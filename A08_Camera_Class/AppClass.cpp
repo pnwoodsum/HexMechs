@@ -22,6 +22,9 @@ void AppClass::InitVariables(void)
 	m_pCylinder = new PrimitiveClass();
 	m_pCylinder->GenerateCylinder(70.0f, 70.0f, 10, REGREEN);
 
+	bullet = new PrimitiveClass();
+	bullet->GenerateSphere(10.0f, 20, RERED);
+
 	//Calculate the first projections
 	m_m4Projection = glm::perspective(45.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
 	m_m4View = glm::lookAt(glm::vec3(0.0f, 0.0f, 15.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -58,6 +61,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine(std::to_string(m_Camera->x) + "," + std::to_string(m_Camera->y));
 	m_pMeshMngr->PrintLine(std::to_string(dis.x) + "," + std::to_string(dis.y));
 	
+	bulletPos += bulletForward;
 
 	lastPressedM = sf::Keyboard::isKeyPressed(sf::Keyboard::M);
 	lastPressedN = sf::Keyboard::isKeyPressed(sf::Keyboard::N);

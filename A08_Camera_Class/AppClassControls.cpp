@@ -94,6 +94,9 @@ void AppClass::ProcessKeyboard(void)
 			m_Camera->ChangeYaw(-0.01f);
 		}
 	}
+	if (sf::Mouse::Left) {
+
+	}
 	//Exit the program
 #pragma region Other Actions
 	ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL))

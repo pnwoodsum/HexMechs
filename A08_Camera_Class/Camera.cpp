@@ -45,7 +45,7 @@ matrix4 Camera::GetView(vector2 mouse) {
 		orientation = glm::quat(vector3(cameraPitch, cameraYaw, cameraRoll));
 	}
 	else {
-		orientation = glm::quat(vector3(glm::radians(y / 20.0f), 0.0f, 0.0f)) * glm::quat(vector3(0.0f, glm::radians(x/20.0f), 0.0f));
+		orientation = glm::quat(vector3(glm::radians(y/20.0f), 0.0f, 0.0f)) * glm::quat(vector3(0.0f, glm::radians(x/20.0f), 0.0f));
 	}
 	cameraView = glm::toMat4(orientation) * glm::translate(cameraPos);
 	return cameraView;
@@ -77,6 +77,7 @@ void Camera::MoveForward(float z) {
 	if (z <= 1.0f) {
 		cameraPos += glm::normalize(cameraForward);
 	}
+	cameraForward.x = 0.0f;
 	cameraPos += cameraForward;
 }
 
