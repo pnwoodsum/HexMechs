@@ -1,5 +1,6 @@
 #include "AppClass.h"
 #include "Camera.h"
+#include "GameObject.h"
 #include "iostream"
 void AppClass::InitWindow(String a_sWindowName)
 {
@@ -7,9 +8,49 @@ void AppClass::InitWindow(String a_sWindowName)
 }
 void AppClass::InitVariables(void)
 {
+	//Environment Setup
+	//********
+
+	envCount = 10;
+	environment = new PrimitiveClass[envCount];
+	environ_Matrix = new matrix4[envCount];
+
+	environment[0].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
+	environ_Matrix[0] = glm::translate(vector3(-200, 0, -200));
+
+	environment[1].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
+	environ_Matrix[1] = glm::translate(vector3(-200, 0, -0));
+
+	environment[2].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
+	environ_Matrix[2] = glm::translate(vector3(-200, 0, 200));
+
+	environment[3].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
+	environ_Matrix[3] = glm::translate(vector3(200, 0, -200));
+
+	environment[4].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
+	environ_Matrix[4] = glm::translate(vector3(200, 0, 0));
+
+	environment[5].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
+	environ_Matrix[5] = glm::translate(vector3(200, 0, 200));
+
+	environment[6].GenerateCuboid(vector3(2000.f, 400.f, 30.f), REORANGE);
+	environ_Matrix[6] = glm::translate(vector3(0, 0, 1000));
+
+	environment[7].GenerateCuboid(vector3(2000.f, 400.f, 30.f), REORANGE);
+	environ_Matrix[7] = glm::translate(vector3(0, 0, -1000));
+
+	environment[8].GenerateCuboid(vector3(30.f, 400.f, 2000.f), REORANGE);
+	environ_Matrix[8] = glm::translate(vector3(1000, 0, 0));
+
+	environment[9].GenerateCuboid(vector3(30.f, 400.f, 2000.f), REORANGE);
+	environ_Matrix[9] = glm::translate(vector3(-1000, 0, 0));
+	
+	//*******
+
+
 	//Generate the Cone
 	m_pCone = new PrimitiveClass();
-	m_pCone->GenerateCone(70.0f, 70.0f, 10, RERED);
+	m_pCone->GenerateCube(70.0f, RERED);
 
 	m_pPlane = new PrimitiveClass();
 	m_pPlane->GeneratePlane(10000.0f, REBLUE);
@@ -17,10 +58,6 @@ void AppClass::InitVariables(void)
 	//Static Cylinder that representsa gun, I guess...
 	m_pCylinder2 = new PrimitiveClass();
 	m_pCylinder2->GenerateCylinder(5.0f, 25.0f, 12, REORANGE);
-
-	//Generate the Cylinder
-	m_pCylinder = new PrimitiveClass();
-	m_pCylinder->GenerateCylinder(70.0f, 70.0f, 10, REGREEN);
 
 	//Calculate the first projections
 	m_m4Projection = glm::perspective(45.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
@@ -97,10 +134,7 @@ void AppClass::Display(void)
 	m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::XY);
 
 	//Render the cone
-	m_pCone->Render(m_m4Projection, m_m4View, IDENTITY_M4);
-
-	//Render the cylinder
-	m_pCylinder->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISZ * -200.0f));
+	m_pCone->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -65.0f));
 
 	m_pCylinder2->Render(m_m4Projection, m_m4View, glm::translate(-m_Camera->GetPos()) * glm::transpose(glm::toMat4(m_Camera->orientation)) * glm::translate(IDENTITY_M4, -vector3(-20.0f,10.0f,40.0f)) * glm::rotate(95.0f,1.0f,0.0f,0.0f));
 
@@ -108,6 +142,11 @@ void AppClass::Display(void)
 		for (int i = 0; i < bullets.size(); i++) {
 			bullets[i].render(m_m4Projection, m_m4View);
 		}
+	}
+
+	for (int n = 0; n < envCount; n++)
+	{
+		environment[n].Render(m_m4Projection, m_m4View, environ_Matrix[n]);
 	}
 
 	m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -100.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));

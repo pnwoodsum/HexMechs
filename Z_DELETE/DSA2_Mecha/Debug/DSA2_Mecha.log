@@ -1,0 +1,38 @@
+﻿  AppClass.cpp
+c:\users\zane\documents\hexmechs\dsa2_mecha\appclass.cpp(84): warning C4018: '<': signed/unsigned mismatch
+c:\users\zane\documents\hexmechs\dsa2_mecha\appclass.cpp(141): warning C4018: '<': signed/unsigned mismatch
+  DSA2_Mecha.vcxproj -> C:\Users\Zane\Documents\HexMechs\Z_DELETE\DSA2_MechaD.exe
+  DSA2_Mecha.vcxproj -> C:\Users\Zane\Documents\HexMechs\Z_DELETE\DSA2_MechaD.pdb (Full PDB)
+  A subdirectory or file C:\Users\Zane\Documents\HexMechs\_Binary\ already exists.
+  C:\Users\Zane\Documents\HexMechs\include\GL\bin\glew32.dll
+  C:\Users\Zane\Documents\HexMechs\include\GL\bin\glut32.dll
+  2 File(s) copied
+  C:\Users\Zane\Documents\HexMechs\include\RE\bin\2015\ReEng_VS15.dll
+  C:\Users\Zane\Documents\HexMechs\include\RE\bin\2015\ReEng_VS15_d.dll
+  2 File(s) copied
+  C:\Users\Zane\Documents\HexMechs\include\SFML\bin\sfml-system-2.dll
+  1 File(s) copied
+  C:\Users\Zane\Documents\HexMechs\include\SFML\bin\sfml-window-2.dll
+  1 File(s) copied
+  A subdirectory or file C:\Users\Zane\Documents\HexMechs\_Binary\Shaders\ already exists.
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Basic.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Basic.vs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\BasicColor.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\BasicColor.vs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Color.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Color.vs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\PassThrough.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\PassThrough.vs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Phong.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Phong.vs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\REShader.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\REShader.vs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\REShaderInv.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\REShaderMC.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Skybox.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Skybox.vs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Test.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\Test.vs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\TextShader.fs
+  C:\Users\Zane\Documents\HexMechs\include\RE\Shaders\TextShader.vs
+  20 File(s) copied

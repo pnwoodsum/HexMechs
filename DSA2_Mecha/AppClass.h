@@ -20,6 +20,10 @@ class AppClass : public ReEngAppClass
 	PrimitiveClass* m_pCylinder = nullptr;
 	PrimitiveClass* m_pCylinder2 = nullptr;
 
+	PrimitiveClass* environment = nullptr;
+	matrix4* environ_Matrix = nullptr;
+	int envCount;
+
 	std::vector<Bullet> bullets;
 	int curr = 0;
 
