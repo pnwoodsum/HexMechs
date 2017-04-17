@@ -4,7 +4,7 @@
 #include "iostream"
 void AppClass::InitWindow(String a_sWindowName)
 {
-	super::InitWindow("A08_Camera_Class"); // Window Name
+	super::InitWindow("HexMechs"); // Window Name
 }
 void AppClass::InitVariables(void)
 {
