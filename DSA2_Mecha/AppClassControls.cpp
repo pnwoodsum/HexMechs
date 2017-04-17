@@ -50,7 +50,7 @@ void AppClass::ProcessKeyboard(void)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
 		bullets[curr].fire(m_Camera->GetPos(), m_Camera->orientation);
 		curr++;
-		if (curr >= 20) {
+		if (curr >= bullets.size()) {
 			curr = 0;
 		}
 	}

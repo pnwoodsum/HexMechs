@@ -16,7 +16,7 @@ Bullet::~Bullet()
 }
 
 void Bullet::fire(vector3 pos, glm::quat or) {
-	bulletPos = pos;
+	bulletPos = pos - (vector3(0.0f,0.0f,2.0f) * or);
 	lastOrient = or ;
 
 	exist = true;

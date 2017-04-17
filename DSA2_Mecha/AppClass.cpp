@@ -4,7 +4,7 @@
 #include "iostream"
 void AppClass::InitWindow(String a_sWindowName)
 {
-	super::InitWindow("A08_Camera_Class"); // Window Name
+	super::InitWindow("DSA2 Game"); // Window Name
 }
 void AppClass::InitVariables(void)
 {
@@ -71,7 +71,7 @@ void AppClass::InitVariables(void)
 
 	
 	//Create Object Pool for Bullets
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 50; i++) {
 		bullets.push_back(Bullet());
 	}
 
