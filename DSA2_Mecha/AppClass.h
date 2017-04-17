@@ -15,6 +15,7 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
+	TextureClass* cockpitTexture;
 	PrimitiveClass* m_pCone = nullptr;
 	PrimitiveClass* m_pPlane = nullptr;
 	PrimitiveClass* m_pCylinder = nullptr;

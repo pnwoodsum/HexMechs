@@ -8,6 +8,9 @@ void AppClass::InitWindow(String a_sWindowName)
 }
 void AppClass::InitVariables(void)
 {
+
+	cockpitTexture = new TextureClass();
+	cockpitTexture->LoadTexture("Cockpit.png");
 	//Environment Setup
 	//********
 
@@ -129,6 +132,7 @@ void AppClass::Display(void)
 {
 	//clear the screen
 	ClearScreen();
+
 	
 	//Render the grid
 	m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::XY);
@@ -150,8 +154,9 @@ void AppClass::Display(void)
 	}
 
 	m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -100.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));
-
+	
 	m_pMeshMngr->Render(); //renders the render list
+	m_pMeshMngr->RenderTexture(cockpitTexture->GetGLTextureID());
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
 }
