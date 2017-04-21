@@ -164,7 +164,7 @@ void AppClass::Display(void)
 	}
 
 	m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -100.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));
-	
+
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->RenderTexture(cockpitTexture->GetGLTextureID());
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render

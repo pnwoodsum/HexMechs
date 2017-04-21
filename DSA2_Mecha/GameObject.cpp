@@ -7,6 +7,7 @@ GameObject::GameObject(std::string modelPath, std::string instName)
 
 	colMngr = CollisionManager::GetInstance();
 	colMngr->m_pMeshMngr->LoadModel(modelPath, instanceName);
+
 	collider = new BoundingObject(colMngr->m_pMeshMngr->GetVertexList(instanceName), 0);
 	colMngr->AddObject(*collider);
 
