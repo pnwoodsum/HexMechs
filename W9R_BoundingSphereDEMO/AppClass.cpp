@@ -19,10 +19,10 @@ void AppClass::InitVariables(void)
 	m_pBS0 = new MyBoundingBoxClass(m_pMeshMngr->GetVertexList("Zombie"));
 	m_pBS1 = new MyBoundingBoxClass(m_pMeshMngr->GetVertexList("Steve"));
 	m_pBS2 = new MyBoundingBoxClass(m_pMeshMngr->GetVertexList("Cow"));
-	
+
 	matrix4 m4Position = glm::translate(vector3(3.0, 0.0, 0.0));
 	m_pMeshMngr->SetModelMatrix(m4Position, "Steve");
-	
+
 	matrix4 m4Position2 = glm::translate(vector3(2.5, 2.0, 0.0));
 	m_pMeshMngr->SetModelMatrix(m4Position2, "Cow");
 }
@@ -55,20 +55,16 @@ void AppClass::Update(void)
 
 	//set the translate to create the transform matrix
 	matrix4 m4Transform = glm::translate(m_v3Position) * ToMatrix4(m_qArcBall);
-
 	m_pMeshMngr->SetModelMatrix(m4Transform, "Zombie"); //set the matrix to the model
-	m_pBS0->m_v3Position = m_v3Position;
 	m_pBS0->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Zombie"));
 	m_pBS0->RenderSphere();//render the bounding sphere
 		
 
 	m_pMeshMngr->SetModelMatrix(mTranslation, "Steve");
-	m_pBS1->m_v3Position = v3Current;
 	m_pBS1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
 	m_pBS1->RenderSphere();
-	
+
 	m_pBS2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Cow"));
-	m_pBS2->m_v3Position = vector3(2.5, 2.0, 0.0);
 	m_pBS2->RenderSphere();
 
 	m_pBS0->SetColliding(false);
@@ -120,13 +116,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine(")");
 
 	m_pMeshMngr->Print("FPS:");
-	m_pMeshMngr->PrintLine(std::to_string(nFPS), RERED);
-	m_pMeshMngr->PrintLine(std::to_string(m_pBS0->p_v3Max.x), RERED);
-	m_pMeshMngr->PrintLine(std::to_string(m_pBS0->p_v3Max.y), RERED);
-	m_pMeshMngr->PrintLine(std::to_string(m_pBS0->p_v3Max.z), RERED);
-	m_pMeshMngr->PrintLine(std::to_string(m_pBS0->p_v3Min.x), RERED);
-	m_pMeshMngr->PrintLine(std::to_string(m_pBS0->p_v3Min.y), RERED);
-	m_pMeshMngr->PrintLine(std::to_string(m_pBS0->p_v3Min.z), RERED);
+	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
 }
 
 void AppClass::Display(void)

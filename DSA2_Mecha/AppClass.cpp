@@ -8,6 +8,7 @@ void AppClass::InitWindow(String a_sWindowName)
 }
 void AppClass::InitVariables(void)
 {
+	m_pBOMngr = CollisionManager::GetInstance();
 
 	cockpitTexture = new TextureClass();
 	cockpitTexture->LoadTexture("Cockpit.png");
@@ -50,6 +51,13 @@ void AppClass::InitVariables(void)
 	
 	//*******
 
+	first = new GameObject("Minecraft\\Zombie.obj", "Zombie");
+	second = new GameObject("Minecraft\\Steve.obj", "Steve");
+	third = new GameObject("Minecraft\\Cow.obj", "Cow");
+
+	first->SetMatrix(glm::translate(vector3(3.0, 0.0, 0.0)));
+	second->SetMatrix(glm::translate(vector3(3.0, 0.0, 0.0)));
+	third->SetMatrix(glm::translate(vector3(3.0, 0.0, 0.0)));
 
 	//Generate the Cone
 	m_pCone = new PrimitiveClass();
@@ -119,6 +127,8 @@ void AppClass::Update(void)
 
 	//Update the system's time
 	m_pSystem->UpdateTime();
+
+	m_pBOMngr->RenderAll();
 
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();

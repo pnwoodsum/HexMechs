@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}</ProjectGuid>
     <RootNamespace>W9R_BoundingSphereDEMO</RootNamespace>
-    <ProjectName>W9R_BoundingSphereDEMO</ProjectName>
+    <ProjectName>A11_SAT</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -109,15 +109,12 @@ xcopy "$(SolutionDir)include\RE\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
     <ClCompile Include="AppClassControls.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MyBoundingBoxClass.cpp" />
-    <ClCompile Include="MyBoundingObjectClass.cpp" />
     <ClCompile Include="MyBoundingSphereClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\res\Resource.h" />
     <ClInclude Include="AppClass.h" />
-    <ClInclude Include="BoundingObjectManager.h" />
     <ClInclude Include="MyBoundingBoxClass.h" />
-    <ClInclude Include="MyBoundingObjectClass.h" />
     <ClInclude Include="MyBoundingSphereClass.h" />
   </ItemGroup>
   <ItemGroup>

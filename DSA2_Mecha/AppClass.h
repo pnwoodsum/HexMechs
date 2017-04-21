@@ -8,6 +8,7 @@ Date: 2015/09
 #include "RE\ReEngAppClass.h"
 #include "Camera.h"
 #include "Bullet.h"
+#include "GameObject.h"
 #include <SFML\Graphics.hpp>
 //#include <chrono>
 
@@ -15,6 +16,8 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
+	CollisionManager* m_pBOMngr;
+
 	TextureClass* cockpitTexture;
 	PrimitiveClass* m_pCone = nullptr;
 	PrimitiveClass* m_pPlane = nullptr;
@@ -29,6 +32,10 @@ class AppClass : public ReEngAppClass
 	int curr = 0;
 
 	Camera* m_Camera = new Camera();
+
+	GameObject* first;
+	GameObject* second;
+	GameObject* third;
 
 	sf::Vector2i cM;
 

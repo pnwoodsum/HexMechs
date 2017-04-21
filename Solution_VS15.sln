@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DSA2_Mecha", "DSA2_Mecha\DSA2_Mecha.vcxproj", "{8BD313E1-20AC-43EA-8ACA-5A9069F3198B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "W9R_BoundingSphereDEMO", "W9R_BoundingSphereDEMO\W9R_BoundingSphereDEMO.vcxproj", "{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A11_SAT", "W9R_BoundingSphereDEMO\W9R_BoundingSphereDEMO.vcxproj", "{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

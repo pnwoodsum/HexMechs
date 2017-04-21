@@ -18,22 +18,6 @@ private:
 	vector3 m_v3MaxG;
 	vector3 m_v3MinG;
 	vector3 m_v3SizeG;
-
-	
-	vector3 p_v3Size;
-	
-	vector3 one;
-	vector3 two;
-	vector3 three;
-	vector3 four;
-	vector3 five;
-	vector3 six;
-	vector3 seven;
-	vector3 eight;
-
-	std::vector<vector3> points;
-	std::vector<vector3> pointsG;
-
 public:
 	/*
 	Sets Colliding
@@ -90,8 +74,4 @@ public:
 	Will check the collision with another object
 	*/
 	bool IsColliding(MyBoundingBoxClass* a_other);
-
-	vector3 m_v3Position;
-	vector3 p_v3Max;
-	vector3 p_v3Min;
 };
