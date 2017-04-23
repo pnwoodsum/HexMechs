@@ -1,7 +1,6 @@
 #pragma once
 #include "RE\ReEngAppClass.h"
 #include "BoundingObject.h"
-#include "CollisionManager.h"
 
 using namespace ReEng;
 
@@ -9,8 +8,11 @@ enum ColliderType { projectile, environment, object };
 
 class GameObject
 {
+
+public:
 	bool bGravityEnabled;
 	bool bCanCollide;
+	bool visible;
 
 	std::string instanceName;
 	matrix4 matrix;
@@ -20,15 +22,17 @@ class GameObject
 	ColliderType collisionType;
 	BoundingObject* collider;
 
-	CollisionManager* colMngr;
+	PrimitiveClass* model = nullptr;
+
 	
 public:
-	GameObject(std::string modelPath, std::string instName);
+	GameObject();
 	~GameObject();
 
-	void SetMatrix(matrix4 newMatrix);
-	void AddOffset(vector3 delta);
+	void SetMatrix(matrix4);
+	void AddOffset(vector3);
 
-	void Render();
+	void Render(matrix4, matrix4 );
+	virtual void Update();
 
 };

@@ -1,7 +1,4 @@
 #include "AppClass.h"
-#include "Camera.h"
-#include "GameObject.h"
-#include "iostream"
 void AppClass::InitWindow(String a_sWindowName)
 {
 	super::InitWindow("HexMechs"); // Window Name
@@ -19,23 +16,12 @@ void AppClass::InitVariables(void)
 	environment = new PrimitiveClass[envCount];
 	environ_Matrix = new matrix4[envCount];
 
-	environment[0].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
-	environ_Matrix[0] = glm::translate(vector3(-200, 0, -200));
-
-	environment[1].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
-	environ_Matrix[1] = glm::translate(vector3(-200, 0, -0));
-
-	environment[2].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
-	environ_Matrix[2] = glm::translate(vector3(-200, 0, 200));
-
-	environment[3].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
-	environ_Matrix[3] = glm::translate(vector3(200, 0, -200));
-
-	environment[4].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
-	environ_Matrix[4] = glm::translate(vector3(200, 0, 0));
-
-	environment[5].GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
-	environ_Matrix[5] = glm::translate(vector3(200, 0, 200));
+	m_pBOMngr->AddObject(Pillar(vector3(-200, 0, -200)));
+	m_pBOMngr->AddObject(Pillar(vector3(-200, 0, 0)));
+	m_pBOMngr->AddObject(Pillar(vector3(-200, 0, 200)));
+	m_pBOMngr->AddObject(Pillar(vector3(200, 0, -200)));
+	m_pBOMngr->AddObject(Pillar(vector3(200, 0, 0)));
+	m_pBOMngr->AddObject(Pillar(vector3(200, 0, 200)));
 
 	environment[6].GenerateCuboid(vector3(2000.f, 400.f, 30.f), REORANGE);
 	environ_Matrix[6] = glm::translate(vector3(0, 0, 1000));
@@ -50,14 +36,6 @@ void AppClass::InitVariables(void)
 	environ_Matrix[9] = glm::translate(vector3(-1000, 0, 0));
 	
 	//*******
-
-	first = new GameObject("Minecraft\\Zombie.obj", "Zombie");
-	second = new GameObject("Minecraft\\Steve.obj", "Steve");
-	third = new GameObject("Minecraft\\Cow.obj", "Cow");
-
-	first->SetMatrix(glm::translate(vector3(3.0, 0.0, 0.0)));
-	second->SetMatrix(glm::translate(vector3(3.0, 0.0, 0.0)));
-	third->SetMatrix(glm::translate(vector3(3.0, 0.0, 0.0)));
 
 	//Generate the Cone
 	m_pCone = new PrimitiveClass();
@@ -91,12 +69,14 @@ void AppClass::InitVariables(void)
 
 void AppClass::Update(void)
 {
+	
 	//Do Bullet Stuff
 	if (!bullets.empty()) {
 		for (int i = 0; i < bullets.size(); i++) {
-			bullets[i].move();
+			bullets[i].Update();
 		}
 	}
+	
 
 	//Find Mouse Difference to move Camera
 	cM = sf::Mouse::getPosition();
@@ -112,7 +92,7 @@ void AppClass::Update(void)
 
 	SetCursorPos(CenterX, CenterY);
 
-
+	m_pBOMngr->Update();
 
 	m_pMeshMngr->PrintLine("");
 
@@ -152,11 +132,15 @@ void AppClass::Display(void)
 
 	m_pCylinder2->Render(m_m4Projection, m_m4View, glm::translate(-m_Camera->GetPos()) * glm::transpose(glm::toMat4(m_Camera->orientation)) * glm::translate(IDENTITY_M4, -vector3(-20.0f,10.0f,40.0f)) * glm::rotate(95.0f,1.0f,0.0f,0.0f));
 
+	m_pBOMngr->RenderObjects(m_m4Projection, m_m4View);
+
+	
 	if (!bullets.empty()) {
 		for (int i = 0; i < bullets.size(); i++) {
-			bullets[i].render(m_m4Projection, m_m4View);
+			bullets[i].Render(m_m4Projection, m_m4View);
 		}
 	}
+	
 
 	for (int n = 0; n < envCount; n++)
 	{

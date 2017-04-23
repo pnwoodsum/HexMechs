@@ -9,6 +9,9 @@ Date: 2015/09
 #include "Camera.h"
 #include "Bullet.h"
 #include "GameObject.h"
+#include "CollisionManager.h"
+#include "Prefabs.h"
+#include "iostream"
 #include <SFML\Graphics.hpp>
 //#include <chrono>
 
@@ -32,10 +35,6 @@ class AppClass : public ReEngAppClass
 	int curr = 0;
 
 	Camera* m_Camera = new Camera();
-
-	GameObject* first;
-	GameObject* second;
-	GameObject* third;
 
 	sf::Vector2i cM;
 

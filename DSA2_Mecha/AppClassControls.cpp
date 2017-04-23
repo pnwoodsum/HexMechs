@@ -28,16 +28,25 @@ void AppClass::ProcessKeyboard(void)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		if (!bModifier) {
-			m_Camera->MoveForward(1.0f);
+			m_Camera->MoveForward(1.0f); 
+			m_pCameraMngr->MoveForward(1.0f);
 		}
 		else {
 			m_Camera->MoveForward(4.0f);
+			m_pCameraMngr->MoveForward(4.0f);
 		}
 		
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		m_Camera->MoveForward(-1.0f);
+		if (!bModifier) {
+			m_Camera->MoveForward(-1.0f);
+			m_pCameraMngr->MoveForward(-1.0f);
+		}
+		else {
+			m_Camera->MoveForward(-4.0f);
+			m_pCameraMngr->MoveForward(-4.0f);
+		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{

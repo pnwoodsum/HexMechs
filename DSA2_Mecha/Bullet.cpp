@@ -1,13 +1,17 @@
 #include "Bullet.h"
 
 
-
 Bullet::Bullet(void)
 {
-	bullet = new PrimitiveClass();
-	bullet->GenerateSphere(5.0f, 20, RERED);
+	model = new PrimitiveClass();
+	model->GenerateSphere(5.0f, 20, RERED);
 
-	exist = false;
+	collider = new BoundingObject(model->GetVertexList(), 0);
+
+	bCanCollide = true;
+	collisionType = ColliderType::projectile;
+
+	visible = true;
 }
 
 
@@ -16,22 +20,26 @@ Bullet::~Bullet()
 }
 
 void Bullet::fire(vector3 pos, glm::quat or) {
-	bulletPos = pos - (vector3(0.0f,0.0f,2.0f) * or);
+	position = pos - vector3(0.0f, 0.0f, 2.0f) * or;
+
+	//bulletPos = pos - (vector3(0.0f,0.0f,2.0f) * or);
 	lastOrient = or ;
 
-	exist = true;
+	visible = true;
 }
 
-void Bullet::move() 
+void Bullet::Update() 
 {
-	if (exist) {
-		bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
+	if (visible) {
+		position += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
+		//bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
 	}
 }
-
+/*
 void Bullet::render(matrix4 projection, matrix4 view)
 {
 	if (exist) {
 		bullet->Render(projection, view, glm::translate(-bulletPos));
 	}
 }
+*/
