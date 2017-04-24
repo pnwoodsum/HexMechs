@@ -9,6 +9,11 @@ void AppClass::InitVariables(void)
 
 	cockpitTexture = new TextureClass();
 	cockpitTexture->LoadTexture("Cockpit.png");
+
+	m_pMeshMngr->LoadModel("Sorted\\enemy.obj", "enemy");
+	m_pMeshMngr->SetModelMatrix(glm::translate(vector3(0, -100, 200)), "enemy");
+	
+
 	//Environment Setup
 	//********
 
@@ -127,9 +132,13 @@ void AppClass::Display(void)
 	//clear the screen
 	ClearScreen();
 
+	m_pCameraMngr->SetProjectionMatrix(m_m4Projection);
+	m_pCameraMngr->SetViewMatrix(m_m4View);
+
 	
 	//Render the grid
-	m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::XY);
+	//m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::XY);
+	
 
 	//Render the cone
 	m_pCone->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -65.0f));
