@@ -44,13 +44,17 @@ void AppClass::InitVariables(void)
 	//Generate the Cone
 	m_pCone = new PrimitiveClass();
 	m_pCone->GenerateCube(70.0f, RERED);
-
+	
 	m_pPlane = new PrimitiveClass();
 	m_pPlane->GeneratePlane(10000.0f, REBLUE);
 
 	//Static Cylinder that representsa gun, I guess...
 	m_pCylinder2 = new PrimitiveClass();
 	m_pCylinder2->GenerateCylinder(5.0f, 25.0f, 12, REORANGE);
+
+	// Gun model
+	m_pMeshMngr->LoadModel("Mechs\\ChainGun.fbx", "ChainGun");
+
 
 	//Calculate the first projections
 	m_m4Projection = glm::perspective(45.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
@@ -73,7 +77,21 @@ void AppClass::InitVariables(void)
 
 void AppClass::Update(void)
 {
-	
+
+	//update gun matrix
+	//m_pMeshMngr->SetModelMatrix(glm::translate(-m_Camera->GetPos()) * 
+	//	glm::transpose(glm::toMat4(m_Camera->orientation)) * 
+	//	glm::translate(IDENTITY_M4, -vector3(-20.0f, 10.0f, 40.0f)) * 
+	//	glm::rotate(95.0f, 1.0f, 0.0f, 0.0f),
+	//	"ChainGun");
+	m_m4GunMat = IDENTITY_M4 *
+		glm::translate((-m_Camera->GetPos() * 0.0001f) + (vector3(4.4f, -2.1f, 0.0f))) *
+		ToMatrix4(glm::angleAxis(185.0f, REAXISY)) * 
+		ToMatrix4(glm::angleAxis(-5.0f, REAXISX));
+
+	m_pMeshMngr->SetModelMatrix(m_m4GunMat,
+		"ChainGun");
+
 	//Do Bullet Stuff
 	if (!bullets.empty()) {
 		for (int i = 0; i < bullets.size(); i++) {
@@ -143,7 +161,10 @@ void AppClass::Display(void)
 	//Render the cone
 	m_pCone->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -65.0f));
 
-	m_pCylinder2->Render(m_m4Projection, m_m4View, glm::translate(-m_Camera->GetPos()) * glm::transpose(glm::toMat4(m_Camera->orientation)) * glm::translate(IDENTITY_M4, -vector3(-20.0f,10.0f,40.0f)) * glm::rotate(95.0f,1.0f,0.0f,0.0f));
+	//m_pCylinder2->Render(m_m4Projection, m_m4View, glm::translate(-m_Camera->GetPos()) * 
+	//	glm::transpose(glm::toMat4(m_Camera->orientation)) * 
+	//	glm::translate(IDENTITY_M4, -vector3(-20.0f,10.0f,40.0f)) * 
+	//	glm::rotate(95.0f,1.0f,0.0f,0.0f));
 
 	m_pBOMngr->RenderObjects(m_m4Projection, m_m4View);
 

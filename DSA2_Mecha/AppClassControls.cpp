@@ -70,7 +70,9 @@ void AppClass::ProcessKeyboard(void)
 			//m_pCameraMngr->MoveSideways(-4.0f);
 		}
 	}
+	firing = false;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+		firing = true;
 		bullets[curr].fire(m_Camera->GetPos(), m_Camera->orientation);
 		curr++;
 		if (curr >= bullets.size()) {

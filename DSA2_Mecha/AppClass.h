@@ -39,6 +39,9 @@ class AppClass : public ReEngAppClass
 
 	Camera* m_Camera = new Camera();
 
+	bool firing;
+	matrix4 m_m4GunMat;
+
 	sf::Vector2i cM;
 
 	matrix4 m_m4Projection;
