@@ -78,19 +78,8 @@ void AppClass::InitVariables(void)
 void AppClass::Update(void)
 {
 
-	//update gun matrix
-	//m_pMeshMngr->SetModelMatrix(glm::translate(-m_Camera->GetPos()) * 
-	//	glm::transpose(glm::toMat4(m_Camera->orientation)) * 
-	//	glm::translate(IDENTITY_M4, -vector3(-20.0f, 10.0f, 40.0f)) * 
-	//	glm::rotate(95.0f, 1.0f, 0.0f, 0.0f),
-	//	"ChainGun");
-	m_m4GunMat = IDENTITY_M4 *
-		glm::translate((-m_Camera->GetPos() * 0.0001f) + (vector3(4.4f, -2.1f, 0.0f))) *
-		ToMatrix4(glm::angleAxis(185.0f, REAXISY)) * 
-		ToMatrix4(glm::angleAxis(-5.0f, REAXISX));
 
-	m_pMeshMngr->SetModelMatrix(m_m4GunMat,
-		"ChainGun");
+
 
 	//Do Bullet Stuff
 	if (!bullets.empty()) {
@@ -132,6 +121,16 @@ void AppClass::Update(void)
 	m_m4Projection = m_Camera->GetProjection(false);
 	m_m4View = m_Camera->GetView(mousePos);
 
+	// Update gun matrix
+
+	m_m4GunMat = glm::translate(-m_Camera->GetPos()) *
+		glm::transpose(glm::toMat4(m_Camera->orientation)) * 
+		glm::translate(IDENTITY_M4, -vector3(-8.0f,4.0f,20.0f)) * 
+		ToMatrix4(glm::angleAxis(180.0f, REAXISY));
+
+	m_pMeshMngr->SetModelMatrix(m_m4GunMat,
+		"ChainGun");
+
 	//Update the system's time
 	m_pSystem->UpdateTime();
 
@@ -160,11 +159,6 @@ void AppClass::Display(void)
 
 	//Render the cone
 	m_pCone->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -65.0f));
-
-	//m_pCylinder2->Render(m_m4Projection, m_m4View, glm::translate(-m_Camera->GetPos()) * 
-	//	glm::transpose(glm::toMat4(m_Camera->orientation)) * 
-	//	glm::translate(IDENTITY_M4, -vector3(-20.0f,10.0f,40.0f)) * 
-	//	glm::rotate(95.0f,1.0f,0.0f,0.0f));
 
 	m_pBOMngr->RenderObjects(m_m4Projection, m_m4View);
 
