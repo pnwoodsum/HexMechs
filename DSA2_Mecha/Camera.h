@@ -10,8 +10,8 @@ public:
 	void SetPosition(vector3); //Sets the position of the camera
 	void SetTarget(vector3); //Sets the target of the camera
 	void SetUp(vector3); //Sets the up vector of the camera
-	void MoveForward(float); //Move the camera forward (or backwards) depending on the “view vector”
-	void MoveSideways(float); //Move the camera based on the “right” vectordepending on the “view vec
+	void MoveForward(float,bool); //Move the camera forward (or backwards) depending on the “view vector”
+	void MoveSideways(float,bool); //Move the camera based on the “right” vectordepending on the “view vec
 	void MoveVertical(float); //Move the camera up or down depending on the “up vector”
 	void ChangePitch(float);
 	void ChangeRoll(float);
@@ -20,6 +20,11 @@ public:
 	void SwitchProjection();
 	
 	vector3 cameraForward;
+	vector3 cameraPos;
+
+	vector3 accel;
+	vector3 velocity;
+	float accelf;
 
 	glm::quat orientation;
 	vector3 GetPos();
@@ -35,7 +40,6 @@ private:
 	vector3 cameraUp;
 	
 	vector3 cameraRight;
-	vector3 cameraPos;
 	vector3 cameraTarget;
 	
 	float cameraYaw;

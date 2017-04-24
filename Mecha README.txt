@@ -6,7 +6,4 @@ WASD to move
 
 F to shoot
 
-
-Current Problems:
-
-None... yet
+Shift + WASD to boost... kind of

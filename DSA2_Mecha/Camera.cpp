@@ -17,6 +17,10 @@ Camera::Camera()
 	mouseUse = false;
 	ortho = false;
 
+	accelf = 7.0f;
+	accel = vector3(0.0f, 0.0f, 0.0f);
+	velocity = vector3(0.0f, 0.0f, 0.0f);
+
 	x = 0.0f;
 	y = 0.0f;
 }
@@ -72,18 +76,34 @@ void Camera::SetUp(vector3 up) {
 	cameraUp = up;
 }
 
-void Camera::MoveForward(float z) {
-	cameraForward = vector3(0.0, 0.0, z) * orientation;
-	if (z <= 1.0f) {
-		cameraForward = glm::normalize(cameraForward);
+void Camera::MoveForward(float z, bool b) {
+	cameraForward = vector3(0.0f, 0.0f, z) * orientation;
+	accel = cameraForward * accelf;
+	velocity += accel;
+
+	if (b) {
+		velocity = glm::clamp(velocity, -20, 20);
 	}
-	cameraForward.y = 0.0f;
-	cameraPos += cameraForward;
+	else {
+		velocity = glm::clamp(velocity, -3, 3);
+	}
+
+	velocity.y = 0.0f;
 }
 
-void Camera::MoveSideways(float x) {
-	cameraRight = vector3(x, 0.0, 0.0) * orientation;
-	cameraPos += glm::normalize(cameraRight);
+void Camera::MoveSideways(float x, bool b) {
+	cameraRight = vector3(x, 0.0f, 0.0f) * orientation;
+	accel = cameraRight * accelf;
+	velocity += accel;
+
+	if (b) {
+		velocity = glm::clamp(velocity, -20, 20);
+	}
+	else {
+		velocity = glm::clamp(velocity, -3, 3);
+	}
+
+	velocity.y = 0.0f;
 }
 
 void Camera::MoveVertical(float y) {

@@ -27,34 +27,48 @@ void AppClass::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		if (!bModifier) {
-			m_Camera->MoveForward(1.0f); 
-			m_pCameraMngr->MoveForward(1.0f);
+		if (bModifier) {
+			m_Camera->MoveForward(1.0f,true); 
+			//m_pCameraMngr->MoveForward(1.0f);
 		}
 		else {
-			m_Camera->MoveForward(4.0f);
-			m_pCameraMngr->MoveForward(4.0f);
+			m_Camera->MoveForward(1.0f,false);
+			//m_pCameraMngr->MoveForward(4.0f);
 		}
 		
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		if (!bModifier) {
-			m_Camera->MoveForward(-1.0f);
-			m_pCameraMngr->MoveForward(-1.0f);
+		if (bModifier) {
+			m_Camera->MoveForward(-1.0f,true);
+			//m_pCameraMngr->MoveForward(1.0f);
 		}
 		else {
-			m_Camera->MoveForward(-4.0f);
-			m_pCameraMngr->MoveForward(-4.0f);
+			m_Camera->MoveForward(-1.0f,false);
+			//m_pCameraMngr->MoveForward(-4.0f);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		m_Camera->MoveSideways(1.0f);
+		if (bModifier) {
+			m_Camera->MoveSideways(1.0f, true);
+			//m_pCameraMngr->MoveSideways(1.0f);
+		}
+		else {
+			m_Camera->MoveSideways(1.0f, false);
+			//m_pCameraMngr->MoveSideways(4.0f);
+		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		m_Camera->MoveSideways(-1.0f);
+		if (bModifier) {
+			m_Camera->MoveSideways(-1.0f, true);
+			//m_pCameraMngr->MoveSideways(-1.0f);
+		}
+		else {
+			m_Camera->MoveSideways(-1.0f, false);
+			//m_pCameraMngr->MoveSideways(-4.0f);
+		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
 		bullets[curr].fire(m_Camera->GetPos(), m_Camera->orientation);

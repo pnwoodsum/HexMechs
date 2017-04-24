@@ -60,7 +60,7 @@ void AppClass::InitVariables(void)
 
 	
 	//Create Object Pool for Bullets
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 40; i++) {
 		bullets.push_back(Bullet());
 	}
 
@@ -91,6 +91,10 @@ void AppClass::Update(void)
 	vector2 mousePos = vector2(-dis.x, -dis.y);
 
 	SetCursorPos(CenterX, CenterY);
+
+	//Velocity Work
+	m_Camera->cameraPos += m_Camera->velocity;
+	m_Camera->velocity *= 0.7f;
 
 	m_pBOMngr->Update();
 
