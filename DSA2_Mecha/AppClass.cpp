@@ -10,8 +10,7 @@ void AppClass::InitVariables(void)
 	cockpitTexture = new TextureClass();
 	cockpitTexture->LoadTexture("Cockpit.png");
 
-	m_pMeshMngr->LoadModel("Sorted\\enemy.obj", "enemy");
-	m_pMeshMngr->SetModelMatrix(glm::translate(vector3(0, -100, 200)), "enemy");
+	enemy = new Enemy();
 	
 
 	//Environment Setup
@@ -81,6 +80,7 @@ void AppClass::Update(void)
 			bullets[i].Update();
 		}
 	}
+	enemy->Update();
 	
 
 	//Find Mouse Difference to move Camera
@@ -154,6 +154,7 @@ void AppClass::Display(void)
 		}
 	}
 	
+	enemy->Render(m_m4Projection, m_m4View);
 
 	for (int n = 0; n < envCount; n++)
 	{

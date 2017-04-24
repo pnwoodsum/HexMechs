@@ -11,6 +11,7 @@ Date: 2015/09
 #include "GameObject.h"
 #include "CollisionManager.h"
 #include "Prefabs.h"
+#include "Enemy.hpp"
 #include "iostream"
 #include <SFML\Graphics.hpp>
 //#include <chrono>
@@ -30,6 +31,8 @@ class AppClass : public ReEngAppClass
 	PrimitiveClass* environment = nullptr;
 	matrix4* environ_Matrix = nullptr;
 	int envCount;
+
+	Enemy* enemy;
 
 	std::vector<Bullet> bullets;
 	int curr = 0;
