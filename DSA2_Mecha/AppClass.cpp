@@ -6,7 +6,7 @@ void AppClass::InitWindow(String a_sWindowName)
 void AppClass::InitVariables(void)
 {
 	m_pBOMngr = CollisionManager::GetInstance();
-
+	
 	cockpitTexture = new TextureClass();
 	cockpitTexture->LoadTexture("Cockpit.png");
 
