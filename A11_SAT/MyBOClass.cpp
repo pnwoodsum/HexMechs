@@ -200,9 +200,7 @@ void MyBOClass::DisplayReAlligned(vector3 a_v3Color)
 	m_pMeshMngr->AddCubeToRenderList(glm::translate(IDENTITY_M4, m_v3CenterG) *
 		glm::scale(m_v3HalfWidthG * 2.0f), a_v3Color, WIRE);
 }
-void MyBOClass::DisplaySAT(vector3 normal, vector3 center) {
 
-}
 bool MyBOClass::IsColliding(MyBOClass* const a_pOther)
 {
 	if (IsCollidingSphere(a_pOther))
@@ -252,12 +250,7 @@ bool MyBOClass::IsCollidingARBB(MyBOClass* const a_pOther) {
 	return true;
 }
 
-bool MyBOClass::CheckAxis(int p1, int p2, int p3, MyBOClass* const a_pFirst, MyBOClass* const a_pSecond, int axis, bool debug = false) {
-	vector3 v1 = a_pFirst->v3Corner[p2] - a_pFirst->v3Corner[p1];
-	vector3 v2 = a_pFirst->v3Corner[p3] - a_pFirst->v3Corner[p2];
-	vector3 vN = glm::cross(v1, v2);
-
-
+bool MyBOClass::CheckAxis(vector3 vN, MyBOClass* const a_pFirst, MyBOClass* const a_pSecond, int axis, bool debug = false) {
 	vector3 projectedverts1[8];
 	vector3 projectedverts2[8];
 	float min1 = std::numeric_limits<float>::max();
@@ -272,22 +265,16 @@ bool MyBOClass::CheckAxis(int p1, int p2, int p3, MyBOClass* const a_pFirst, MyB
 		if (min2 > projectedverts2[i][axis]) min2 = projectedverts2[i][axis];
 		if (max2 < projectedverts2[i][axis]) max2 = projectedverts2[i][axis];
 	}
-	if ((max1 < min2 || min1 > max2)) {
-		//if(debug)
-			//m_pMeshMngr->AddPlaneToRenderList(glm::translate(IDENTITY_M4, ((a_pFirst->m_v3Center + a_pSecond->m_v3Center)/2.0f)) *
-				//glm::scale(vector3(5,5,5)));
-		return false;
-	}
-	return true;
+	return (!(max1 < min2 || min1 > max2));
 }
 
 bool MyBOClass::IsCollidingSAT(MyBOClass* const a_pOther) {
 
-	return	CheckAxis(0, 4, 6, this, a_pOther, 0) &&
-			CheckAxis(0, 4, 5, this, a_pOther, 1) &&
-			CheckAxis(0, 1, 2, this, a_pOther, 2) &&
+	return	CheckAxis(v3Corner[1] - v3Corner[0], this, a_pOther, 0) &&
+			CheckAxis(v3Corner[2] - v3Corner[0], this, a_pOther, 1) &&
+			CheckAxis(v3Corner[4] - v3Corner[0], this, a_pOther, 2) &&
 
-			CheckAxis(0, 4, 6, a_pOther, this, 0) &&
-			CheckAxis(0, 4, 5, a_pOther, this, 1) &&
-			CheckAxis(0, 1, 2, a_pOther, this, 2);
+			CheckAxis(a_pOther->v3Corner[1] - a_pOther->v3Corner[0], a_pOther, this, 0) &&
+			CheckAxis(a_pOther->v3Corner[2] - a_pOther->v3Corner[0], a_pOther, this, 1) &&
+			CheckAxis(a_pOther->v3Corner[4] - a_pOther->v3Corner[0], a_pOther, this, 2);
 }

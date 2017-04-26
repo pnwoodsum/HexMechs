@@ -139,7 +139,7 @@ public:
 	bool IsColliding(MyBOClass* const a_pOther);
 	bool IsCollidingSphere(MyBOClass * const a_pOther);
 	bool IsCollidingARBB(MyBOClass * const a_pOther);
-	bool CheckAxis(int p1, int p2, int p3, MyBOClass * const a_pFirst, MyBOClass * const a_pSecond, int axis, bool debug);
+	bool CheckAxis(vector3 vN, MyBOClass * const a_pFirst, MyBOClass * const a_pSecond, int axis, bool debug);
 	
 	bool IsCollidingSAT(MyBOClass * const a_pOther);
 	/*
@@ -166,8 +166,6 @@ public:
 	OUTPUT: ---
 	*/
 	void DisplayReAlligned(vector3 a_v3Color = REDEFAULT);
-
-	void DisplaySAT(vector3 normal, vector3 center);
 
 	float GetHeight() {
 		return abs(m_v3MaxG.y - m_v3MinG.y) / 2;
