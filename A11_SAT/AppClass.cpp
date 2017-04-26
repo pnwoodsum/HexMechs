@@ -24,6 +24,7 @@ void AppClass::InitVariables(void)
 
 	m_pBOMngr = MyBOManager::GetInstance();
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Steve"), "Steve");
+	m_pBOMngr->GetBoundingObject(0)->isControlledUnit = true;
 	//m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Creeper"), "Creeper");
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Cow"), "Cow");
 }

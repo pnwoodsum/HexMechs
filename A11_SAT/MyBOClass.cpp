@@ -6,6 +6,8 @@ void MyBOClass::Init(void)
 {
 	m_m4ToWorld = IDENTITY_M4;
 
+	isControlledUnit = false;
+
 	m_v3Center = vector3(0.0f);
 	m_v3Min = vector3(0.0f);
 	m_v3Max = vector3(0.0f);

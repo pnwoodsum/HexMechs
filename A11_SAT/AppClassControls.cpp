@@ -47,25 +47,39 @@ void AppClass::ProcessKeyboard(void)
 	if (bModifier)
 		fSpeed *= 10.0f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		m_v3O1.x -= 0.1f;
+		if(!m_pBOMngr->directionBlocked[1])
+			m_v3O1.x -= 0.1f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		m_v3O1.x += 0.1f;
+		if (!m_pBOMngr->directionBlocked[0])
+			m_v3O1.x += 0.1f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		if(!bModifier)
-			m_v3O1.y -= 0.1f;
-		else
-			m_v3O1.z += 0.1f;
+		if (!bModifier) {
+			if (!m_pBOMngr->directionBlocked[3]) {
+				m_v3O1.y -= 0.1f;
+			}
+		}
+		else {
+			if (!m_pBOMngr->directionBlocked[4]) {
+				m_v3O1.z += 0.1f;
+			}
+		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		if (!bModifier)
-			m_v3O1.y += 0.1f;
-		else
-			m_v3O1.z -= 0.1f;
+		if (!bModifier) {
+			if (!m_pBOMngr->directionBlocked[2]) {
+				m_v3O1.y += 0.1f;
+			}
+		}
+		else {
+			if (!m_pBOMngr->directionBlocked[5]) {
+				m_v3O1.z -= 0.1f;
+			}
+		}
 	}
 #pragma endregion
 

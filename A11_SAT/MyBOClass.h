@@ -28,8 +28,10 @@ class MyBOClass
 
 	vector3 v3Corner[8];
 
+
 	matrix4 m_m4ToWorld = IDENTITY_M4; //Matrix that will take us from local to world coordinate
 public:
+	bool isControlledUnit;
 	/*
 	USAGE: Constructor
 	ARGUMENTS: ---
@@ -166,6 +168,19 @@ public:
 	void DisplayReAlligned(vector3 a_v3Color = REDEFAULT);
 
 	void DisplaySAT(vector3 normal, vector3 center);
+
+	float GetHeight() {
+		return abs(m_v3MaxG.y - m_v3MinG.y) / 2;
+	}
+	float GetWidth() {
+		return abs(m_v3MaxG.x - m_v3MinG.x) / 2;
+	}
+	float GetDepth() {
+		return abs(m_v3MaxG.z - m_v3MinG.z) / 2;
+	}
+	vector3 DistanceBetween(vector3 otherLoc) {
+		return otherLoc - m_v3CenterG;
+	}
 
 private:
 	/*

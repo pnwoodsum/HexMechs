@@ -214,12 +214,45 @@ void MyBOManager::CheckCollisions(void)
 {
 	for (uint nObjectA = 0; nObjectA < m_nObjectCount - 1; nObjectA++)
 	{
+		if (m_lObject[nObjectA]->isControlledUnit) {
+			for (int i = 0; i < 6; i++) directionBlocked[i] = false;
+		}
 		for (uint nObjectB = nObjectA + 1; nObjectB < m_nObjectCount; nObjectB++)
 		{
 			if (m_lObject[nObjectA]->IsColliding(m_lObject[nObjectB]))
 			{
 				m_llCollidingIndices[nObjectA].push_back(nObjectB);
 				m_llCollidingIndices[nObjectB].push_back(nObjectA);
+
+				if (m_lObject[nObjectA]->isControlledUnit){
+					MyBOClass unit = *m_lObject[nObjectA];
+					MyBOClass other = *m_lObject[nObjectB];
+					vector3 diff = unit.DistanceBetween(other.GetCenterGlobal());
+					if (abs(diff.x) < unit.GetWidth() + other.GetWidth()) {
+						if (diff.y > 0) {
+							directionBlocked[2] = true;
+						}
+						else {
+							directionBlocked[3] = true;
+						}
+					}
+					if (abs(diff.y) < unit.GetHeight() + other.GetHeight()) {
+						if (diff.x > 0) {
+							directionBlocked[0] = true;
+						}
+						else {
+							directionBlocked[1] = true;
+						}
+					}
+					if (abs(diff.x) < unit.GetWidth() + other.GetWidth()) {
+						if (diff.z > 0) {
+							directionBlocked[4] = true;
+						}
+						else {
+							directionBlocked[5] = true;
+						}
+					}
+				}
 			}
 		}
 	}
