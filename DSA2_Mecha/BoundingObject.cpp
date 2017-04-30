@@ -214,3 +214,9 @@ matrix4 BoundingObject::GetModelMatrix(void) { return m_m4ToWorld; }
 BoundingObject::~BoundingObject()
 {
 }
+
+void BoundingObject::Update() 
+{
+	//m_v3Position += vector3(0.0f, 0.0f, 20.0f) * orientation;
+	m_m4ToWorld = glm::translate(m_m4ToWorld, vector3(0.0f, 0.0f, -20.0f) * orientation);
+}

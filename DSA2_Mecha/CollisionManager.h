@@ -6,16 +6,82 @@
 #pragma once
 #include "RE\ReEng.h"
 #include "BoundingObject.h"
-#include "GameObject.h"
+#include "Bullet.h"
 #include <iostream>
 #include <vector>
 #include <string>
+
+class BulletManager
+{
+public:
+	std::vector<Bullet> bulletList;
+
+	static BulletManager* GetInstance() {
+		if (instance == nullptr)
+			instance = new BulletManager();
+		return instance;
+	}
+
+	static void ReleaseInstance() {
+		if (instance != nullptr) {
+			delete instance;
+			instance = nullptr;
+		}
+
+	}
+
+	static void RenderAll(matrix4 proj, matrix4 view) {
+		for (int i = 0; i < instance->bulletList.size(); i++) {
+			instance->bulletList[i].Render(proj, view);
+			instance->bulletList[i].collider->RenderBO();
+		}
+	}
+
+	static void Update() {
+		for (int i = 0; i < instance->bulletList.size(); i++) {
+			if (instance->bulletList[i].visible) {
+				instance->bulletList[i].Update();
+			}
+		}
+	}
+
+	static void ActivateBullet(vector3 pos, glm::quat or ) {
+		if (instance->bulletList.size() > 0) {
+			for (int i = 0; i < instance->bulletList.size(); i++) {
+				if (!instance->bulletList[i].visible) {
+					instance->bulletList[i].fire(pos, or );
+					return;
+				}
+			}
+		}
+
+		instance->bulletList.push_back(Bullet());
+		instance->bulletList[instance->bulletList.size() - 1].fire(pos, or );
+		return;
+	}
+
+	static void Populate() {
+		for (int i = 0; i < 40; i++) {
+			instance->bulletList.push_back(Bullet());
+		}
+	}
+
+private:
+	static BulletManager* instance;
+	BulletManager() {
+		for (int i = 0; i < 20; i++) {
+			//instance->bulletList.push_back(Bullet());
+		}
+	};
+	~BulletManager() {};
+};
 
 class CollisionManager
 {
 public:
 	std::vector<GameObject> objectList;
 	MeshManagerSingleton* m_pMeshMngr;
+	BulletManager* bulltMngr;
 
 	static CollisionManager* GetInstance() {
 		if (instance == nullptr)
@@ -72,15 +138,26 @@ public:
 		}
 
 		for (int i = 0; i < instance->objectList.size() - 1; i++) {
-			if(instance->objectList[i].collisionType == ColliderType::object || instance->objectList[i].collisionType == ColliderType::projectile)
-			for (int j = i + 1; j < instance->objectList.size(); j++) {
-				if (!(instance->objectList[i].collisionType == ColliderType::projectile && instance->objectList[j].collisionType == ColliderType::projectile)) {
-					BoundingObject* temp = instance->objectList[j].collider;
-					if (instance->objectList[i].collider->IsColliding(temp)) {
-						instance->objectList[i].collider->SetColor(RERED);
-						instance->objectList[j].collider->SetColor(RERED);
-						instance->objectList[i].collider->m_bColliding = true;
-						instance->objectList[j].collider->m_bColliding = true;
+			if (instance->objectList[i].collisionType == ColliderType::object || instance->objectList[i].collisionType == ColliderType::projectile)
+				for (int j = i + 1; j < instance->objectList.size(); j++) {
+					if (!(instance->objectList[i].collisionType == ColliderType::projectile && instance->objectList[j].collisionType == ColliderType::projectile)) {
+						BoundingObject* temp = instance->objectList[j].collider;
+						if (instance->objectList[i].collider->IsColliding(temp)) {
+							instance->objectList[i].collider->SetColor(RERED);
+							instance->objectList[j].collider->SetColor(RERED);
+							instance->objectList[i].collider->m_bColliding = true;
+							instance->objectList[j].collider->m_bColliding = true;
+						}
+					}
+				}
+		}
+
+		for (int i = 0; i < instance->bulltMngr->bulletList.size(); i++) {
+			if (instance->bulltMngr->bulletList[i].visible) {
+				std::cout << "collision" << std::endl;
+				for (int j = 0; j < instance->objectList.size(); j++) {
+					if (instance->bulltMngr->bulletList[i].collider->IsColliding(instance->objectList[j].collider)) {
+						instance->bulltMngr->bulletList[i].visible = false;
 					}
 				}
 			}
@@ -97,6 +174,8 @@ private:
 	static CollisionManager* instance;
 	CollisionManager() {
 		m_pMeshMngr = MeshManagerSingleton::GetInstance();
+		bulltMngr = BulletManager::GetInstance();
 	};
 	~CollisionManager() {};
 };
+

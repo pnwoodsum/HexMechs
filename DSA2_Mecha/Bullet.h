@@ -11,6 +11,7 @@ public:
 	//PrimitiveClass* bullet = nullptr;
 	//vector3 bulletPos;
 	glm::quat lastOrient;
+	int timer;
 
 	//void move();
 	//void render(matrix4, matrix4);

@@ -18,7 +18,6 @@ private:
 	vector3 m_v3MinG;
 	vector3 m_v3SizeG;
 
-
 	vector3 p_v3Size;
 
 	vector3 one;
@@ -95,6 +94,11 @@ public:
 	bool IsColliding(BoundingObject* a_other);
 
 	/*
+	Will check the collision with another object
+	*/
+	void Update();
+
+	/*
 	Sets the type of bounding object
 	0 = box;
 	1 = sphere;
@@ -104,5 +108,6 @@ public:
 	vector3 m_v3Position;
 	vector3 p_v3Max;
 	vector3 p_v3Min;
+	glm::quat orientation;
 };
 

@@ -5,13 +5,16 @@ void AppClass::InitWindow(String a_sWindowName)
 }
 void AppClass::InitVariables(void)
 {
+	timer = 0;
 	m_pBOMngr = CollisionManager::GetInstance();
+	bulletMngr = BulletManager::GetInstance();
+	bulletMngr->Populate();
 	
 	cockpitTexture = new TextureClass();
 	cockpitTexture->LoadTexture("Cockpit.png");
 
 	enemy = new Enemy();
-	
+	pause = false;
 
 	//Environment Setup
 	//********
@@ -66,11 +69,12 @@ void AppClass::InitVariables(void)
 	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
 	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
 
-	
+	/*
 	//Create Object Pool for Bullets
 	for (int i = 0; i < 40; i++) {
 		bullets.push_back(Bullet());
 	}
+	*/
 
 }
 
@@ -78,16 +82,12 @@ void AppClass::InitVariables(void)
 void AppClass::Update(void)
 {
 
-
-
-
-	//Do Bullet Stuff
-	if (!bullets.empty()) {
-		for (int i = 0; i < bullets.size(); i++) {
-			bullets[i].Update();
-		}
+	if (!pause) {
+		bulletMngr->Update();
+		enemy->Update();
+		m_pBOMngr->Update();
+		m_pBOMngr->CheckCollisions();
 	}
-	enemy->Update();
 	
 
 	//Find Mouse Difference to move Camera
@@ -108,7 +108,6 @@ void AppClass::Update(void)
 	m_Camera->cameraPos += m_Camera->velocity;
 	m_Camera->velocity *= 0.7f;
 
-	m_pBOMngr->Update();
 
 	m_pMeshMngr->PrintLine("");
 
@@ -162,12 +161,15 @@ void AppClass::Display(void)
 
 	m_pBOMngr->RenderObjects(m_m4Projection, m_m4View);
 
-	
+	bulletMngr->RenderAll(m_m4Projection, m_m4View);
+
+	/*
 	if (!bullets.empty()) {
 		for (int i = 0; i < bullets.size(); i++) {
 			bullets[i].Render(m_m4Projection, m_m4View);
 		}
 	}
+	*/
 	
 	enemy->Render(m_m4Projection, m_m4View);
 

@@ -24,9 +24,9 @@ Pillar::Pillar(vector3 pos)
 	model->GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
 
 	position = pos;
-	//collider->SetModelMatrix(glm::translate(position));
 
 	collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(glm::translate(position));
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;

@@ -70,14 +70,25 @@ void AppClass::ProcessKeyboard(void)
 			//m_pCameraMngr->MoveSideways(-4.0f);
 		}
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) 
+	{
+		pause = true;
+	}
+	else pause = false;
+
 	firing = false;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+		timer++;
 		firing = true;
-		bullets[curr].fire(m_Camera->GetPos(), m_Camera->orientation);
-		curr++;
-		if (curr >= bullets.size()) {
-			curr = 0;
+		if (timer % 3 == 0) {
+			bulletMngr->ActivateBullet(m_Camera->GetPos(), m_Camera->orientation);
 		}
+		if (timer > 200) timer = 0;
+		//bullets[curr].fire(m_Camera->GetPos(), m_Camera->orientation);
+		//curr++;
+		//if (curr >= bullets.size()) {
+		//	curr = 0;
+		//}
 	}
 	//Exit the program
 #pragma region Other Actions

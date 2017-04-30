@@ -21,6 +21,7 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 class AppClass : public ReEngAppClass
 {
 	CollisionManager* m_pBOMngr;
+	BulletManager* bulletMngr;
 
 	TextureClass* cockpitTexture;
 	PrimitiveClass* m_pCone = nullptr;
@@ -39,7 +40,9 @@ class AppClass : public ReEngAppClass
 
 	Camera* m_Camera = new Camera();
 
+	int timer;
 	bool firing;
+	bool pause;
 	matrix4 m_m4GunMat;
 
 	sf::Vector2i cM;
