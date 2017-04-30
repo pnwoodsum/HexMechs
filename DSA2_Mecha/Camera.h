@@ -12,19 +12,24 @@ public:
 	void SetUp(vector3); //Sets the up vector of the camera
 	void MoveForward(float,bool); //Move the camera forward (or backwards) depending on the “view vector”
 	void MoveSideways(float,bool); //Move the camera based on the “right” vectordepending on the “view vec
-	void MoveVertical(float); //Move the camera up or down depending on the “up vector”
+	void MoveVertical(float,bool); //Move the camera up or down depending on the “up vector”
 	void ChangePitch(float);
 	void ChangeRoll(float);
 	void ChangeYaw(float);
 	void SwitchMouseUse();
 	void SwitchProjection();
+	void Move(float);
 	
 	vector3 cameraForward;
 	vector3 cameraPos;
 
 	vector3 accel;
+	vector3 accelV;
 	vector3 velocity;
 	float accelf;
+	bool inAir;
+	bool boost;
+	int energy;
 
 	glm::quat orientation;
 	vector3 GetPos();

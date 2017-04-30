@@ -12,12 +12,13 @@ public:
 	//vector3 bulletPos;
 	glm::quat lastOrient;
 	int timer;
+	float startTime;
 
 	//void move();
 	//void render(matrix4, matrix4);
-	void fire(vector3, glm::quat);
+	void fire(vector3, glm::quat,float);
 
-	void Update() override;
+	void Update(float);
 
 	//bool exist;
 };

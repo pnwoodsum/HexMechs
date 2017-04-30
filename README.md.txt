@@ -4,6 +4,8 @@ Mouse to move Camera
 
 WASD to move
 
-F to shoot
+Left Click to shoot
 
 Shift + WASD to boost... kind of
+
+SPACE for upward movement

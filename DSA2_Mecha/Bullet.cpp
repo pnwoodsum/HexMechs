@@ -12,7 +12,7 @@ Bullet::Bullet(void)
 	collisionType = ColliderType::projectile;
 
 	visible = false;
-	timer = 0;
+	//timer = 0;
 }
 
 
@@ -20,26 +20,28 @@ Bullet::~Bullet()
 {
 }
 
-void Bullet::fire(vector3 pos, glm::quat or) {
+void Bullet::fire(vector3 pos, glm::quat or, float time) {
 	position = pos - vector3(45.0f, -22.0f, -220.0f) * or;
 	collider->SetModelMatrix(glm::inverse(glm::translate(position)));
 	collider->orientation = or;
 
 	//bulletPos = pos - (vector3(0.0f,0.0f,2.0f) * or);
 	lastOrient = or ;
-	timer = 0;
+	//timer = 0;
+	startTime = time;
 
 	visible = true;
 }
 
-void Bullet::Update() 
+void Bullet::Update(float time) 
 {
 	if (visible) {
 		position += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
 		collider->Update();
-		timer++;
+		//timer++;
 
-		if (timer > 100) visible = false;
+		if(time - startTime > 2) visible = false;
+		//if (timer > 100) visible = false;
 		//collider->SetModelMatrix(glm::translate(position));
 		//bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
 	}

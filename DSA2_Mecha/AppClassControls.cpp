@@ -77,18 +77,21 @@ void AppClass::ProcessKeyboard(void)
 	else pause = false;
 
 	firing = false;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-		timer++;
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		//timer++;
 		firing = true;
-		if (timer % 3 == 0) {
-			bulletMngr->ActivateBullet(m_Camera->GetPos(), m_Camera->orientation);
-		}
-		if (timer > 200) timer = 0;
+		bulletMngr->ActivateBullet(m_Camera->GetPos(), m_Camera->orientation, fTimer);//Timing done in function using Real Time seconds
+		//if (timer > 200) timer = 0;
 		//bullets[curr].fire(m_Camera->GetPos(), m_Camera->orientation);
 		//curr++;
 		//if (curr >= bullets.size()) {
 		//	curr = 0;
 		//}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		m_Camera->MoveVertical(1.0f, false);
+		m_Camera->inAir = true;
 	}
 	//Exit the program
 #pragma region Other Actions

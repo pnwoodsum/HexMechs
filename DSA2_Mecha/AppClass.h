@@ -41,6 +41,7 @@ class AppClass : public ReEngAppClass
 	Camera* m_Camera = new Camera();
 
 	int timer;
+	float fTimer;
 	bool firing;
 	bool pause;
 	matrix4 m_m4GunMat;

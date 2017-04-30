@@ -19,10 +19,14 @@ Camera::Camera()
 
 	accelf = 7.0f;
 	accel = vector3(0.0f, 0.0f, 0.0f);
+	accelV = vector3(0.0f, 0.0f, 0.0f);
 	velocity = vector3(0.0f, 0.0f, 0.0f);
 
 	x = 0.0f;
 	y = 0.0f;
+
+	energy = 5000;
+	boost = false;
 }
 
 
@@ -78,37 +82,72 @@ void Camera::SetUp(vector3 up) {
 
 void Camera::MoveForward(float z, bool b) {
 	cameraForward = vector3(0.0f, 0.0f, z) * orientation;
-	accel = cameraForward * accelf;
-	velocity += accel;
 
 	if (b) {
-		velocity = glm::clamp(velocity, -20, 20);
+		if (energy > 0) {
+			accelf = 7.0f;
+			accel += cameraForward * accelf;
+			if (accel.y < 0) {
+				inAir = true;
+			}
+			else if (accel.y >= 0) {
+				accel.y = 0.0f;
+			}
+			boost = true;
+		}
+		else {
+			boost = false;
+			if (inAir) return;
+			accelf = 2.0f;
+		}
 	}
 	else {
-		velocity = glm::clamp(velocity, -3, 3);
+		if (inAir) return;
+		accelf = 1.0f;
+		accel += cameraForward * accelf;
+		accel.y = 0.0f;
 	}
-
-	velocity.y = 0.0f;
 }
 
 void Camera::MoveSideways(float x, bool b) {
 	cameraRight = vector3(x, 0.0f, 0.0f) * orientation;
-	accel = cameraRight * accelf;
-	velocity += accel;
-
+	
+	if (inAir) return;
 	if (b) {
-		velocity = glm::clamp(velocity, -20, 20);
+		if (energy > 0) {
+			accelf = 7.0f;
+			boost = true;
+		}
+		else {
+			boost = false;
+			accelf = 2.0f;
+		}
 	}
 	else {
-		velocity = glm::clamp(velocity, -3, 3);
+		accelf = 2.0f;
 	}
 
-	velocity.y = 0.0f;
+	accel += cameraRight * accelf;
+	accel.y = 0.0f;
 }
 
-void Camera::MoveVertical(float y) {
-	cameraPos.y += y;
-	cameraTarget.y += y;
+void Camera::MoveVertical(float y, bool b) {
+	vector3 upVector = vector3(0.0f, y, 0.0f) * orientation;
+
+	if (energy <= 0) {
+		boost = false;
+		return;
+	}
+	if (b) {
+		accelf = 7.0f;
+	}
+	else {
+		accelf = 0.7f;
+	}
+	boost = true;
+	accelV -= upVector * accelf;
+	accelV.x = 0.0f;
+	accelV.z = 0.0f;
 }
 
 void Camera::ChangePitch(float p) {
@@ -123,3 +162,48 @@ void Camera::ChangeYaw(float y) {
 	cameraYaw += y;
 }
 
+void Camera::Move(float timer) {
+	//Timer currently not used
+
+	velocity += accel;
+	velocity += accelV;
+	cameraPos += velocity;
+
+	//Acts as friction or Air resistance
+	velocity -= (vector3(velocity.x, 0.0f, velocity.z) * 0.05f);
+
+	if (glm::length(velocity) > 5) {
+		if(!boost && !inAir) velocity = glm::normalize(velocity) * 5.0f;
+		else if (glm::length(velocity) > 20) {
+			if (velocity.y < 0) {
+				velocity = glm::normalize(velocity) * 20.0f;
+			}
+			else {
+				velocity.x = vector3((glm::normalize(velocity) * 20.0f)).x;
+				velocity.z = vector3((glm::normalize(velocity) * 20.0f)).z;
+			}
+		}
+	}
+	else if (glm::length(velocity) < 0) {
+		velocity = vector3(0,0,0);
+	}
+	if (inAir) {
+		velocity.y += 0.4f;
+		if (cameraPos.y > 0) {
+			velocity.y = 0;
+			inAir = false;
+			cameraPos.y = 0;
+		}
+	}
+	accel = vector3(0, 0, 0);
+	accelV = vector3(0, 0, 0);
+
+	//Extremely Simple Energy System
+	if (boost) {
+		energy -= 51;
+		if (energy <= 0) boost = false;
+	}
+	else if(energy < 5000)energy += 11;
+
+	boost = false;
+}

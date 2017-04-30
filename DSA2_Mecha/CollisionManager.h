@@ -37,27 +37,31 @@ public:
 		}
 	}
 
-	static void Update() {
+	static void Update(float time) {
 		for (int i = 0; i < instance->bulletList.size(); i++) {
 			if (instance->bulletList[i].visible) {
-				instance->bulletList[i].Update();
+				instance->bulletList[i].Update(time);
 			}
 		}
 	}
 
-	static void ActivateBullet(vector3 pos, glm::quat or ) {
-		if (instance->bulletList.size() > 0) {
-			for (int i = 0; i < instance->bulletList.size(); i++) {
-				if (!instance->bulletList[i].visible) {
-					instance->bulletList[i].fire(pos, or );
-					return;
+	static void ActivateBullet(vector3 pos, glm::quat or, float time) {
+		if (time - instance->lastBullet > 0.1f) { //Timing
+			if (instance->bulletList.size() > 0) {
+				for (int i = 0; i < instance->bulletList.size(); i++) {
+					if (!instance->bulletList[i].visible) {
+						instance->bulletList[i].fire(pos, or , time);
+						instance->lastBullet = time;
+						return;
+					}
 				}
 			}
-		}
 
-		instance->bulletList.push_back(Bullet());
-		instance->bulletList[instance->bulletList.size() - 1].fire(pos, or );
-		return;
+			instance->bulletList.push_back(Bullet());
+			instance->bulletList[instance->bulletList.size() - 1].fire(pos, or , time);
+			instance->lastBullet = time;
+			return;
+		}
 	}
 
 	static void Populate() {
@@ -67,6 +71,7 @@ public:
 	}
 
 private:
+	float lastBullet;
 	static BulletManager* instance;
 	BulletManager() {
 		for (int i = 0; i < 20; i++) {

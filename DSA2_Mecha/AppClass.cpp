@@ -5,7 +5,8 @@ void AppClass::InitWindow(String a_sWindowName)
 }
 void AppClass::InitVariables(void)
 {
-	timer = 0;
+	//timer = 0;
+	fTimer = 0.0f; //Global Timer in Seconds
 	m_pBOMngr = CollisionManager::GetInstance();
 	bulletMngr = BulletManager::GetInstance();
 	bulletMngr->Populate();
@@ -23,24 +24,24 @@ void AppClass::InitVariables(void)
 	environment = new PrimitiveClass[envCount];
 	environ_Matrix = new matrix4[envCount];
 
-	m_pBOMngr->AddObject(Pillar(vector3(-200, 0, -200)));
-	m_pBOMngr->AddObject(Pillar(vector3(-200, 0, 0)));
-	m_pBOMngr->AddObject(Pillar(vector3(-200, 0, 200)));
-	m_pBOMngr->AddObject(Pillar(vector3(200, 0, -200)));
-	m_pBOMngr->AddObject(Pillar(vector3(200, 0, 0)));
-	m_pBOMngr->AddObject(Pillar(vector3(200, 0, 200)));
+	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, -600)));
+	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, 0)));
+	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, 600)));
+	m_pBOMngr->AddObject(Pillar(vector3(600, 0, -600)));
+	m_pBOMngr->AddObject(Pillar(vector3(600, 0, 0)));
+	m_pBOMngr->AddObject(Pillar(vector3(600, 0, 600)));
 
-	environment[6].GenerateCuboid(vector3(2000.f, 400.f, 30.f), REORANGE);
-	environ_Matrix[6] = glm::translate(vector3(0, 0, 1000));
+	environment[6].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
+	environ_Matrix[6] = glm::translate(vector3(0, 0, 3000));
 
-	environment[7].GenerateCuboid(vector3(2000.f, 400.f, 30.f), REORANGE);
-	environ_Matrix[7] = glm::translate(vector3(0, 0, -1000));
+	environment[7].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
+	environ_Matrix[7] = glm::translate(vector3(0, 0, -3000));
 
-	environment[8].GenerateCuboid(vector3(30.f, 400.f, 2000.f), REORANGE);
-	environ_Matrix[8] = glm::translate(vector3(1000, 0, 0));
+	environment[8].GenerateCuboid(vector3(30.f, 400.f, 6000.f), REORANGE);
+	environ_Matrix[8] = glm::translate(vector3(3000, 0, 0));
 
-	environment[9].GenerateCuboid(vector3(30.f, 400.f, 2000.f), REORANGE);
-	environ_Matrix[9] = glm::translate(vector3(-1000, 0, 0));
+	environment[9].GenerateCuboid(vector3(30.f, 400.f, 6000.f), REORANGE);
+	environ_Matrix[9] = glm::translate(vector3(-3000, 0, 0));
 	
 	//*******
 
@@ -49,7 +50,7 @@ void AppClass::InitVariables(void)
 	m_pCone->GenerateCube(70.0f, RERED);
 	
 	m_pPlane = new PrimitiveClass();
-	m_pPlane->GeneratePlane(10000.0f, REBLUE);
+	m_pPlane->GeneratePlane(100000.0f, REBLUE);
 
 	//Static Cylinder that representsa gun, I guess...
 	m_pCylinder2 = new PrimitiveClass();
@@ -75,18 +76,24 @@ void AppClass::InitVariables(void)
 		bullets.push_back(Bullet());
 	}
 	*/
-
 }
 
 
 void AppClass::Update(void)
 {
+	//TIME
+	m_pSystem->UpdateTime();
+	static int nClock = m_pSystem->GenClock();
+	float fDeltaTime = static_cast<float>(m_pSystem->LapClock(nClock));
+	fTimer += fDeltaTime;
+
 
 	if (!pause) {
-		bulletMngr->Update();
+		bulletMngr->Update(fTimer);
 		enemy->Update();
 		m_pBOMngr->Update();
 		m_pBOMngr->CheckCollisions();
+		m_Camera->Move(fTimer); //Moves Camera/Player
 	}
 	
 
@@ -103,16 +110,6 @@ void AppClass::Update(void)
 	vector2 mousePos = vector2(-dis.x, -dis.y);
 
 	SetCursorPos(CenterX, CenterY);
-
-	//Velocity Work
-	m_Camera->cameraPos += m_Camera->velocity;
-	m_Camera->velocity *= 0.7f;
-
-
-	m_pMeshMngr->PrintLine("");
-
-	m_pMeshMngr->PrintLine(std::to_string(m_Camera->x) + "," + std::to_string(m_Camera->y));
-	m_pMeshMngr->PrintLine(std::to_string(dis.x) + "," + std::to_string(dis.y));
 
 	ArcBall();
 
@@ -178,7 +175,12 @@ void AppClass::Display(void)
 		environment[n].Render(m_m4Projection, m_m4View, environ_Matrix[n]);
 	}
 
-	m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -100.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));
+	m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -155.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));
+
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->PrintLine(std::to_string(m_Camera->velocity.x) + "," + std::to_string(m_Camera->velocity.y) + "," + std::to_string(m_Camera->velocity.z));
+	m_pMeshMngr->PrintLine(std::to_string(glm::length(m_Camera->velocity)));
+	m_pMeshMngr->PrintLine(std::to_string(m_Camera->energy));
 
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->RenderTexture(cockpitTexture->GetGLTextureID());
