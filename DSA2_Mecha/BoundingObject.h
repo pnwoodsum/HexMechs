@@ -91,7 +91,7 @@ public:
 	/*
 	Will check the collision with another object
 	*/
-	bool IsColliding(BoundingObject* a_other);
+	bool IsColliding(BoundingObject* a_other, bool isProjectile = false);
 
 	/*
 	Will check the collision with another object

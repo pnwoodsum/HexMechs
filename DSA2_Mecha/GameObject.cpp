@@ -17,6 +17,7 @@ GameObject::GameObject()
 	matrix = glm::translate(position);
 
 	collisionType = ColliderType::object;
+	destructible = false;
 }
 
 GameObject::~GameObject()
@@ -46,4 +47,15 @@ void GameObject::Render(matrix4 projection, matrix4 view)
 
 void GameObject::Update()
 {
+}
+
+void GameObject::HandleCollision()
+{
+	if (destructible) {
+		std::cout << "hit destruct" << std::endl;
+		health -= 10;
+		if (health <= 0) {
+			visible = false;
+		}
+	}
 }

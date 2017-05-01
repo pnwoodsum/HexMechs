@@ -30,6 +30,10 @@ void AppClass::InitVariables(void)
 	m_pBOMngr->AddObject(Pillar(vector3(600, 0, -600)));
 	m_pBOMngr->AddObject(Pillar(vector3(600, 0, 0)));
 	m_pBOMngr->AddObject(Pillar(vector3(600, 0, 600)));
+	m_pBOMngr->AddObject(DestructObj(vector3(300, 0, 300)));
+	m_pBOMngr->AddObject(DestructObj(vector3(200, 0, 300)));
+	m_pBOMngr->AddObject(DestructObj(vector3(100, 0, 300)));
+	m_pBOMngr->AddObject(*enemy);
 
 	environment[6].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
 	environ_Matrix[6] = glm::translate(vector3(0, 0, 3000));
@@ -70,12 +74,6 @@ void AppClass::InitVariables(void)
 	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
 	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
 
-	/*
-	//Create Object Pool for Bullets
-	for (int i = 0; i < 40; i++) {
-		bullets.push_back(Bullet());
-	}
-	*/
 }
 
 

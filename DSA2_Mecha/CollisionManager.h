@@ -74,9 +74,6 @@ private:
 	float lastBullet;
 	static BulletManager* instance;
 	BulletManager() {
-		for (int i = 0; i < 20; i++) {
-			//instance->bulletList.push_back(Bullet());
-		}
 	};
 	~BulletManager() {};
 };
@@ -159,10 +156,11 @@ public:
 
 		for (int i = 0; i < instance->bulltMngr->bulletList.size(); i++) {
 			if (instance->bulltMngr->bulletList[i].visible) {
-				std::cout << "collision" << std::endl;
 				for (int j = 0; j < instance->objectList.size(); j++) {
-					if (instance->bulltMngr->bulletList[i].collider->IsColliding(instance->objectList[j].collider)) {
+					if (instance->bulltMngr->bulletList[i].collider->IsColliding(instance->objectList[j].collider, true)) {
+						std::cout << "Collision" << std::endl;
 						instance->bulltMngr->bulletList[i].visible = false;
+						instance->objectList[j].HandleCollision();
 					}
 				}
 			}

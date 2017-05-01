@@ -174,7 +174,7 @@ void BoundingObject::SetModelMatrix(matrix4 a_m4ToWorld)
 	p_v3Size = p_v3Max - p_v3Min;
 }
 
-bool BoundingObject::IsColliding(BoundingObject* a_other)
+bool BoundingObject::IsColliding(BoundingObject* a_other, bool isProjectile)
 {
 	float fDistance = glm::distance(m_v3CenterGlobal, a_other->m_v3CenterGlobal);
 	float fRadiiSum = m_fRadius + a_other->m_fRadius;
@@ -219,4 +219,7 @@ void BoundingObject::Update()
 {
 	//m_v3Position += vector3(0.0f, 0.0f, 20.0f) * orientation;
 	m_m4ToWorld = glm::translate(m_m4ToWorld, vector3(0.0f, 0.0f, -20.0f) * orientation);
+	p_v3Max += vector3(0.0f, 0.0f, -20.0f) * orientation;
+	p_v3Min += vector3(0.0f, 0.0f, -20.0f) * orientation;
+	m_v3CenterGlobal = vector3(m_m4ToWorld * vector4(m_v3CenterLocal, 1.0f));
 }

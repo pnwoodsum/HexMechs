@@ -13,6 +13,7 @@ public:
 	bool bGravityEnabled;
 	bool bCanCollide;
 	bool visible;
+	bool destructible;
 
 	std::string instanceName;
 	matrix4 matrix;
@@ -23,6 +24,7 @@ public:
 	BoundingObject* collider;
 
 	PrimitiveClass* model = nullptr;
+	int health;
 
 	
 public:
@@ -33,6 +35,7 @@ public:
 	void AddOffset(vector3);
 
 	void Render(matrix4, matrix4 );
+	virtual void HandleCollision();
 	virtual void Update();
 
 };
