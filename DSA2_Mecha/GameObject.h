@@ -1,7 +1,7 @@
 #pragma once
 class Component;
 #include "RE\ReEngAppClass.h"
-#include "BoundingObject.h"
+//#include "BoundingObject.h"
 #include "Camera.h"
 #include <vector>
 #include "Object.hpp"
@@ -25,7 +25,7 @@ public:
 	vector3 orientation;
 
 	ColliderType collisionType;
-	BoundingObject* collider;
+	//BoundingObject* collider;
 
 	PrimitiveClass* model = nullptr;
 	int health;

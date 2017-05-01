@@ -3,6 +3,7 @@
 
 BoundingObject::BoundingObject(std::vector<vector3> vertexList, int objectType)
 {
+	ColliderCollection.push_back(this);
 	m_iBoundingObjectType = 0;
 	m_bColliding = false;
 	m_fRadius = 0.0f;
@@ -214,8 +215,13 @@ matrix4 BoundingObject::GetModelMatrix(void) { return m_m4ToWorld; }
 BoundingObject::~BoundingObject()
 {
 }
-
-void BoundingObject::Update() 
+void BoundingObject::subUpdate() {};
+void BoundingObject::testCollision(Collider* other) {
+	//this is probably not a good idea
+	BoundingObject* castedOther = dynamic_cast<BoundingObject*>(other);
+	callCallbacks(IsColliding(castedOther));
+}
+void BoundingObject::update() 
 {
 	//m_v3Position += vector3(0.0f, 0.0f, 20.0f) * orientation;
 	m_m4ToWorld = glm::translate(m_m4ToWorld, vector3(0.0f, 0.0f, -20.0f) * orientation);

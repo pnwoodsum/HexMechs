@@ -111,10 +111,12 @@ xcopy "$(SolutionDir)include\RE\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Prefabs.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -124,9 +126,11 @@ xcopy "$(SolutionDir)include\RE\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Collider.hpp" />
     <ClInclude Include="CollisionManager.h" />
-    <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="Component.hpp" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Object.hpp" />
     <ClInclude Include="Prefabs.h" />
   </ItemGroup>
   <ItemGroup>

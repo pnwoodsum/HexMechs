@@ -10,7 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+/*
 class BulletManager
 {
 public:
@@ -82,7 +82,7 @@ class CollisionManager
 {
 public:
 	std::vector<GameObject> objectList;
-	MeshManagerSingleton* m_pMeshMngr;
+	//MeshManagerSingleton* m_pMeshMngr;
 	BulletManager* bulltMngr;
 
 	static CollisionManager* GetInstance() {
@@ -176,9 +176,10 @@ public:
 private:
 	static CollisionManager* instance;
 	CollisionManager() {
-		m_pMeshMngr = MeshManagerSingleton::GetInstance();
+		//m_pMeshMngr = MeshManagerSingleton::GetInstance();
 		bulltMngr = BulletManager::GetInstance();
 	};
 	~CollisionManager() {};
 };
 
+*/

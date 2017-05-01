@@ -7,7 +7,7 @@ Pillar::Pillar()
 	model = new PrimitiveClass();
 	model->GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
+	//collider = new BoundingObject(model->GetVertexList(), 0);
 
 	position = vector3(0, 0, 0);
 	//collider->SetModelMatrix(glm::translate(position));
@@ -25,8 +25,8 @@ Pillar::Pillar(vector3 pos)
 
 	position = pos;
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
-	collider->SetModelMatrix(glm::translate(position));
+	//collider = new BoundingObject(model->GetVertexList(), 0);
+	//collider->SetModelMatrix(glm::translate(position));
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;
@@ -59,10 +59,10 @@ DestructObj::DestructObj()
 	model = new PrimitiveClass();
 	model->GenerateCube(50.0f, REBROWN);
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
+	//collider = new BoundingObject(model->GetVertexList(), 0);
 
 	position = vector3(0, 0, 0);
-	collider->SetModelMatrix(glm::translate(position));
+	//collider->SetModelMatrix(glm::translate(position));
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;
@@ -79,8 +79,8 @@ DestructObj::DestructObj(vector3 pos)
 
 	position = pos;
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
-	collider->SetModelMatrix(glm::inverse(glm::translate(pos)));
+	//collider = new BoundingObject(model->GetVertexList(), 0);
+	//collider->SetModelMatrix(glm::inverse(glm::translate(pos)));
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;
@@ -97,7 +97,7 @@ DestructObj::~DestructObj()
 
 void DestructObj::HandleCollision()
 {
-	std::cout << "hit destruct" << std::endl;
+	std::cout << "hit destruct actually" << std::endl;
 
 	health -= 10;
 
@@ -118,10 +118,10 @@ Enemy::Enemy(Camera* cam)
 	model = new PrimitiveClass();
 	model->GenerateCube(50.0f, RERED);
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
+	//collider = new BoundingObject(model->GetVertexList(), 0);
 
 	position = vector3(0, 0, 0);
-	collider->SetModelMatrix(glm::translate(position));
+	//collider->SetModelMatrix(glm::translate(position));
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;
@@ -140,8 +140,8 @@ Enemy::Enemy(Camera* cam, vector3 pos)
 
 	position = pos;
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
-	collider->SetModelMatrix(glm::inverse(glm::translate(pos)));
+	//collider = new BoundingObject(model->GetVertexList(), 0);
+	//collider->SetModelMatrix(glm::inverse(glm::translate(pos)));
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;

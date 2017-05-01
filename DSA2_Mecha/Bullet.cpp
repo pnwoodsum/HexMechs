@@ -6,7 +6,7 @@ Bullet::Bullet(void)
 	model = new PrimitiveClass();
 	model->GenerateSphere(5.0f, 20, RERED);
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
+	//collider = new BoundingObject(model->GetVertexList(), 0);
 
 	bCanCollide = true;
 	collisionType = ColliderType::projectile;
@@ -22,8 +22,8 @@ Bullet::~Bullet()
 
 void Bullet::fire(vector3 pos, glm::quat or, float time) {
 	position = pos - vector3(45.0f, -22.0f, -220.0f) * or;
-	collider->SetModelMatrix(glm::inverse(glm::translate(position)));
-	collider->orientation = or;
+	//collider->SetModelMatrix(glm::inverse(glm::translate(position)));
+	//collider->orientation = or;
 
 	//bulletPos = pos - (vector3(0.0f,0.0f,2.0f) * or);
 	lastOrient = or ;
@@ -35,9 +35,10 @@ void Bullet::fire(vector3 pos, glm::quat or, float time) {
 
 void Bullet::Update(float time) 
 {
+	/*
 	if (visible) {
 		position += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
-		collider->Update();
+		collider->Update(time);
 		//timer++;
 
 		if(time - startTime > 2) visible = false;
@@ -45,6 +46,7 @@ void Bullet::Update(float time)
 		//collider->SetModelMatrix(glm::translate(position));
 		//bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
 	}
+	*/
 }
 /*
 void Bullet::render(matrix4 projection, matrix4 view)

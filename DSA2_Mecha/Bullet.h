@@ -18,7 +18,7 @@ public:
 	//void render(matrix4, matrix4);
 	void fire(vector3, glm::quat,float);
 
-	void Update(float);
+	void Update(float deltaTime);
 
 	//bool exist;
 };

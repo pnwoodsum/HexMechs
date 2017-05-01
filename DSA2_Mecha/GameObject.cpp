@@ -64,15 +64,15 @@ void GameObject::SetMatrix(matrix4 newMatrix)
 {
 	//colMngr->m_pMeshMngr->SetModelMatrix(newMatrix, instanceName);
 	matrix = newMatrix;
-	collider->m_v3Position = -position;
-	collider->SetModelMatrix(newMatrix);
+	//collider->m_v3Position = -position;
+//	collider->SetModelMatrix(newMatrix);
 }
 
 
 void GameObject::AddOffset(vector3 delta)
 {
 	position += delta;
-	collider->m_v3Position = position;
+	//collider->m_v3Position = position;
 }
 
 void GameObject::HandleCollision()
