@@ -54,7 +54,7 @@ void AppClass::InitVariables(void)
 	m_pCone->GenerateCube(70.0f, RERED);
 	
 	m_pPlane = new PrimitiveClass();
-	m_pPlane->GeneratePlane(100000.0f, REBLUE);
+	m_pPlane->GeneratePlane(10000.0f, REBLUE);
 
 	//Static Cylinder that representsa gun, I guess...
 	m_pCylinder2 = new PrimitiveClass();
