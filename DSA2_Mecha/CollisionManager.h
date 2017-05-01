@@ -167,9 +167,9 @@ public:
 		}
 	}
 
-	static void Update() {
+	static void Update(float fDeltaTime) {
 		for (int i = 0; i < instance->objectList.size(); i++) {
-			instance->objectList[i].Update();
+			instance->objectList[i].Update(fDeltaTime);
 		}
 	}
 

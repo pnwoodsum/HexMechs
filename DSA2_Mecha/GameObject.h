@@ -1,6 +1,7 @@
 #pragma once
 #include "RE\ReEngAppClass.h"
 #include "BoundingObject.h"
+#include "Camera.h"
 
 using namespace ReEng;
 
@@ -14,6 +15,8 @@ public:
 	bool bCanCollide;
 	bool visible;
 	bool destructible;
+	bool enemy;
+	Camera* m_Camera;
 
 	std::string instanceName;
 	matrix4 matrix;
@@ -36,6 +39,7 @@ public:
 
 	void Render(matrix4, matrix4 );
 	virtual void HandleCollision();
-	virtual void Update();
+	virtual void Update(float fDeltaTime);
+
 
 };

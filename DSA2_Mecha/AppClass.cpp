@@ -5,6 +5,7 @@ void AppClass::InitWindow(String a_sWindowName)
 }
 void AppClass::InitVariables(void)
 {
+
 	//timer = 0;
 	fTimer = 0.0f; //Global Timer in Seconds
 	m_pBOMngr = CollisionManager::GetInstance();
@@ -14,7 +15,6 @@ void AppClass::InitVariables(void)
 	cockpitTexture = new TextureClass();
 	cockpitTexture->LoadTexture("Cockpit.png");
 
-	enemy = new Enemy();
 	pause = false;
 
 	//Environment Setup
@@ -33,7 +33,7 @@ void AppClass::InitVariables(void)
 	m_pBOMngr->AddObject(DestructObj(vector3(300, 0, 300)));
 	m_pBOMngr->AddObject(DestructObj(vector3(200, 0, 300)));
 	m_pBOMngr->AddObject(DestructObj(vector3(100, 0, 300)));
-	m_pBOMngr->AddObject(*enemy);
+	m_pBOMngr->AddObject(Enemy(m_Camera, vector3(400, 0, 300)));
 
 	environment[6].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
 	environ_Matrix[6] = glm::translate(vector3(0, 0, 3000));
@@ -73,7 +73,7 @@ void AppClass::InitVariables(void)
 	UINT	CenterX, CenterY;
 	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
 	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
-
+	
 }
 
 
@@ -88,8 +88,7 @@ void AppClass::Update(void)
 
 	if (!pause) {
 		bulletMngr->Update(fTimer);
-		enemy->Update();
-		m_pBOMngr->Update();
+		m_pBOMngr->Update(fDeltaTime);
 		m_pBOMngr->CheckCollisions();
 		m_Camera->Move(fTimer); //Moves Camera/Player
 	}
@@ -166,7 +165,6 @@ void AppClass::Display(void)
 	}
 	*/
 	
-	enemy->Render(m_m4Projection, m_m4View);
 
 	for (int n = 0; n < envCount; n++)
 	{

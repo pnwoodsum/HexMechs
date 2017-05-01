@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Camera.h"
 
 class Pillar : public GameObject
 {
@@ -7,7 +8,7 @@ public:
 	Pillar();
 	Pillar(vector3);
 	~Pillar();
-	void Update() override;
+	void Update(float fDeltaTime) override;
 	void HandleCollision() override;
 };
 
@@ -18,7 +19,19 @@ public:
 	DestructObj();
 	DestructObj(vector3);
 	~DestructObj();
-	void Update() override;
+	void Update(float fDeltaTime) override;
 	void HandleCollision() override;
 };
 
+class Enemy : public GameObject
+{
+public:
+	int health;
+	Enemy(Camera* cam);
+	Enemy(Camera* cam, vector3);
+	~Enemy();
+	//Camera* m_Camera;
+
+	virtual void Update(float fDeltaTime) override;
+	virtual void HandleCollision() override;
+};

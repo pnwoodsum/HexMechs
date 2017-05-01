@@ -18,6 +18,7 @@ GameObject::GameObject()
 
 	collisionType = ColliderType::object;
 	destructible = false;
+	enemy = false;
 }
 
 GameObject::~GameObject()
@@ -28,7 +29,7 @@ void GameObject::SetMatrix(matrix4 newMatrix)
 {
 	//colMngr->m_pMeshMngr->SetModelMatrix(newMatrix, instanceName);
 	matrix = newMatrix;
-	collider->m_v3Position = position;
+	collider->m_v3Position = -position;
 	collider->SetModelMatrix(newMatrix);
 }
 
@@ -44,9 +45,14 @@ void GameObject::Render(matrix4 projection, matrix4 view)
 	if (visible)
 		model->Render(projection, view, glm::translate(-position));
 }
-
-void GameObject::Update()
+void GameObject::Update(float fDeltaTime)
 {
+	if (enemy) {
+		vector3 cm = m_Camera->GetPos();
+		vector3 newposition = glm::lerp(position, cm, 0.1f * fDeltaTime);
+		SetMatrix(glm::translate(-newposition));
+		position = newposition;
+	}
 }
 
 void GameObject::HandleCollision()
