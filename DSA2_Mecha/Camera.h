@@ -29,6 +29,7 @@ public:
 	float accelf;
 	bool inAir;
 	bool boost;
+	bool decel;
 	int energy;
 
 	glm::quat orientation;

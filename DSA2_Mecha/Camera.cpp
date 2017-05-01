@@ -27,6 +27,7 @@ Camera::Camera()
 
 	energy = 5000;
 	boost = false;
+	decel = false;
 }
 
 
@@ -98,11 +99,13 @@ void Camera::MoveForward(float z, bool b) {
 		else {
 			boost = false;
 			if (inAir) return;
+			if (glm::length(velocity) > 5) return;
 			accelf = 2.0f;
 		}
 	}
 	else {
 		if (inAir) return;
+		if (glm::length(velocity) > 5) return;
 		accelf = 1.0f;
 		accel += cameraForward * accelf;
 		accel.y = 0.0f;
@@ -112,18 +115,22 @@ void Camera::MoveForward(float z, bool b) {
 void Camera::MoveSideways(float x, bool b) {
 	cameraRight = vector3(x, 0.0f, 0.0f) * orientation;
 	
-	if (inAir) return;
+	
 	if (b) {
 		if (energy > 0) {
 			accelf = 7.0f;
 			boost = true;
 		}
 		else {
+			if (inAir) return;
 			boost = false;
+			if (glm::length(velocity) > 5) return;
 			accelf = 2.0f;
 		}
 	}
 	else {
+		if (inAir) return;
+		if (glm::length(velocity) > 5) return;
 		accelf = 2.0f;
 	}
 
@@ -170,11 +177,13 @@ void Camera::Move(float timer) {
 	cameraPos += velocity;
 
 	//Acts as friction or Air resistance
-	velocity -= (vector3(velocity.x, 0.0f, velocity.z) * 0.05f);
+	if (decel)velocity -= (vector3(velocity.x, 0.0f, velocity.z) * 0.02f);
+	else velocity -= (vector3(velocity.x, 0.0f, velocity.z) * 0.06f);
 
 	if (glm::length(velocity) > 5) {
-		if(!boost && !inAir) velocity = glm::normalize(velocity) * 5.0f;
+		if(!boost && !inAir && !decel) velocity = glm::normalize(velocity) * 5.0f;
 		else if (glm::length(velocity) > 20) {
+			decel = true;
 			if (velocity.y < 0) {
 				velocity = glm::normalize(velocity) * 20.0f;
 			}
@@ -183,6 +192,9 @@ void Camera::Move(float timer) {
 				velocity.z = vector3((glm::normalize(velocity) * 20.0f)).z;
 			}
 		}
+	}
+	if (glm::length(velocity) < 5) {
+		decel = false;
 	}
 	else if (glm::length(velocity) < 0) {
 		velocity = vector3(0,0,0);
@@ -203,7 +215,7 @@ void Camera::Move(float timer) {
 		energy -= 51;
 		if (energy <= 0) boost = false;
 	}
-	else if(energy < 5000)energy += 11;
+	else if(energy < 10000)energy += 11;
 
 	boost = false;
 }
