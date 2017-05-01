@@ -14,9 +14,9 @@ public:
 	GameObject* getGameObject();
 	void setGameObject(GameObject* gameobject);
 	virtual Component* clone();
-	virtual void start();
-	virtual void update(float deltaTime);
-	virtual void render();
+	virtual void Start();
+	virtual void Update(float deltaTime);
+	virtual void Render();
 
 private:
 	GameObject *gameObject;

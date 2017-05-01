@@ -15,6 +15,6 @@ void Component::setGameObject(GameObject* go) {
 	gameObject = go;
 }
 Component* Component::clone() { return new Component(); }
-void Component::start() {}
-void Component::update(float deltaTime) {}
-void Component::render() {}
+void Component::Start() {}
+void Component::Update(float deltaTime) {}
+void Component::Render() {}
