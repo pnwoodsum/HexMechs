@@ -41,7 +41,7 @@ void Collider::onTriggerStay() {
 void Collider::emptyFunction() { return; }
 
 
-void Collider::start() {
+void Collider::Start() {
 	onCollisionEnterFunction = &Collider::emptyFunction;
 	onCollisionExitFunction = &Collider::emptyFunction;
 	onCollisionStayFunction = &Collider::emptyFunction;
@@ -88,7 +88,7 @@ void Collider::callCallbacks(bool contact) {
 	}
 }
 void Collider::testCollision(Collider* other) {}
-void Collider::update(float deltaTime) {
+void Collider::Update(float deltaTime) {
 	
 	subUpdate();
 	for (auto singleCollid : ColliderCollection) {
@@ -99,4 +99,4 @@ void Collider::update(float deltaTime) {
 	
 }
 
-void Collider::render() {}
+void Collider::Render() {}

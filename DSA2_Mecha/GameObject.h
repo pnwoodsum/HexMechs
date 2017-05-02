@@ -14,7 +14,7 @@ class GameObject : public Object {
 public:
 	bool bGravityEnabled;
 	bool bCanCollide;
-	bool visible;
+	bool visible = true;
 	bool destructible;
 	bool enemy;
 	Camera* m_Camera;

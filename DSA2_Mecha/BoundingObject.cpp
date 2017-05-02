@@ -93,7 +93,7 @@ void BoundingObject::SetColor(vector3 vidya) {
 	v3Color = vidya;
 }
 
-void BoundingObject::RenderBO()
+void BoundingObject::Render()
 {
 	if (m_iBoundingObjectType > 3) {
 		m_iBoundingObjectType = 0;
@@ -221,7 +221,7 @@ void BoundingObject::testCollision(Collider* other) {
 	BoundingObject* castedOther = dynamic_cast<BoundingObject*>(other);
 	callCallbacks(IsColliding(castedOther));
 }
-void BoundingObject::update() 
+void BoundingObject::Update() 
 {
 	//m_v3Position += vector3(0.0f, 0.0f, 20.0f) * orientation;
 	m_m4ToWorld = glm::translate(m_m4ToWorld, vector3(0.0f, 0.0f, -20.0f) * orientation);

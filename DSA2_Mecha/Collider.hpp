@@ -21,9 +21,9 @@ public:
 	call_back onTriggerExitFunction;
 	call_back onTriggerStayFunction;
 
-	virtual void start();
-	virtual void update(float deltaTime);
-	virtual void render();
+	virtual void Start();
+	virtual void Update(float deltaTime);
+	virtual void Render();
 
 protected:
 	bool previouslyCollided;

@@ -101,7 +101,7 @@ void GameObject::Update(float deltaTime) {
 	if (enemy) {
 		vector3 cm = m_Camera->GetPos();
 		vector3 newposition = glm::lerp(position, cm, 0.1f * deltaTime);
-		SetMatrix(glm::translate(-newposition));
+		SetMatrix(glm::translate(newposition));
 		position = newposition;
 	}
 }
@@ -111,6 +111,7 @@ void GameObject::Render(matrix4 projection, matrix4 view) {
 	for (int i = 0; i < numComponents; i++)
 		components[i]->Render();
 
-	if (visible)
-		model->Render(projection, view, glm::translate(-position));
+	//if (visible)
+	visible;
+		model->Render(projection, view, glm::translate(position));
 }

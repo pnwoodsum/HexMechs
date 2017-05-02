@@ -35,7 +35,8 @@ private:
 
 public:
 	virtual void subUpdate();
-	virtual void update();
+	virtual void Update();
+	virtual void Render();
 	virtual void testCollision(Collider* other);
 
 	bool m_bColliding = false;
@@ -87,7 +88,7 @@ public:
 	/*
 	Renders the sphere based on the radius and the center in global space
 	*/
-	void RenderBO();
+	//void RenderBO();
 	/*
 	Sets the transform from the local to world matrix
 	*/

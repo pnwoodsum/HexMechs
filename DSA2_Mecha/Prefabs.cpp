@@ -1,4 +1,5 @@
 #include "Prefabs.h"
+#include "BoundingObject.h"
 
 //PILLAR
 //******************
@@ -7,14 +8,14 @@ Pillar::Pillar()
 	model = new PrimitiveClass();
 	model->GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
 
-	//collider = new BoundingObject(model->GetVertexList(), 0);
-
 	position = vector3(0, 0, 0);
-	//collider->SetModelMatrix(glm::translate(position));
+
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(glm::translate(position));
+	this->addComponent(collider);
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;
-
 	visible = true;
 }
 
@@ -25,12 +26,12 @@ Pillar::Pillar(vector3 pos)
 
 	position = pos;
 
-	//collider = new BoundingObject(model->GetVertexList(), 0);
-	//collider->SetModelMatrix(glm::translate(position));
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(glm::translate(position));
+	this->addComponent(collider);
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;
-
 	visible = true;
 }
 

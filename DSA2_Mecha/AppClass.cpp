@@ -36,7 +36,8 @@ void AppClass::InitVariables(void)
 	m_pBOMngr->AddObject(Enemy(m_Camera, vector3(400, 0, 300)));
 	*/
 	
-	Pillar(vector3(-600, 0, -600));
+	objects.push_back(new Pillar(vector3(-600, 0, -600)));
+
 	Pillar(vector3(-600, 0, 0));
 	Pillar(vector3(-600, 0, 600));
 	Pillar(vector3(600, 0, -600));
