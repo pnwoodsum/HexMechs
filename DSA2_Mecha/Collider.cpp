@@ -8,37 +8,43 @@ Collider::~Collider() {}
 
 std::vector<Collider*> Collider::ColliderCollection;
 
-void Collider::onCollisionEnter() {
-	Collider pointerInstance;
-	(pointerInstance.*onCollisionEnterFunction)();
+void Collider::onCollisionEnter(void* other) {
+	onCollisionEnterFunction(other);
+	//Collider pointerInstance;
+	//(pointerInstance.*onCollisionEnterFunction)();
 }
 
-void Collider::onCollisionExit() {
-	Collider pointerInstance;
-	(pointerInstance.*onCollisionExitFunction)();
+void Collider::onCollisionExit(void* other) {
+	onCollisionExitFunction(other);
+	//Collider pointerInstance;
+	//(pointerInstance.*onCollisionExitFunction)();
 }
 
-void Collider::onCollisionStay() {
-	Collider pointerInstance;
-	(pointerInstance.*onCollisionStayFunction)();
+void Collider::onCollisionStay(void* other) {
+	onCollisionStayFunction(other);
+	//Collider pointerInstance;
+	//(pointerInstance.*onCollisionStayFunction)();
 }
 
-void Collider::onTriggerEnter() {
-	Collider pointerInstance;
-	(pointerInstance.*onTriggerEnterFunction)();
+void Collider::onTriggerEnter(void* other) {
+	onTriggerEnter(other);
+	//Collider pointerInstance;
+	//(pointerInstance.*onTriggerEnterFunction)();
 }
 
-void Collider::onTriggerExit() {
-	Collider pointerInstance;
-	(pointerInstance.*onTriggerExitFunction)();
+void Collider::onTriggerExit(void* other) {
+	onTriggerExitFunction(other);
+	//Collider pointerInstance;
+	//(pointerInstance.*onTriggerExitFunction)();
 }
 
-void Collider::onTriggerStay() {
-	Collider pointerInstance;
-	(pointerInstance.*onTriggerStayFunction)();
+void Collider::onTriggerStay(void* other) {
+	onTriggerStayFunction(other);
+	//Collider pointerInstance;
+	//(pointerInstance.*onTriggerStayFunction)();
 }
 
-void Collider::emptyFunction() { return; }
+void Collider::emptyFunction(void* ptr) { return; }
 
 
 void Collider::Start() {
@@ -51,23 +57,23 @@ void Collider::Start() {
 }
 
 void Collider::subUpdate() {}
-void Collider::callCallbacks(bool contact) {
+void Collider::callCallbacks(bool contact, void* other) {
 	if (contact) {
 		if (!isTrigger) {
 			if (previouslyCollided) {
-				onCollisionStay();
+				onCollisionStay(other);
 			}
 			else {
-				onCollisionEnter();
+				onCollisionEnter(other);
 				previouslyCollided = true;
 			}
 		}
 		else {
 			if (previouslyTriggered) {
-				onTriggerStay();
+				onTriggerStay(other);
 			}
 			else {
-				onTriggerEnter();
+				onTriggerEnter(other);
 				previouslyTriggered;
 			}
 		}
@@ -75,13 +81,13 @@ void Collider::callCallbacks(bool contact) {
 	else {
 		if (isTrigger) {
 			if (previouslyTriggered) {
-				onTriggerExit();
+				onTriggerExit(other);
 				previouslyTriggered = false;
 			}
 		}
 		else {
 			if (previouslyCollided) {
-				onCollisionExit();
+				onCollisionExit(other);
 				previouslyCollided = false;
 			}
 		}

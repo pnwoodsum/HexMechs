@@ -74,7 +74,7 @@ void GameObject::AddOffset(vector3 delta)
 	position += delta;
 	//collider->m_v3Position = position;
 }
-
+/*
 void GameObject::HandleCollision()
 {
 	if (destructible) {
@@ -84,7 +84,7 @@ void GameObject::HandleCollision()
 			visible = false;
 		}
 	}
-}
+}*/
 
 
 void GameObject::Start() {

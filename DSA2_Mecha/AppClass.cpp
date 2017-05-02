@@ -23,29 +23,17 @@ void AppClass::InitVariables(void)
 	envCount = 10;
 	environment = new PrimitiveClass[envCount];
 	environ_Matrix = new matrix4[envCount];
-	/*
-	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, -600)));
-	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, 0)));
-	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, 600)));
-	m_pBOMngr->AddObject(Pillar(vector3(600, 0, -600)));
-	m_pBOMngr->AddObject(Pillar(vector3(600, 0, 0)));
-	m_pBOMngr->AddObject(Pillar(vector3(600, 0, 600)));
-	m_pBOMngr->AddObject(DestructObj(vector3(300, 0, 300)));
-	m_pBOMngr->AddObject(DestructObj(vector3(200, 0, 300)));
-	m_pBOMngr->AddObject(DestructObj(vector3(100, 0, 300)));
-	m_pBOMngr->AddObject(Enemy(m_Camera, vector3(400, 0, 300)));
-	*/
 	
+	objects.push_back(new Pillar());
 	objects.push_back(new Pillar(vector3(-600, 0, -600)));
-
-	Pillar(vector3(-600, 0, 0));
-	Pillar(vector3(-600, 0, 600));
-	Pillar(vector3(600, 0, -600));
-	Pillar(vector3(600, 0, 0));
-	Pillar(vector3(600, 0, 600));
-	DestructObj(vector3(300, 0, 300));
-	DestructObj(vector3(200, 0, 300));
-	DestructObj(vector3(100, 0, 300));
+	objects.push_back(new Pillar(vector3(-600, 0, 0)));
+	objects.push_back(new Pillar(vector3(-600, 0, 600)));
+	objects.push_back(new Pillar(vector3(600, 0, -600)));
+	objects.push_back(new Pillar(vector3(600, 0, 0)));
+	objects.push_back(new Pillar(vector3(600, 0, 600)));
+	objects.push_back(new DestructObj(vector3(300, 0, 300)));
+	objects.push_back(new DestructObj(vector3(200, 0, 300)));
+	objects.push_back(new DestructObj(vector3(100, 0, 300)));
 	Enemy(m_Camera, vector3(400, 0, 300));
 
 

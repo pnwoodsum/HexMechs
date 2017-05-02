@@ -9,7 +9,7 @@ public:
 	Pillar(vector3);
 	~Pillar();
 	void Update(float fDeltaTime) override;
-	void HandleCollision() override;
+	//void HandleCollision() override;
 };
 
 class DestructObj : public GameObject
@@ -20,10 +20,10 @@ public:
 	DestructObj(vector3);
 	~DestructObj();
 	void Update(float fDeltaTime) override;
-	void HandleCollision() override;
+	static void HandleCollision(void* ptr);
 };
 
-class Enemy : public GameObject
+class Enemy : public DestructObj
 {
 public:
 	int health;
@@ -33,5 +33,5 @@ public:
 	//Camera* m_Camera;
 
 	virtual void Update(float fDeltaTime) override;
-	virtual void HandleCollision() override;
+	//virtual void HandleCollision() override;
 };

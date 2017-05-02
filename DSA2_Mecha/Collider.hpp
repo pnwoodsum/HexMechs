@@ -2,7 +2,7 @@
 #include "Component.hpp"
 #include "GameObject.h"
 #include <vector>
-
+//typedef void(*call_back)();
 class Collider : public Component {
 public:
 	Collider();
@@ -13,13 +13,22 @@ public:
 	bool isTrigger;
 
 	//will probably want to move this typdef to a separate class
-	typedef void(Collider::*call_back) ();
+	//typedef void(Collider::*call_back) ();
+	/*
 	call_back onCollisionEnterFunction;
 	call_back onCollisionExitFunction;
 	call_back onCollisionStayFunction;
 	call_back onTriggerEnterFunction;
 	call_back onTriggerExitFunction;
 	call_back onTriggerStayFunction;
+	*/
+	//void(*)(void* ptr)
+	void(*onCollisionEnterFunction)(void *ptr);
+	void(*onCollisionExitFunction)(void *ptr);
+	void(*onCollisionStayFunction)(void *ptr);
+	void(*onTriggerEnterFunction)(void *ptr);
+	void(*onTriggerExitFunction)(void *ptr);
+	void(*onTriggerStayFunction)(void *ptr);
 
 	virtual void Start();
 	virtual void Update(float deltaTime);
@@ -30,17 +39,17 @@ protected:
 	bool previouslyTriggered;
 	vector3 positionOffset;
 
-	void onCollisionEnter();
-	void onCollisionExit();
-	void onCollisionStay();
-	void onTriggerEnter();
-	void onTriggerExit();
-	void onTriggerStay();
+	void onCollisionEnter(void* other);
+	void onCollisionExit(void* other);
+	void onCollisionStay(void* other);
+	void onTriggerEnter(void* other);
+	void onTriggerExit(void* other);
+	void onTriggerStay(void* other);
 
-	void emptyFunction();
+	static void emptyFunction(void* ptr);
 
 	static std::vector<Collider*> ColliderCollection;
 	virtual void subUpdate();
-	virtual void callCallbacks(bool contact);
+	virtual void callCallbacks(bool contact, void* other);
 	virtual void testCollision(Collider* other);
 };

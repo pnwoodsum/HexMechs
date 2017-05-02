@@ -53,7 +53,7 @@ public:
 
 	void SetMatrix(matrix4);
 	void AddOffset(vector3);
-	virtual void HandleCollision();
+	//virtual void HandleCollision();
 
 	virtual void Start();
 	virtual void Update(float deltaTime);

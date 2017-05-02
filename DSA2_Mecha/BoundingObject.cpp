@@ -219,7 +219,7 @@ void BoundingObject::subUpdate() {};
 void BoundingObject::testCollision(Collider* other) {
 	//this is probably not a good idea
 	BoundingObject* castedOther = dynamic_cast<BoundingObject*>(other);
-	callCallbacks(IsColliding(castedOther));
+	callCallbacks(IsColliding(castedOther), other);
 }
 void BoundingObject::Update() 
 {
