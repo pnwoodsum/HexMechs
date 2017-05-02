@@ -1,8 +1,7 @@
 #include "Prefabs.h"
 #include "BoundingObject.h"
 
-//PILLAR
-//******************
+#pragma region Pillar
 Pillar::Pillar() : Pillar(vector3(0, 0, 0)) {}
 
 Pillar::Pillar(vector3 pos)
@@ -36,12 +35,9 @@ void Pillar::Update(float fDeltaTime)
 void Pillar::HandleCollision()
 {
 }*/
+#pragma endregion
 
-//******************
-
-
-//DESTRUCTOBJ
-//******************
+#pragma region DestructObj
 DestructObj::DestructObj() : DestructObj(vector3(0, 0, 0)) {}
 
 DestructObj::DestructObj(vector3 pos)
@@ -64,9 +60,7 @@ DestructObj::DestructObj(vector3 pos)
 }
 
 
-DestructObj::~DestructObj()
-{
-}
+DestructObj::~DestructObj() {}
 
 void DestructObj::HandleCollision(void* ptr)
 {
@@ -80,12 +74,10 @@ void DestructObj::HandleCollision(void* ptr)
 	}
 }
 
-void DestructObj::Update(float fDeltaTime)
-{
-}
+//void DestructObj::Update(float fDeltaTime){}
+#pragma endregion
 
-//******************
-
+#pragma region Enemy
 Enemy::Enemy(Camera* cam)
 {
 	m_Camera = cam;
@@ -127,9 +119,7 @@ Enemy::Enemy(Camera* cam, vector3 pos)
 }
 
 
-Enemy::~Enemy()
-{
-}
+Enemy::~Enemy(){}
 /*
 void Enemy::HandleCollision()
 {
@@ -141,9 +131,78 @@ void Enemy::HandleCollision()
 		visible = false;
 	}
 }
-*/
+
 void Enemy::Update(float fDeltaTime)
 {
 	std::cout << "Update" << std::endl;
 	position = glm::lerp(position, m_Camera->cameraPos, 0.1f);
+}*/
+#pragma endregion
+
+#pragma region Bullet
+int Bullet::bulletIndex;
+std::vector<Bullet*> Bullet::bulletList;
+
+Bullet::Bullet(void)
+{
+	model = new PrimitiveClass();
+	model->GenerateSphere(5.0f, 20, RERED);
+
+	position = vector3(0,0,0);
+
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(glm::translate(position));
+	this->addComponent(collider);
+
+	bCanCollide = true;
+	collisionType = ColliderType::projectile;
+	visible = true;
+	//timer = 0;
+
+	bulletList.push_back(this);
 }
+
+
+Bullet::~Bullet() {}
+
+void Bullet::fire(vector3 pos, glm::quat or , float time) {
+	Bullet* ptr = bulletList[bulletIndex];
+	bulletIndex = (bulletIndex + 1) % bulletList.size();
+
+	ptr->position = pos - vector3(45.0f, -22.0f, -220.0f) * or ;
+	//collider->SetModelMatrix(glm::inverse(glm::translate(position)));
+	//collider->orientation = or;
+
+	//bulletPos = pos - (vector3(0.0f,0.0f,2.0f) * or);
+	ptr->lastOrient = or ;
+	//timer = 0;
+	ptr->startTime = time;
+
+	ptr->visible = true;
+}
+
+void Bullet::Update(float time)
+{
+	GameObject::Update(time);
+	if (visible) {
+	position += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
+	//TODO this should update automatically in BO code
+	getComponent<BoundingObject>()->SetModelMatrix(glm::translate(position));
+	//timer++;
+
+	if(time - startTime > 2) visible = false;
+	//if (timer > 100) visible = false;
+	//collider->SetModelMatrix(glm::translate(position));
+	//bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
+	}
+	
+}
+/*
+void Bullet::Render(matrix4 projection, matrix4 view)
+{
+	if (exist) {
+		bullet->Render(projection, view, glm::translate(-bulletPos));
+	}
+}*/
+
+#pragma endregion

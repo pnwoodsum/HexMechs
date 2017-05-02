@@ -94,6 +94,7 @@ void GameObject::Start() {
 }
 
 void GameObject::Update(float deltaTime) {
+
 	int numComponents = components.size();
 	for (int i = 0; i < numComponents; i++)
 		components[i]->Update(deltaTime);

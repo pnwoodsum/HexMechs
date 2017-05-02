@@ -24,6 +24,10 @@ void AppClass::InitVariables(void)
 	environment = new PrimitiveClass[envCount];
 	environ_Matrix = new matrix4[envCount];
 	
+	for (int i = 0; i < 40; i++) {
+		objects.push_back(new Bullet());
+	}
+	
 	objects.push_back(new Pillar());
 	objects.push_back(new Pillar(vector3(-600, 0, -600)));
 	objects.push_back(new Pillar(vector3(-600, 0, 0)));
@@ -75,7 +79,9 @@ void AppClass::InitVariables(void)
 	UINT	CenterX, CenterY;
 	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
 	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
-	
+	for (int i = 0; i < objects.size(); i++) {
+		objects[i]->Start();
+	}
 }
 
 

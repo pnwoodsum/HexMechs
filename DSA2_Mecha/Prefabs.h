@@ -19,7 +19,7 @@ public:
 	DestructObj();
 	DestructObj(vector3);
 	~DestructObj();
-	void Update(float fDeltaTime) override;
+	//void Update(float fDeltaTime) override;
 	static void HandleCollision(void* ptr);
 };
 
@@ -32,6 +32,31 @@ public:
 	~Enemy();
 	//Camera* m_Camera;
 
-	virtual void Update(float fDeltaTime) override;
+	//virtual void Update(float fDeltaTime) override;
 	//virtual void HandleCollision() override;
+};
+
+class Bullet : public GameObject
+{
+public:
+	Bullet();
+	~Bullet();
+
+	//PrimitiveClass* bullet = nullptr;
+	//vector3 bulletPos;
+	glm::quat lastOrient;
+	int timer;
+	float startTime;
+
+	//void move();
+	//virtual void Render(matrix4, matrix4);
+	static void fire(vector3, glm::quat, float);
+	//static void HandleCollision(void* ptr);
+
+	virtual void Update(float deltaTime);
+
+	//bool exist;
+	static float lastBullet;
+	static int bulletIndex;
+	static std::vector<Bullet*> bulletList;
 };

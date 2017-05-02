@@ -35,7 +35,7 @@ private:
 
 public:
 	virtual void subUpdate();
-	virtual void Update();
+	//virtual void Update(float);
 	virtual void Render();
 	virtual void testCollision(Collider* other);
 
