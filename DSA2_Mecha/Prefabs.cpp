@@ -128,9 +128,9 @@ void Bullet::fire(vector3 pos, glm::quat or , float time) {
 	Bullet* ptr = bulletList[bulletIndex];
 	bulletIndex = (bulletIndex + 1) % bulletList.size();
 
-	ptr->transform = glm::translate(pos - vector3(45.0f, -22.0f, -220.0f) * or);
+	ptr->transform = glm::inverse(glm::translate(pos - vector3(45.0f, -22.0f, -220.0f) * or));
 
-	ptr->lastOrient = or ;
+	ptr->lastOrient = or;
 	ptr->startTime = time;
 
 	ptr->visible = true;
@@ -140,7 +140,7 @@ void Bullet::Update(float time)
 {
 	GameObject::Update(time);
 	if (visible) {
-	transform = glm::translate(transform, vector3(0.0f, 0.0f, 20.0f) * lastOrient);
+	transform = glm::translate(transform, vector3(0.0f, 0.0f, -20.0f) * lastOrient);
 	//TODO this should update automatically in BO code
 	getComponent<BoundingObject>()->SetModelMatrix(transform);
 	//timer++;
