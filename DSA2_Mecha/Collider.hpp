@@ -23,12 +23,12 @@ public:
 	call_back onTriggerStayFunction;
 	*/
 	//void(*)(void* ptr)
-	void(*onCollisionEnterFunction)(void *ptr);
-	void(*onCollisionExitFunction)(void *ptr);
-	void(*onCollisionStayFunction)(void *ptr);
-	void(*onTriggerEnterFunction)(void *ptr);
-	void(*onTriggerExitFunction)(void *ptr);
-	void(*onTriggerStayFunction)(void *ptr);
+	void(*onCollisionEnterFunction)(Collider*, Collider*);
+	void(*onCollisionExitFunction)(Collider*, Collider*);
+	void(*onCollisionStayFunction)(Collider*, Collider*);
+	void(*onTriggerEnterFunction)(Collider*, Collider*);
+	void(*onTriggerExitFunction)(Collider*, Collider*);
+	void(*onTriggerStayFunction)(Collider*, Collider*);
 
 	virtual void Start();
 	virtual void Update(float deltaTime);
@@ -39,17 +39,15 @@ protected:
 	bool previouslyTriggered;
 	vector3 positionOffset;
 
-	void onCollisionEnter(void* other);
-	void onCollisionExit(void* other);
-	void onCollisionStay(void* other);
-	void onTriggerEnter(void* other);
-	void onTriggerExit(void* other);
-	void onTriggerStay(void* other);
-
-	static void emptyFunction(void* ptr);
+	void onCollisionEnter(Collider* other);
+	void onCollisionExit(Collider* other);
+	void onCollisionStay(Collider* other);
+	void onTriggerEnter(Collider* other);
+	void onTriggerExit(Collider* other);
+	void onTriggerStay(Collider* other);
 
 	static std::vector<Collider*> ColliderCollection;
 	virtual void subUpdate();
-	virtual void callCallbacks(bool contact, void* other);
+	virtual void callCallbacks(bool contact, Collider* other);
 	virtual void testCollision(Collider* other);
 };

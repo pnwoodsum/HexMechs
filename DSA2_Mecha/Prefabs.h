@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Collider.hpp"
 #include "Camera.h"
 
 class Pillar : public GameObject
@@ -20,7 +21,7 @@ public:
 	DestructObj(vector3);
 	~DestructObj();
 	//void Update(float fDeltaTime) override;
-	static void HandleCollision(void* ptr);
+	static void HandleCollision(Collider*, Collider*);
 };
 
 class Enemy : public DestructObj

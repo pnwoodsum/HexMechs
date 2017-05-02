@@ -8,49 +8,48 @@ Collider::~Collider() {}
 
 std::vector<Collider*> Collider::ColliderCollection;
 
-void Collider::onCollisionEnter(void* other) {
+void Collider::onCollisionEnter(Collider* other) {
 	if(onCollisionEnterFunction == nullptr) return;
-	onCollisionEnterFunction(other);
+	onCollisionEnterFunction(this, other);
 	//Collider pointerInstance;
 	//(pointerInstance.*onCollisionEnterFunction)();
 }
 
-void Collider::onCollisionExit(void* other) {
+void Collider::onCollisionExit(Collider* other) {
 	if (onCollisionExitFunction == nullptr) return;
-	onCollisionExitFunction(other);
+	onCollisionExitFunction(this, other);
 	//Collider pointerInstance;
 	//(pointerInstance.*onCollisionExitFunction)();
 }
 
-void Collider::onCollisionStay(void* other) {
+void Collider::onCollisionStay(Collider* other) {
 	if (onCollisionStayFunction == nullptr) return;
-	onCollisionStayFunction(other);
+	onCollisionStayFunction(this, other);
 	//Collider pointerInstance;
 	//(pointerInstance.*onCollisionStayFunction)();
 }
 
-void Collider::onTriggerEnter(void* other) {
+void Collider::onTriggerEnter(Collider* other) {
 	if (onTriggerEnterFunction == nullptr) return;
-	onTriggerEnter(other);
+	onTriggerEnterFunction(this, other);
 	//Collider pointerInstance;
 	//(pointerInstance.*onTriggerEnterFunction)();
 }
 
-void Collider::onTriggerExit(void* other) {
+void Collider::onTriggerExit(Collider* other) {
 	if (onTriggerExitFunction == nullptr) return;
-	onTriggerExitFunction(other);
+	onTriggerExitFunction(this, other);
 	//Collider pointerInstance;
 	//(pointerInstance.*onTriggerExitFunction)();
 }
 
-void Collider::onTriggerStay(void* other) {
+void Collider::onTriggerStay(Collider* other) {
 	if (onTriggerStayFunction == nullptr) return;
-	onTriggerStayFunction(other);
+	onTriggerStayFunction(this, other);
 	//Collider pointerInstance;
 	//(pointerInstance.*onTriggerStayFunction)();
 }
 
-void Collider::emptyFunction(void* ptr) {	return; }
 
 
 void Collider::Start() {
@@ -65,7 +64,7 @@ void Collider::Start() {
 }
 
 void Collider::subUpdate() {}
-void Collider::callCallbacks(bool contact, void* other) {
+void Collider::callCallbacks(bool contact, Collider* other) {
 	if (contact) {
 		if (!isTrigger) {
 			if (previouslyCollided) {

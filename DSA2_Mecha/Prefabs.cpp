@@ -50,7 +50,7 @@ DestructObj::DestructObj(vector3 pos)
 	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
 	collider->SetModelMatrix(glm::translate(position));
 	this->addComponent(collider);
-	collider->onCollisionEnterFunction = (&DestructObj::HandleCollision);
+	collider->onCollisionEnterFunction = &DestructObj::HandleCollision;
 
 	bCanCollide = true;
 	collisionType = ColliderType::environment;
@@ -62,14 +62,18 @@ DestructObj::DestructObj(vector3 pos)
 
 DestructObj::~DestructObj() {}
 
-void DestructObj::HandleCollision(void* ptr)
+void DestructObj::HandleCollision(Collider* mainobj, Collider* other)
 {
-	DestructObj* me = static_cast<DestructObj*>(ptr);
+	DestructObj* me = static_cast<DestructObj*>(mainobj->getGameObject());
 	std::cout << "hit destruct actually" << std::endl;
-
+	
+	Bullet* castedOther = dynamic_cast<Bullet*>(other->getGameObject());
+	if (!castedOther) return;
+	
 	me->health -= 10;
 
 	if (me->health <= 0) {
+		std::cout << "dead" << std::endl;
 		me->visible = false;
 	}
 }
