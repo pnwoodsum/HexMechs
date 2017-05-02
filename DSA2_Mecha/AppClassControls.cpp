@@ -29,11 +29,9 @@ void AppClass::ProcessKeyboard(void)
 	{
 		if (bModifier) {
 			m_Camera->MoveForward(1.0f,true); 
-			//m_pCameraMngr->MoveForward(1.0f);
 		}
 		else {
 			m_Camera->MoveForward(1.0f,false);
-			//m_pCameraMngr->MoveForward(4.0f);
 		}
 		
 	}
@@ -41,33 +39,27 @@ void AppClass::ProcessKeyboard(void)
 	{
 		if (bModifier) {
 			m_Camera->MoveForward(-1.0f,true);
-			//m_pCameraMngr->MoveForward(1.0f);
 		}
 		else {
 			m_Camera->MoveForward(-1.0f,false);
-			//m_pCameraMngr->MoveForward(-4.0f);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		if (bModifier) {
 			m_Camera->MoveSideways(1.0f, true);
-			//m_pCameraMngr->MoveSideways(1.0f);
 		}
 		else {
 			m_Camera->MoveSideways(1.0f, false);
-			//m_pCameraMngr->MoveSideways(4.0f);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		if (bModifier) {
 			m_Camera->MoveSideways(-1.0f, true);
-			//m_pCameraMngr->MoveSideways(-1.0f);
 		}
 		else {
 			m_Camera->MoveSideways(-1.0f, false);
-			//m_pCameraMngr->MoveSideways(-4.0f);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) 

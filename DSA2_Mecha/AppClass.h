@@ -7,9 +7,7 @@ Date: 2015/09
 
 #include "RE\ReEngAppClass.h"
 #include "Camera.h"
-#include "Bullet.h"
 #include "GameObject.h"
-#include "CollisionManager.h"
 #include "Prefabs.h"
 #include "iostream"
 #include <SFML\Graphics.hpp>

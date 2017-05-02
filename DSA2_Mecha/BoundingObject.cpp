@@ -221,12 +221,3 @@ void BoundingObject::testCollision(Collider* other) {
 	BoundingObject* castedOther = dynamic_cast<BoundingObject*>(other);
 	callCallbacks(IsColliding(castedOther), other);
 }
-/*
-void BoundingObject::Update(float deltaTime) 
-{
-	//m_v3Position += vector3(0.0f, 0.0f, 20.0f) * orientation;
-	m_m4ToWorld = glm::translate(m_m4ToWorld, vector3(0.0f, 0.0f, -20.0f) * orientation);
-	p_v3Max += vector3(0.0f, 0.0f, -20.0f) * orientation;
-	p_v3Min += vector3(0.0f, 0.0f, -20.0f) * orientation;
-	m_v3CenterGlobal = vector3(m_m4ToWorld * vector4(m_v3CenterLocal, 1.0f));
-}*/

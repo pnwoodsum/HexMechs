@@ -11,56 +11,31 @@ std::vector<Collider*> Collider::ColliderCollection;
 void Collider::onCollisionEnter(Collider* other) {
 	if(onCollisionEnterFunction == nullptr) return;
 	onCollisionEnterFunction(this, other);
-	//Collider pointerInstance;
-	//(pointerInstance.*onCollisionEnterFunction)();
 }
 
 void Collider::onCollisionExit(Collider* other) {
 	if (onCollisionExitFunction == nullptr) return;
 	onCollisionExitFunction(this, other);
-	//Collider pointerInstance;
-	//(pointerInstance.*onCollisionExitFunction)();
 }
 
 void Collider::onCollisionStay(Collider* other) {
 	if (onCollisionStayFunction == nullptr) return;
 	onCollisionStayFunction(this, other);
-	//Collider pointerInstance;
-	//(pointerInstance.*onCollisionStayFunction)();
 }
 
 void Collider::onTriggerEnter(Collider* other) {
 	if (onTriggerEnterFunction == nullptr) return;
 	onTriggerEnterFunction(this, other);
-	//Collider pointerInstance;
-	//(pointerInstance.*onTriggerEnterFunction)();
 }
 
 void Collider::onTriggerExit(Collider* other) {
 	if (onTriggerExitFunction == nullptr) return;
 	onTriggerExitFunction(this, other);
-	//Collider pointerInstance;
-	//(pointerInstance.*onTriggerExitFunction)();
 }
 
 void Collider::onTriggerStay(Collider* other) {
 	if (onTriggerStayFunction == nullptr) return;
 	onTriggerStayFunction(this, other);
-	//Collider pointerInstance;
-	//(pointerInstance.*onTriggerStayFunction)();
-}
-
-
-
-void Collider::Start() {
-	/*
-	onCollisionEnterFunction = &Collider::emptyFunction;
-	onCollisionExitFunction = &Collider::emptyFunction;
-	onCollisionStayFunction = &Collider::emptyFunction;
-	onTriggerEnterFunction = &Collider::emptyFunction;
-	onTriggerExitFunction = &Collider::emptyFunction;
-	onTriggerStayFunction = &Collider::emptyFunction;
-	*/
 }
 
 void Collider::subUpdate() {}

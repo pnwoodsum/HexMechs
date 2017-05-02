@@ -2,7 +2,7 @@
 #include "Component.hpp"
 #include "GameObject.h"
 #include <vector>
-//typedef void(*call_back)();
+
 class Collider : public Component {
 public:
 	Collider();
@@ -12,17 +12,6 @@ public:
 	bool enabled;
 	bool isTrigger;
 
-	//will probably want to move this typdef to a separate class
-	//typedef void(Collider::*call_back) ();
-	/*
-	call_back onCollisionEnterFunction;
-	call_back onCollisionExitFunction;
-	call_back onCollisionStayFunction;
-	call_back onTriggerEnterFunction;
-	call_back onTriggerExitFunction;
-	call_back onTriggerStayFunction;
-	*/
-	//void(*)(void* ptr)
 	void(*onCollisionEnterFunction)(Collider*, Collider*);
 	void(*onCollisionExitFunction)(Collider*, Collider*);
 	void(*onCollisionStayFunction)(Collider*, Collider*);
@@ -30,7 +19,6 @@ public:
 	void(*onTriggerExitFunction)(Collider*, Collider*);
 	void(*onTriggerStayFunction)(Collider*, Collider*);
 
-	virtual void Start();
 	virtual void Update(float deltaTime);
 	virtual void Render();
 

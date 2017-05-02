@@ -13,22 +13,13 @@ enum ColliderType { projectile, environment, object };
 class GameObject : public Object {
 public:
 	bool bGravityEnabled;
-	bool bCanCollide;
 	bool visible = true;
-	bool destructible;
-	bool enemy;
 	Camera* m_Camera;
 
 	std::string instanceName;
-	matrix4 matrix;
-	vector3 position;
-	vector3 orientation;
 
-	ColliderType collisionType;
-	//BoundingObject* collider;
-
+	//TODO: should handle both primitives and loaded models
 	PrimitiveClass* model = nullptr;
-	int health;
 
 	matrix4 transform;
 	std::vector<Component*> components;
@@ -50,10 +41,6 @@ public:
 	}
 
 	void addComponent(Component* component);
-
-	void SetMatrix(matrix4);
-	void AddOffset(vector3);
-	//virtual void HandleCollision();
 
 	virtual void Start();
 	virtual void Update(float deltaTime);
