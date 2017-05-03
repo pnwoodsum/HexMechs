@@ -31,7 +31,7 @@ void AppClass::InitVariables(void) {
 	objects.push_back(new DestructObj(vector3(300, 0, 300)));
 	objects.push_back(new DestructObj(vector3(200, 0, 300)));
 	objects.push_back(new DestructObj(vector3(100, 0, 300)));
-	//Enemy(m_Camera, vector3(400, 0, 300));
+	objects.push_back(new Enemy(vector3(400, 0, 300), m_Camera));
 
 
 	environment[6].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);

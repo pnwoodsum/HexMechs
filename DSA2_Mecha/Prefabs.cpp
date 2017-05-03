@@ -46,7 +46,6 @@ DestructObj::~DestructObj() {}
 void DestructObj::HandleCollision(Collider* mainobj, Collider* other)
 {
 	DestructObj* me = static_cast<DestructObj*>(mainobj->getGameObject());
-	std::cout << "hit destruct actually" << std::endl;
 	
 	Bullet* castedOther = dynamic_cast<Bullet*>(other->getGameObject());
 	if (!castedOther) return;
@@ -61,45 +60,35 @@ void DestructObj::HandleCollision(Collider* mainobj, Collider* other)
 #pragma endregion
 
 #pragma region Enemy
-Enemy::Enemy(Camera* cam)
+Enemy::Enemy(Camera* cam) : Enemy(vector3(0, 0, 0), cam) {}
+
+Enemy::Enemy(vector3 pos, Camera* cam)
 {
 	m_Camera = cam;
 	model = new PrimitiveClass();
 	model->GenerateCube(50.0f, RERED);
 
+	transform = glm::translate(pos);
+	//collider already there from Destructable obj?
+	/*
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(transform);
+	this->addComponent(collider);
+	//reuse the destructobj handle collision method we inherit
+	collider->onCollisionEnterFunction = &DestructObj::HandleCollision;
+	*/
 	visible = true;
-	health = 1000;
+	health = 50;
 }
-
-Enemy::Enemy(Camera* cam, vector3 pos)
-{
-	m_Camera = cam;
-	model = new PrimitiveClass();
-	model->GenerateCube(50.0f, RERED);
-
-	visible = true;
-	health = 1000;
-}
-
 
 Enemy::~Enemy(){}
-/*
-void Enemy::HandleCollision()
-{
-	std::cout << "hit destruct" << std::endl;
 
-	health -= 10;
-
-	if (health <= 0) {
-		visible = false;
-	}
+void Enemy::Update(float fDeltaTime) {
+	DestructObj::Update(fDeltaTime);
+	transform = glm::translate(glm::lerp(glm::vec3(transform[3]), m_Camera->cameraPos, 1*fDeltaTime));
+	
+	getComponent<BoundingObject>()->SetModelMatrix(transform);
 }
-
-void Enemy::Update(float fDeltaTime)
-{
-	std::cout << "Update" << std::endl;
-	position = glm::lerp(position, m_Camera->cameraPos, 0.1f);
-}*/
 #pragma endregion
 
 #pragma region Bullet

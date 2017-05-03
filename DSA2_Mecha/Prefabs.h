@@ -24,14 +24,13 @@ public:
 class Enemy : public DestructObj
 {
 public:
-	int health;
 	Enemy(Camera* cam);
-	Enemy(Camera* cam, vector3);
+	Enemy(vector3, Camera*);
 	~Enemy();
-	//Camera* m_Camera;
+	Camera* m_Camera;
 
-	//virtual void Update(float fDeltaTime) override;
-	//virtual void HandleCollision() override;
+	virtual void Update(float fDeltaTime);
+	static void HandleCollision(Collider*, Collider*);
 };
 
 class Bullet : public GameObject

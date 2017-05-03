@@ -93,8 +93,7 @@ void BoundingObject::SetColor(vector3 vidya) {
 	v3Color = vidya;
 }
 
-void BoundingObject::Render()
-{
+void BoundingObject::Render() {
 	if (m_iBoundingObjectType > 3) {
 		m_iBoundingObjectType = 0;
 	}
@@ -107,14 +106,6 @@ void BoundingObject::Render()
 			v3Color, WIRE);
 
 		m_pMeshMngr->AddLineToRenderList(p_v3Max, p_v3Min, RERED, RERED);
-
-		m_pMeshMngr->AddCubeToRenderList(
-			glm::translate(m_v3Position) *
-			m_m4ToWorld *
-			glm::translate(m_v3CenterLocal) *
-			glm::inverse(m_m4ToWorld) *
-			glm::scale(p_v3Size),
-			v3Color, WIRE);
 	}
 
 	if (m_iBoundingObjectType == 1 || m_iBoundingObjectType == 2) {
