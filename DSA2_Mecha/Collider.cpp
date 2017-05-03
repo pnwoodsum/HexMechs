@@ -81,6 +81,8 @@ void Collider::Update(float deltaTime) {
 	for (auto singleCollid : ColliderCollection) {
 		if (singleCollid == this)
 			continue;
+		//Don't collide with non-active colliders
+		if (!singleCollid->getGameObject()->active) continue;
 		testCollision(singleCollid);
 	}
 	

@@ -46,7 +46,10 @@ public:
 
 	static void fire(vector3, glm::quat, float);
 	virtual void Update(float deltaTime);
+	static void HandleCollision(Collider*, Collider*);
 
+	const static float BULLET_SPEED;
+	const static float FIRE_RATE;
 	static float lastBullet;
 	static int bulletIndex;
 	static std::vector<Bullet*> bulletList;

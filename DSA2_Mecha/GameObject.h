@@ -45,4 +45,5 @@ public:
 	virtual void Start();
 	virtual void Update(float deltaTime);
 	virtual void Render(matrix4, matrix4);
+	void SetActive(bool);
 };

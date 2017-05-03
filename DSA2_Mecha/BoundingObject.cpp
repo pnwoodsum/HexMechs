@@ -98,6 +98,7 @@ void BoundingObject::Render()
 	if (m_iBoundingObjectType > 3) {
 		m_iBoundingObjectType = 0;
 	}
+
 	if (m_iBoundingObjectType == 0 || m_iBoundingObjectType == 2) {
 		m_pMeshMngr->AddCubeToRenderList(
 			m_m4ToWorld *
@@ -177,6 +178,7 @@ void BoundingObject::SetModelMatrix(matrix4 a_m4ToWorld)
 
 bool BoundingObject::IsColliding(BoundingObject* a_other, bool isProjectile)
 {
+
 	float fDistance = glm::distance(m_v3CenterGlobal, a_other->m_v3CenterGlobal);
 	float fRadiiSum = m_fRadius + a_other->m_fRadius;
 	if (fDistance > fRadiiSum) {

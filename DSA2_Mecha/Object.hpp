@@ -12,6 +12,7 @@ public:
 	Object();
 	Object(const Object& other);
 	~Object();
+	bool active = true;
 	int GetInstanceID() const;
 	std::string ToString();
 	Object Clone();

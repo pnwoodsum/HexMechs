@@ -37,7 +37,7 @@ DestructObj::DestructObj(vector3 pos)
 	collider->onCollisionEnterFunction = &DestructObj::HandleCollision;
 
 	visible = true;
-	health = 1000;
+	health = 100;
 }
 
 
@@ -55,7 +55,7 @@ void DestructObj::HandleCollision(Collider* mainobj, Collider* other)
 
 	if (me->health <= 0) {
 		std::cout << "dead" << std::endl;
-		me->visible = false;
+		me->SetActive(false);
 	}
 }
 #pragma endregion
@@ -105,6 +105,9 @@ void Enemy::Update(float fDeltaTime)
 #pragma region Bullet
 int Bullet::bulletIndex;
 std::vector<Bullet*> Bullet::bulletList;
+float Bullet::lastBullet;
+const float Bullet::BULLET_SPEED = 20.0f;
+const float Bullet::FIRE_RATE = 0.2f;
 
 Bullet::Bullet(void)
 {
@@ -114,9 +117,10 @@ Bullet::Bullet(void)
 	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
 	collider->SetModelMatrix(transform);
 	this->addComponent(collider);
+	collider->onCollisionEnterFunction = &Bullet::HandleCollision;
 
 	visible = true;
-	//timer = 0;
+	SetActive(false);
 
 	bulletList.push_back(this);
 }
@@ -125,31 +129,39 @@ Bullet::Bullet(void)
 Bullet::~Bullet() {}
 
 void Bullet::fire(vector3 pos, glm::quat or , float time) {
-	Bullet* ptr = bulletList[bulletIndex];
-	bulletIndex = (bulletIndex + 1) % bulletList.size();
+	if (time - lastBullet > Bullet::FIRE_RATE) {
+		Bullet* ptr = bulletList[bulletIndex];
+		bulletIndex = (bulletIndex + 1) % bulletList.size();
 
-	ptr->transform = glm::inverse(glm::translate(pos - vector3(45.0f, -22.0f, -220.0f) * or));
+		ptr->SetActive(true);
+		ptr->transform = glm::inverse(glm::translate(pos - vector3(45.0f, -22.0f, -220.0f) * or ));
 
-	ptr->lastOrient = or;
-	ptr->startTime = time;
+		ptr->lastOrient = or ;
+		ptr->startTime = time;
 
-	ptr->visible = true;
+		lastBullet = time;
+	}
+}
+
+void Bullet::HandleCollision(Collider* mainobj, Collider* other) {
+	Bullet* me = static_cast<Bullet*>(mainobj->getGameObject());	
+
+	me->SetActive(false);
 }
 
 void Bullet::Update(float time)
 {
 	GameObject::Update(time);
-	if (visible) {
-	transform = glm::translate(transform, vector3(0.0f, 0.0f, -20.0f) * lastOrient);
+	transform = glm::translate(transform, vector3(0.0f, 0.0f, -BULLET_SPEED) * lastOrient);
 	//TODO this should update automatically in BO code
 	getComponent<BoundingObject>()->SetModelMatrix(transform);
 	//timer++;
 
-	if(time - startTime > 2) visible = false;
+	//if(time - startTime > 2) visible = false;
 	//if (timer > 100) visible = false;
 	//collider->SetModelMatrix(glm::translate(position));
 	//bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
-	}
+	
 	
 }
 
