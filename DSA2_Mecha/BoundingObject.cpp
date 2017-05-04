@@ -3,6 +3,7 @@
 
 BoundingObject::BoundingObject(std::vector<vector3> vertexList, int objectType)
 {
+	ColliderCollection.push_back(this);
 	m_iBoundingObjectType = 0;
 	m_bColliding = false;
 	m_fRadius = 0.0f;
@@ -92,11 +93,11 @@ void BoundingObject::SetColor(vector3 vidya) {
 	v3Color = vidya;
 }
 
-void BoundingObject::RenderBO()
-{
+void BoundingObject::Render() {
 	if (m_iBoundingObjectType > 3) {
 		m_iBoundingObjectType = 0;
 	}
+
 	if (m_iBoundingObjectType == 0 || m_iBoundingObjectType == 2) {
 		m_pMeshMngr->AddCubeToRenderList(
 			m_m4ToWorld *
@@ -105,14 +106,6 @@ void BoundingObject::RenderBO()
 			v3Color, WIRE);
 
 		m_pMeshMngr->AddLineToRenderList(p_v3Max, p_v3Min, RERED, RERED);
-
-		m_pMeshMngr->AddCubeToRenderList(
-			glm::translate(m_v3Position) *
-			m_m4ToWorld *
-			glm::translate(m_v3CenterLocal) *
-			glm::inverse(m_m4ToWorld) *
-			glm::scale(p_v3Size),
-			v3Color, WIRE);
 	}
 
 	if (m_iBoundingObjectType == 1 || m_iBoundingObjectType == 2) {
@@ -176,6 +169,7 @@ void BoundingObject::SetModelMatrix(matrix4 a_m4ToWorld)
 
 bool BoundingObject::IsColliding(BoundingObject* a_other, bool isProjectile)
 {
+
 	float fDistance = glm::distance(m_v3CenterGlobal, a_other->m_v3CenterGlobal);
 	float fRadiiSum = m_fRadius + a_other->m_fRadius;
 	if (fDistance > fRadiiSum) {
@@ -214,12 +208,9 @@ matrix4 BoundingObject::GetModelMatrix(void) { return m_m4ToWorld; }
 BoundingObject::~BoundingObject()
 {
 }
-
-void BoundingObject::Update() 
-{
-	//m_v3Position += vector3(0.0f, 0.0f, 20.0f) * orientation;
-	m_m4ToWorld = glm::translate(m_m4ToWorld, vector3(0.0f, 0.0f, -20.0f) * orientation);
-	p_v3Max += vector3(0.0f, 0.0f, -20.0f) * orientation;
-	p_v3Min += vector3(0.0f, 0.0f, -20.0f) * orientation;
-	m_v3CenterGlobal = vector3(m_m4ToWorld * vector4(m_v3CenterLocal, 1.0f));
+void BoundingObject::subUpdate() {};
+void BoundingObject::testCollision(Collider* other) {
+	//this is probably not a good idea
+	BoundingObject* castedOther = dynamic_cast<BoundingObject*>(other);
+	callCallbacks(IsColliding(castedOther), other);
 }

@@ -29,11 +29,9 @@ void AppClass::ProcessKeyboard(void)
 	{
 		if (bModifier) {
 			m_Camera->MoveForward(1.0f,true); 
-			//m_pCameraMngr->MoveForward(1.0f);
 		}
 		else {
 			m_Camera->MoveForward(1.0f,false);
-			//m_pCameraMngr->MoveForward(4.0f);
 		}
 		
 	}
@@ -41,33 +39,27 @@ void AppClass::ProcessKeyboard(void)
 	{
 		if (bModifier) {
 			m_Camera->MoveForward(-1.0f,true);
-			//m_pCameraMngr->MoveForward(1.0f);
 		}
 		else {
 			m_Camera->MoveForward(-1.0f,false);
-			//m_pCameraMngr->MoveForward(-4.0f);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		if (bModifier) {
 			m_Camera->MoveSideways(1.0f, true);
-			//m_pCameraMngr->MoveSideways(1.0f);
 		}
 		else {
 			m_Camera->MoveSideways(1.0f, false);
-			//m_pCameraMngr->MoveSideways(4.0f);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		if (bModifier) {
 			m_Camera->MoveSideways(-1.0f, true);
-			//m_pCameraMngr->MoveSideways(-1.0f);
 		}
 		else {
 			m_Camera->MoveSideways(-1.0f, false);
-			//m_pCameraMngr->MoveSideways(-4.0f);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) 
@@ -78,15 +70,8 @@ void AppClass::ProcessKeyboard(void)
 
 	firing = false;
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		//timer++;
 		firing = true;
-		bulletMngr->ActivateBullet(m_Camera->GetPos(), m_Camera->orientation, fTimer);//Timing done in function using Real Time seconds
-		//if (timer > 200) timer = 0;
-		//bullets[curr].fire(m_Camera->GetPos(), m_Camera->orientation);
-		//curr++;
-		//if (curr >= bullets.size()) {
-		//	curr = 0;
-		//}
+		Bullet::fire(m_Camera->GetPos(), m_Camera->orientation, fTimer);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{

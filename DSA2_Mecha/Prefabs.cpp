@@ -1,175 +1,157 @@
 #include "Prefabs.h"
+#include "BoundingObject.h"
 
-//PILLAR
-//******************
-Pillar::Pillar()
-{
-	model = new PrimitiveClass();
-	model->GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
-
-	collider = new BoundingObject(model->GetVertexList(), 0);
-
-	position = vector3(0, 0, 0);
-	//collider->SetModelMatrix(glm::translate(position));
-
-	bCanCollide = true;
-	collisionType = ColliderType::environment;
-
-	visible = true;
-}
+#pragma region Pillar
+Pillar::Pillar() : Pillar(vector3(0, 0, 0)) {}
 
 Pillar::Pillar(vector3 pos)
 {
 	model = new PrimitiveClass();
 	model->GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
 
-	position = pos;
+	transform = glm::translate(pos);
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
-	collider->SetModelMatrix(glm::translate(position));
-
-	bCanCollide = true;
-	collisionType = ColliderType::environment;
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(transform);
+	this->addComponent(collider);
 
 	visible = true;
 }
 
+Pillar::~Pillar() {}
+#pragma endregion
 
-Pillar::~Pillar()
-{
-}
-
-
-void Pillar::Update(float fDeltaTime)
-{
-	if (visible = false)
-		visible = true;
-}
-void Pillar::HandleCollision()
-{
-}
-
-//******************
-
-
-//DESTRUCTOBJ
-//******************
-DestructObj::DestructObj()
-{
-	model = new PrimitiveClass();
-	model->GenerateCube(50.0f, REBROWN);
-
-	collider = new BoundingObject(model->GetVertexList(), 0);
-
-	position = vector3(0, 0, 0);
-	collider->SetModelMatrix(glm::translate(position));
-
-	bCanCollide = true;
-	collisionType = ColliderType::environment;
-
-	visible = true;
-	destructible = true;
-	health = 1000;
-}
+#pragma region DestructObj
+DestructObj::DestructObj() : DestructObj(vector3(0, 0, 0)) {}
 
 DestructObj::DestructObj(vector3 pos)
 {
 	model = new PrimitiveClass();
 	model->GenerateCube(50.0f, REBROWN);
 
-	position = pos;
+	transform = glm::translate(pos);
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
-	collider->SetModelMatrix(glm::inverse(glm::translate(pos)));
-
-	bCanCollide = true;
-	collisionType = ColliderType::environment;
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(transform);
+	this->addComponent(collider);
+	collider->onCollisionEnterFunction = &DestructObj::HandleCollision;
 
 	visible = true;
-	destructible = true;
-	health = 1000;
+	health = 100;
 }
 
 
-DestructObj::~DestructObj()
+DestructObj::~DestructObj() {}
+
+void DestructObj::HandleCollision(Collider* mainobj, Collider* other)
 {
-}
+	DestructObj* me = static_cast<DestructObj*>(mainobj->getGameObject());
+	
+	Bullet* castedOther = dynamic_cast<Bullet*>(other->getGameObject());
+	if (!castedOther) return;
+	
+	me->health -= 10;
 
-void DestructObj::HandleCollision()
-{
-	std::cout << "hit destruct" << std::endl;
-
-	health -= 10;
-
-	if (health <= 0) {
-		visible = false;
+	if (me->health <= 0) {
+		std::cout << "dead" << std::endl;
+		me->SetActive(false);
 	}
 }
+#pragma endregion
 
-void DestructObj::Update(float fDeltaTime)
-{
-}
+#pragma region Enemy
+Enemy::Enemy(Camera* cam) : Enemy(vector3(0, 0, 0), cam) {}
 
-//******************
-
-Enemy::Enemy(Camera* cam)
+Enemy::Enemy(vector3 pos, Camera* cam)
 {
 	m_Camera = cam;
 	model = new PrimitiveClass();
 	model->GenerateCube(50.0f, RERED);
 
-	collider = new BoundingObject(model->GetVertexList(), 0);
-
-	position = vector3(0, 0, 0);
-	collider->SetModelMatrix(glm::translate(position));
-
-	bCanCollide = true;
-	collisionType = ColliderType::environment;
-
+	transform = glm::translate(pos);
+	//collider already there from Destructable obj?
+	/*
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(transform);
+	this->addComponent(collider);
+	//reuse the destructobj handle collision method we inherit
+	collider->onCollisionEnterFunction = &DestructObj::HandleCollision;
+	*/
 	visible = true;
-	destructible = true;
-	enemy = true;
-	health = 1000;
+	health = 50;
 }
 
-Enemy::Enemy(Camera* cam, vector3 pos)
+Enemy::~Enemy(){}
+
+void Enemy::Update(float fDeltaTime) {
+	DestructObj::Update(fDeltaTime);
+	transform = glm::translate(glm::lerp(glm::vec3(transform[3]), m_Camera->cameraPos, 1*fDeltaTime));
+	
+	getComponent<BoundingObject>()->SetModelMatrix(transform);
+}
+#pragma endregion
+
+#pragma region Bullet
+int Bullet::bulletIndex;
+std::vector<Bullet*> Bullet::bulletList;
+float Bullet::lastBullet;
+const float Bullet::BULLET_SPEED = 20.0f;
+const float Bullet::FIRE_RATE = 0.2f;
+
+Bullet::Bullet(void)
 {
-	m_Camera = cam;
 	model = new PrimitiveClass();
-	model->GenerateCube(50.0f, RERED);
+	model->GenerateSphere(5.0f, 20, RERED);
 
-	position = pos;
-
-	collider = new BoundingObject(model->GetVertexList(), 0);
-	collider->SetModelMatrix(glm::inverse(glm::translate(pos)));
-
-	bCanCollide = true;
-	collisionType = ColliderType::environment;
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(transform);
+	this->addComponent(collider);
+	collider->onCollisionEnterFunction = &Bullet::HandleCollision;
 
 	visible = true;
-	destructible = true;
-	enemy = true;
-	health = 1000;
+	SetActive(false);
+
+	bulletList.push_back(this);
 }
 
 
-Enemy::~Enemy()
-{
-}
+Bullet::~Bullet() {}
 
-void Enemy::HandleCollision()
-{
-	std::cout << "hit destruct" << std::endl;
+void Bullet::fire(vector3 pos, glm::quat or , float time) {
+	if (time - lastBullet > Bullet::FIRE_RATE) {
+		Bullet* ptr = bulletList[bulletIndex];
+		bulletIndex = (bulletIndex + 1) % bulletList.size();
 
-	health -= 10;
+		ptr->SetActive(true);
+		ptr->transform = glm::inverse(glm::translate(pos - vector3(45.0f, -22.0f, -220.0f) * or ));
 
-	if (health <= 0) {
-		visible = false;
+		ptr->lastOrient = or ;
+		ptr->startTime = time;
+
+		lastBullet = time;
 	}
 }
 
-void Enemy::Update(float fDeltaTime)
-{
-	std::cout << "Update" << std::endl;
-	position = glm::lerp(position, m_Camera->cameraPos, 0.1f);
+void Bullet::HandleCollision(Collider* mainobj, Collider* other) {
+	Bullet* me = static_cast<Bullet*>(mainobj->getGameObject());	
+
+	me->SetActive(false);
 }
+
+void Bullet::Update(float time)
+{
+	GameObject::Update(time);
+	transform = glm::translate(transform, vector3(0.0f, 0.0f, -BULLET_SPEED) * lastOrient);
+	//TODO this should update automatically in BO code
+	getComponent<BoundingObject>()->SetModelMatrix(transform);
+	//timer++;
+
+	//if(time - startTime > 2) visible = false;
+	//if (timer > 100) visible = false;
+	//collider->SetModelMatrix(glm::translate(position));
+	//bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
+	
+	
+}
+
+#pragma endregion

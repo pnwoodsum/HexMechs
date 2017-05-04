@@ -1,16 +1,10 @@
 #include "AppClass.h"
-void AppClass::InitWindow(String a_sWindowName)
-{
+void AppClass::InitWindow(String a_sWindowName) {
 	super::InitWindow("HexMechs"); // Window Name
 }
-void AppClass::InitVariables(void)
-{
+void AppClass::InitVariables(void) {
 
-	//timer = 0;
 	fTimer = 0.0f; //Global Timer in Seconds
-	m_pBOMngr = CollisionManager::GetInstance();
-	bulletMngr = BulletManager::GetInstance();
-	bulletMngr->Populate();
 	
 	cockpitTexture = new TextureClass();
 	cockpitTexture->LoadTexture("Cockpit.png");
@@ -19,21 +13,26 @@ void AppClass::InitVariables(void)
 
 	//Environment Setup
 	//********
-
 	envCount = 10;
 	environment = new PrimitiveClass[envCount];
 	environ_Matrix = new matrix4[envCount];
+	
+	//create the bullets
+	for (int i = 0; i < 40; i++) {
+		objects.push_back(new Bullet());
+	}
+	
+	objects.push_back(new Pillar(vector3(-600, 0, -600)));
+	objects.push_back(new Pillar(vector3(-600, 0, 0)));
+	objects.push_back(new Pillar(vector3(-600, 0, 600)));
+	objects.push_back(new Pillar(vector3(600, 0, -600)));
+	objects.push_back(new Pillar(vector3(600, 0, 0)));
+	objects.push_back(new Pillar(vector3(600, 0, 600)));
+	objects.push_back(new DestructObj(vector3(300, 0, 300)));
+	objects.push_back(new DestructObj(vector3(200, 0, 300)));
+	objects.push_back(new DestructObj(vector3(100, 0, 300)));
+	objects.push_back(new Enemy(vector3(400, 0, 300), m_Camera));
 
-	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, -600)));
-	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, 0)));
-	m_pBOMngr->AddObject(Pillar(vector3(-600, 0, 600)));
-	m_pBOMngr->AddObject(Pillar(vector3(600, 0, -600)));
-	m_pBOMngr->AddObject(Pillar(vector3(600, 0, 0)));
-	m_pBOMngr->AddObject(Pillar(vector3(600, 0, 600)));
-	m_pBOMngr->AddObject(DestructObj(vector3(300, 0, 300)));
-	m_pBOMngr->AddObject(DestructObj(vector3(200, 0, 300)));
-	m_pBOMngr->AddObject(DestructObj(vector3(100, 0, 300)));
-	m_pBOMngr->AddObject(Enemy(m_Camera, vector3(400, 0, 300)));
 
 	environment[6].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
 	environ_Matrix[6] = glm::translate(vector3(0, 0, 3000));
@@ -63,7 +62,6 @@ void AppClass::InitVariables(void)
 	// Gun model
 	m_pMeshMngr->LoadModel("Mechs\\ChainGun.fbx", "ChainGun");
 
-
 	//Calculate the first projections
 	m_m4Projection = glm::perspective(45.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
 	m_m4View = glm::lookAt(glm::vec3(0.0f, 0.0f, 15.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -73,7 +71,9 @@ void AppClass::InitVariables(void)
 	UINT	CenterX, CenterY;
 	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
 	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
-	
+	for (int i = 0; i < objects.size(); i++) {
+		objects[i]->Start();
+	}
 }
 
 
@@ -85,15 +85,13 @@ void AppClass::Update(void)
 	float fDeltaTime = static_cast<float>(m_pSystem->LapClock(nClock));
 	fTimer += fDeltaTime;
 
-
 	if (!pause) {
-		bulletMngr->Update(fTimer);
-		m_pBOMngr->Update(fDeltaTime);
-		m_pBOMngr->CheckCollisions();
 		m_Camera->Move(fTimer); //Moves Camera/Player
+		for (int i = 0; i < objects.size(); i++) {
+			objects[i]->Update(fDeltaTime);
+		}
 	}
 	
-
 	//Find Mouse Difference to move Camera
 	cM = sf::Mouse::getPosition();
 
@@ -127,8 +125,6 @@ void AppClass::Update(void)
 	//Update the system's time
 	m_pSystem->UpdateTime();
 
-	m_pBOMngr->RenderAll();
-
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
 
@@ -145,29 +141,14 @@ void AppClass::Display(void)
 	m_pCameraMngr->SetProjectionMatrix(m_m4Projection);
 	m_pCameraMngr->SetViewMatrix(m_m4View);
 
-	
-	//Render the grid
-	//m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::XY);
-	
-
 	//Render the cone
 	m_pCone->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -65.0f));
 
-	m_pBOMngr->RenderObjects(m_m4Projection, m_m4View);
-
-	bulletMngr->RenderAll(m_m4Projection, m_m4View);
-
-	/*
-	if (!bullets.empty()) {
-		for (int i = 0; i < bullets.size(); i++) {
-			bullets[i].Render(m_m4Projection, m_m4View);
-		}
+	for (int i = 0; i < objects.size(); i++) {
+		objects[i]->Render(m_m4Projection, m_m4View);
 	}
-	*/
-	
 
-	for (int n = 0; n < envCount; n++)
-	{
+	for (int n = 0; n < envCount; n++) {
 		environment[n].Render(m_m4Projection, m_m4View, environ_Matrix[n]);
 	}
 

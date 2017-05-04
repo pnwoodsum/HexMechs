@@ -1,7 +1,8 @@
 #pragma once
 #include "RE\ReEng.h"
+#include "Collider.hpp"
 
-class BoundingObject
+class BoundingObject : public Collider
 {
 private:
 	float m_fRadius = 0.0f; //radius of the sphere
@@ -33,6 +34,11 @@ private:
 	std::vector<vector3> pointsG;
 
 public:
+	virtual void subUpdate();
+	//virtual void Update(float);
+	virtual void Render();
+	virtual void testCollision(Collider* other);
+
 	bool m_bColliding = false;
 	vector3 v3Color;
 
@@ -82,7 +88,7 @@ public:
 	/*
 	Renders the sphere based on the radius and the center in global space
 	*/
-	void RenderBO();
+	//void RenderBO();
 	/*
 	Sets the transform from the local to world matrix
 	*/
@@ -92,11 +98,6 @@ public:
 	Will check the collision with another object
 	*/
 	bool IsColliding(BoundingObject* a_other, bool isProjectile = false);
-
-	/*
-	Will check the collision with another object
-	*/
-	void Update();
 
 	/*
 	Sets the type of bounding object

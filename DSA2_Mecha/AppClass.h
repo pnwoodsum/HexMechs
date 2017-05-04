@@ -7,9 +7,7 @@ Date: 2015/09
 
 #include "RE\ReEngAppClass.h"
 #include "Camera.h"
-#include "Bullet.h"
 #include "GameObject.h"
-#include "CollisionManager.h"
 #include "Prefabs.h"
 #include "iostream"
 #include <SFML\Graphics.hpp>
@@ -19,8 +17,9 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
-	CollisionManager* m_pBOMngr;
-	BulletManager* bulletMngr;
+	//CollisionManager* m_pBOMngr;
+	std::vector<GameObject*> objects;
+	//BulletManager* bulletMngr;
 
 	TextureClass* cockpitTexture;
 	PrimitiveClass* m_pCone = nullptr;
