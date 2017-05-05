@@ -1,6 +1,7 @@
 #include "AppClass.h"
 #include "Camera.h"
 #include "iostream"
+
 void AppClass::ProcessKeyboard(void)
 {
 	//Flag for the modifier
@@ -68,9 +69,9 @@ void AppClass::ProcessKeyboard(void)
 	}
 	else pause = false;
 
-	firing = false;
+	sManager->m_bShooting = false;
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		firing = true;
+		sManager->m_bShooting = true;
 		Bullet::fire(m_Camera->GetPos(), m_Camera->orientation, fTimer);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))

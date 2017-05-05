@@ -17,6 +17,7 @@ class MyBOManager
 	MeshManagerSingleton* m_pMeshMngr = nullptr;//Mesh Manager Singleton
 	std::vector<std::vector<int>> m_llCollidingIndices; //List of list of colliding indices.
 	std::map<String, uint> m_mapIndex;//Map relating the mesh and the index
+
 public:
 	bool directionBlocked[6] = { false };
 	/*

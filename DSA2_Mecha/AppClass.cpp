@@ -1,4 +1,5 @@
 #include "AppClass.h"
+
 void AppClass::InitWindow(String a_sWindowName) {
 	super::InitWindow("HexMechs"); // Window Name
 }
@@ -48,16 +49,15 @@ void AppClass::InitVariables(void) {
 	
 	//*******
 
+	// Sound manager
+	sManager = SoundManager::GetInstance();
+	
 	//Generate the Cone
 	m_pCone = new PrimitiveClass();
 	m_pCone->GenerateCube(70.0f, RERED);
 	
 	m_pPlane = new PrimitiveClass();
 	m_pPlane->GeneratePlane(10000.0f, REBLUE);
-
-	//Static Cylinder that representsa gun, I guess...
-	m_pCylinder2 = new PrimitiveClass();
-	m_pCylinder2->GenerateCylinder(5.0f, 25.0f, 12, REORANGE);
 
 	// Gun model
 	m_pMeshMngr->LoadModel("Mechs\\ChainGun.fbx", "ChainGun");
@@ -112,8 +112,10 @@ void AppClass::Update(void)
 	m_m4Projection = m_Camera->GetProjection(false);
 	m_m4View = m_Camera->GetView(mousePos);
 
-	// Update gun matrix
+	// Handle Sounds
+	sManager->PlaySounds();
 
+	// Update gun matrix
 	m_m4GunMat = glm::translate(-m_Camera->GetPos()) *
 		glm::transpose(glm::toMat4(m_Camera->orientation)) * 
 		glm::translate(IDENTITY_M4, -vector3(-8.0f,4.0f,20.0f)) * 

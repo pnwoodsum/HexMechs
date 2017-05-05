@@ -95,8 +95,8 @@ void Enemy::Update(float fDeltaTime) {
 int Bullet::bulletIndex;
 std::vector<Bullet*> Bullet::bulletList;
 float Bullet::lastBullet;
-const float Bullet::BULLET_SPEED = 20.0f;
-const float Bullet::FIRE_RATE = 0.2f;
+const float Bullet::BULLET_SPEED = 30.0f;
+const float Bullet::FIRE_RATE = 0.1f;
 
 Bullet::Bullet(void)
 {

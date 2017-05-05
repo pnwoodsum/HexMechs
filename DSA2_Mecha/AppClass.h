@@ -10,6 +10,7 @@ Date: 2015/09
 #include "GameObject.h"
 #include "Prefabs.h"
 #include "iostream"
+#include "SoundManager.h"
 #include <SFML\Graphics.hpp>
 //#include <chrono>
 
@@ -31,6 +32,7 @@ class AppClass : public ReEngAppClass
 	matrix4* environ_Matrix = nullptr;
 	int envCount;
 
+	SoundManager* sManager;
 
 	std::vector<Bullet> bullets;
 	int curr = 0;
@@ -39,7 +41,6 @@ class AppClass : public ReEngAppClass
 
 	int timer;
 	float fTimer;
-	bool firing;
 	bool pause;
 	matrix4 m_m4GunMat;
 
