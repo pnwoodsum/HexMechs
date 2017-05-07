@@ -1,14 +1,33 @@
 #include "SpatialTree.h"
 
 
-Node::Node() {
 
+
+Node::Node() {
+	
 }
 
 Node::~Node() {
 
 }
 
+void Node::checkCollisions() {
+	//check collisions between all the objects
+	for (int i = 0; i < objects.size(); i++) {
+		for (int j = 0; j < objects.size(); j++) {
+			if (i == j) continue;
+			if (objects[i]->IsColliding(objects[j]))
+				objects[i]->colliding = true;
+		}
+	}
+	//tell all children to checkCollisions
+	for (int i = 0; i < children.size(); i++)
+		children[i]->checkCollisions();
+}
+
+void SpatialTree::checkCollisions() {
+	head->checkCollisions();
+}
 void SpatialTree::setOptimize(){
 	setOptimize(!optimize);
 }
