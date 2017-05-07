@@ -23,12 +23,14 @@ class SpatialTree
 public:
 	Node* head;
 	std::vector<MyBOClass*> objects;
+	bool optimize = true;
 	
 	
 	vector3 m_v3Min = vector3(0.0f);
 	vector3 m_v3Max = vector3(0.0f);
 
-
+	void setOptimize();
+	void setOptimize(bool);
 	void addObject(MyBOClass*);
 
 	SpatialTree();

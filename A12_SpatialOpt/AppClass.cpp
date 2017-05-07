@@ -11,6 +11,7 @@ void AppClass::InitWindow(String a_sWindowName)
 
 void AppClass::InitVariables(void)
 {
+	spatialTree = new SpatialTree();
 	m_bArcBallZ = false;
 
 	cubeCount = 50;
@@ -113,6 +114,9 @@ void AppClass::Update(void)
 	
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Optimize:");
+	m_pMeshMngr->Print(spatialTree->optimize == 0 ? "False" : "True", REYELLOW);
 }
 
 void AppClass::Display(void)

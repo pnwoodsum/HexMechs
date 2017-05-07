@@ -89,6 +89,8 @@ void AppClass::ProcessKeyboard(void)
 	ON_KEY_PRESS_RELEASE(F2, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOZ));
 	ON_KEY_PRESS_RELEASE(F3, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOY));
 	ON_KEY_PRESS_RELEASE(F4, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOX));
+	ON_KEY_PRESS_RELEASE(F5, NULL, spatialTree->setOptimize());
+
 #pragma endregion
 }
 void AppClass::ProcessMouse(void)

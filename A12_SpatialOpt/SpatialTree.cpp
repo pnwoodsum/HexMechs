@@ -9,7 +9,12 @@ Node::~Node() {
 
 }
 
-
+void SpatialTree::setOptimize(){
+	setOptimize(!optimize);
+}
+void SpatialTree::setOptimize(bool newVal){
+	optimize = newVal;
+}
 
 void SpatialTree::addObject(MyBOClass * object) {
 	//update max

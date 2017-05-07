@@ -8,6 +8,7 @@ Date: 2015/09
 #include "RE\ReEngAppClass.h"
 #include <SFML\Graphics.hpp>
 #include "MyBOManager.h"
+#include "SpatialTree.h"
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
@@ -24,9 +25,9 @@ class AppClass : public ReEngAppClass
 	PrimitiveClass* cubes;
 	matrix4* positions;
 	MyBOClass* bObjects;
-
+	
 	int cubeCount, radius;
-
+	SpatialTree* spatialTree;
 	MyBOManager* m_pBOMngr; //Pointer to Bounding Object Manager
 public:
 	typedef ReEngAppClass super;
