@@ -1,6 +1,8 @@
 #pragma once
 
 #include "RE\ReEng.h"
+#include "MyBOClass.h"
+#include <vector>
 
 class Node 
 {
@@ -20,6 +22,14 @@ class SpatialTree
 {
 public:
 	Node* head;
+	std::vector<MyBOClass*> objects;
+	
+	
+	vector3 m_v3Min = vector3(0.0f);
+	vector3 m_v3Max = vector3(0.0f);
+
+
+	void addObject(MyBOClass*);
 
 	SpatialTree();
 	~SpatialTree();
