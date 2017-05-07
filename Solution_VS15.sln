@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DSA2_Mecha", "DSA2_Mecha\DSA2_Mecha.vcxproj", "{8BD313E1-20AC-43EA-8ACA-5A9069F3198B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A11_SAT", "A11_SAT\A11_SAT.vcxproj", "{13FA2754-46C1-49D8-B9A4-1DC856801931}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A12_SpatialOpt", "A12_SpatialOpt\A12_SpatialOpt.vcxproj", "{65E95467-4C35-43B3-9255-0EBC75B057E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{8BD313E1-20AC-43EA-8ACA-5A9069F3198B}.Debug|x86.Build.0 = Debug|Win32
 		{8BD313E1-20AC-43EA-8ACA-5A9069F3198B}.Release|x86.ActiveCfg = Release|Win32
 		{8BD313E1-20AC-43EA-8ACA-5A9069F3198B}.Release|x86.Build.0 = Release|Win32
-		{13FA2754-46C1-49D8-B9A4-1DC856801931}.Debug|x86.ActiveCfg = Debug|Win32
-		{13FA2754-46C1-49D8-B9A4-1DC856801931}.Debug|x86.Build.0 = Debug|Win32
-		{13FA2754-46C1-49D8-B9A4-1DC856801931}.Release|x86.ActiveCfg = Release|Win32
-		{13FA2754-46C1-49D8-B9A4-1DC856801931}.Release|x86.Build.0 = Release|Win32
+		{65E95467-4C35-43B3-9255-0EBC75B057E1}.Debug|x86.ActiveCfg = Debug|Win32
+		{65E95467-4C35-43B3-9255-0EBC75B057E1}.Debug|x86.Build.0 = Debug|Win32
+		{65E95467-4C35-43B3-9255-0EBC75B057E1}.Release|x86.ActiveCfg = Release|Win32
+		{65E95467-4C35-43B3-9255-0EBC75B057E1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
