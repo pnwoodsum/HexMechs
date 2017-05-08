@@ -3,11 +3,30 @@
 
 
 
-Node::Node() {
+Node::Node(vector3 position, float width) {
 	
 }
 
 Node::~Node() {
+
+}
+
+void Node::split(int level) {
+	if (level == 0) return;
+	float w = (float)(width / 2);
+	float c = width / 4;
+	children[0] = new Node(vector3(position.x + c, position.y + c, position.z + c), w);
+	children[1] = new Node(vector3(position.x + c, position.y + c, position.z - c), w);
+	children[2] = new Node(vector3(position.x + c, position.y - c, position.z - c), w);
+	children[3] = new Node(vector3(position.x + c, position.y - c, position.z + c), w);
+	children[4] = new Node(vector3(position.x - c, position.y + c, position.z + c), w);
+	children[5] = new Node(vector3(position.x - c, position.y + c, position.z - c), w);
+	children[6] = new Node(vector3(position.x - c, position.y - c, position.z + c), w);
+	children[7] = new Node(vector3(position.x - c, position.y - c, position.z - c), w);
+
+	for (int i = 0; i < 8; i++) {
+		children[i]->split(level - 1);
+	}
 
 }
 
@@ -47,6 +66,23 @@ void SpatialTree::addObject(MyBOClass * object) {
 	if (m_v3Min.z > object->GetMinG().z) m_v3Min.z = object->GetMinG().z;
 	
 	objects.push_back(object);
+}
+
+void SpatialTree::displayTree() {
+
+}
+
+void SpatialTree::generateTree(int depth) {
+	head->widths.x = m_v3Max.x - m_v3Min.x;
+	head->widths.y = m_v3Max.y - m_v3Min.y;
+	head->widths.z = m_v3Max.z - m_v3Min.z;
+
+	head->position = m_v3Min + head->widths / 2.0f;
+
+	head->split(depth);
+	for (int i = 0; i < objects.size; i++) {
+		head->
+	}
 }
 
 SpatialTree::SpatialTree()

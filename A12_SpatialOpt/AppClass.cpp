@@ -21,19 +21,22 @@ void AppClass::InitVariables(void)
 	bObjects = new MyBOClass[cubeCount];
 
 	for (int i = 0; i < cubeCount; i++) {
-		cubes[i].GenerateCube(2, RERED);
+		cubes[i].GenerateCube(2, REWHITE);
 		
 		float xRot = (rand() % 360);// *PI / 180;
 		float yRot = (rand() % 360);// *PI / 180;
 		float x = radius * cos(xRot) * sin(yRot);
-		float y = radius * sin(xRot) * cos(yRot);
+		float y = radius * sin(xRot) * sin(yRot);
 		float z = radius * cos(yRot);
 
 		positions[i] = glm::translate(vector3(x, z, y));
 
 		bObjects[i] = MyBOClass(cubes[i].GetVertexList());
 		bObjects[i].SetModelMatrix(glm::translate(vector3(x, z, y)));
+
+		spatialTree->addObject(&bObjects[i]);
 	}
+	
 
 	//Initialize positions
 	m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);

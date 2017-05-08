@@ -11,13 +11,15 @@ public:
 	vector3 position;
 	//holds the x width, y width and z width of current grid section
 	vector3 widths;
+	float width;
 
 	std::vector<Node*> children;
 	std::vector<MyBOClass*> objects;
 	
 	void checkCollisions();
+	void split(int);
 
-	Node();
+	Node(vector3,float);
 	~Node();
 
 
@@ -38,6 +40,8 @@ public:
 	void setOptimize(bool);
 	void addObject(MyBOClass*);
 	void checkCollisions();
+	void displayTree();
+	void generateTree(int);
 
 	SpatialTree();
 	~SpatialTree();
