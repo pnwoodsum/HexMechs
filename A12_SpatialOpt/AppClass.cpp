@@ -14,8 +14,8 @@ void AppClass::InitVariables(void)
 	spatialTree = new SpatialTree();
 	m_bArcBallZ = false;
 
-	cubeCount = 50;
-	radius = 10;
+	cubeCount = 300;
+	radius = 15;
 	cubes = new PrimitiveClass[cubeCount];
 	positions = new matrix4[cubeCount];
 	bObjects = new MyBOClass[cubeCount];
@@ -37,6 +37,7 @@ void AppClass::InitVariables(void)
 		spatialTree->addObject(&bObjects[i]);
 	}
 	
+	spatialTree->generateTree(4);
 
 	//Initialize positions
 	m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
@@ -79,6 +80,9 @@ void AppClass::Update(void)
 	float fPercentage = MapValue(fTimer, 0.0f, 3.0f, 0.0f, 1.0f);
 	m_v3O2 = glm::lerp(v3Start, v3End, fPercentage);
 	matrix4 mTranslation = glm::translate(m_v3O2);
+
+	spatialTree->checkCollisions();
+
 
 	//Set the model matrices for both objects and Bounding Spheres
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");

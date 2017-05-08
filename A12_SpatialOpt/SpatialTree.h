@@ -11,15 +11,17 @@ public:
 	vector3 position;
 	//holds the x width, y width and z width of current grid section
 	vector3 widths;
-	float width;
 
 	std::vector<Node*> children;
 	std::vector<MyBOClass*> objects;
 	
 	void checkCollisions();
 	void split(int);
+	bool containsPoint(vector3);
+	bool containsObject(MyBOClass*);
+	void addObject(MyBOClass*);
 
-	Node(vector3,float);
+	Node(vector3,vector3);
 	~Node();
 
 
