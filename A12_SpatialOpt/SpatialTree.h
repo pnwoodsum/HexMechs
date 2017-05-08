@@ -16,6 +16,9 @@ public:
 	std::vector<MyBOClass*> objects;
 	
 	void checkCollisions();
+	bool containsPoint(vector3);
+	bool containsObject(MyBOClass*);
+	void addObject(MyBOClass*);
 
 	Node();
 	~Node();

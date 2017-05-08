@@ -24,6 +24,33 @@ void Node::checkCollisions() {
 	for (int i = 0; i < children.size(); i++)
 		children[i]->checkCollisions();
 }
+bool Node::containsPoint(vector3 point) {
+	if ((point.x < position.x - widths.x / 2) ||
+		(point.y < position.y - widths.y / 2) ||
+		(point.z < position.z - widths.z / 2) ||
+		(point.x > position.x + widths.x / 2) ||
+		(point.y > position.y + widths.y / 2) ||
+		(point.z > position.z + widths.z / 2)) return false;
+	return true;
+}
+bool Node::containsObject(MyBOClass* object) {
+	//must contain all 8 points of object to fully contain it 
+	for (int i = 0; i < 8; i++) {
+		if (!containsPoint(object->v3Corner[i])) return false;
+	}
+	return true;
+}
+
+void Node::addObject(MyBOClass* object) {
+	for (int i = 0; i < children.size(); i++) {
+		if (children[i]->containsObject(object)) {
+			children[i]->addObject(object);
+			return;
+		}
+	}
+	addObject(object);
+}
+
 
 void SpatialTree::checkCollisions() {
 	head->checkCollisions();
