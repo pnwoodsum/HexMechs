@@ -33,6 +33,7 @@ public:
 	Node* head;
 	std::vector<MyBOClass*> objects;
 	bool optimize = true;
+	bool display = false;
 	
 	
 	vector3 m_v3Min = vector3(0.0f);
@@ -40,9 +41,11 @@ public:
 
 	void setOptimize();
 	void setOptimize(bool);
+	void setDisplay();
 	void addObject(MyBOClass*);
 	void checkCollisions();
-	void displayTree();
+	void displayTree(MeshManagerSingleton*);
+	void displayTree(MeshManagerSingleton*, Node*);
 	void generateTree(int);
 
 	SpatialTree();

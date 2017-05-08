@@ -37,7 +37,7 @@ void AppClass::InitVariables(void)
 		spatialTree->addObject(&bObjects[i]);
 	}
 	
-	spatialTree->generateTree(4);
+	spatialTree->generateTree(3);
 
 	//Initialize positions
 	m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
@@ -82,7 +82,7 @@ void AppClass::Update(void)
 	matrix4 mTranslation = glm::translate(m_v3O2);
 
 	spatialTree->checkCollisions();
-
+	spatialTree->displayTree(m_pMeshMngr);
 
 	//Set the model matrices for both objects and Bounding Spheres
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");

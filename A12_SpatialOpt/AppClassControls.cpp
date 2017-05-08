@@ -90,6 +90,7 @@ void AppClass::ProcessKeyboard(void)
 	ON_KEY_PRESS_RELEASE(F3, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOY));
 	ON_KEY_PRESS_RELEASE(F4, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOX));
 	ON_KEY_PRESS_RELEASE(F5, NULL, spatialTree->setOptimize());
+	ON_KEY_PRESS_RELEASE(F6, NULL, spatialTree->setDisplay());
 
 #pragma endregion
 }

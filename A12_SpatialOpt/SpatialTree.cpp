@@ -91,6 +91,10 @@ void SpatialTree::setOptimize(bool newVal){
 	optimize = newVal;
 }
 
+void SpatialTree::setDisplay() {
+	display = !display;
+}
+
 void SpatialTree::addObject(MyBOClass * object) {
 	//update max
 	if (m_v3Max.x < object->GetMaxG().x) m_v3Max.x = object->GetMaxG().x;
@@ -105,8 +109,31 @@ void SpatialTree::addObject(MyBOClass * object) {
 	objects.push_back(object);
 }
 
-void SpatialTree::displayTree() {
+void SpatialTree::displayTree(MeshManagerSingleton* Mesh) {
+	if (!display) return;
+	for (int i = 0; i < head->children.size(); i++) {
+		Node* curr = head->children[i];
+		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(curr->position.x, curr->position.y, curr->position.z) * glm::scale(curr->widths.x, curr->widths.y, curr->widths.z), RERED, WIRE);
+		for (int j = 0; j < curr->children.size(); j++) {
+			Node* curr2 = curr->children[j];
+			displayTree(Mesh, curr2);
+		}
+	}
+}
 
+void SpatialTree::displayTree(MeshManagerSingleton* Mesh, Node* node) {
+	if (node->children.size() <= 0) {
+		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(node->position.x, node->position.y, node->position.z) * glm::scale(node->widths.x, node->widths.y, node->widths.z), RERED, WIRE);
+		return;
+	}
+	for (int i = 0; i < node->children.size(); i++) {
+		Node* curr = node->children[i];
+		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(curr->position.x, curr->position.y, curr->position.z) * glm::scale(curr->widths.x, curr->widths.y, curr->widths.z), RERED, WIRE);
+		for (int j = 0; j < curr->children.size(); j++) {
+			Node* curr2 = curr->children[j];
+			displayTree(Mesh, curr2);
+		}
+	}
 }
 
 void SpatialTree::generateTree(int depth) {

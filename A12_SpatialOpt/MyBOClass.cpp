@@ -207,7 +207,8 @@ bool MyBOClass::IsColliding(MyBOClass* const a_pOther)
 {
 	if (IsCollidingSphere(a_pOther))
 		if (IsCollidingARBB(a_pOther))
-			return IsCollidingSAT(a_pOther);
+			//return IsCollidingSAT(a_pOther);
+			return true;
 	return false;
 }
 
