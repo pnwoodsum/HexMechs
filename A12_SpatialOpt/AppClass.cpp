@@ -16,12 +16,13 @@ void AppClass::InitVariables(void)
 
 	cubeCount = 300;
 	radius = 15;
-	cubes = new PrimitiveClass[cubeCount];
+	cube = new PrimitiveClass();
 	positions = new matrix4[cubeCount];
 	bObjects = new MyBOClass[cubeCount];
 
+	cube->GenerateCube(2, REWHITE);
+
 	for (int i = 0; i < cubeCount; i++) {
-		cubes[i].GenerateCube(2, REWHITE);
 		
 		float xRot = (rand() % 360);// *PI / 180;
 		float yRot = (rand() % 360);// *PI / 180;
@@ -31,7 +32,7 @@ void AppClass::InitVariables(void)
 
 		positions[i] = glm::translate(vector3(x, z, y));
 
-		bObjects[i] = MyBOClass(cubes[i].GetVertexList());
+		bObjects[i] = MyBOClass(cube->GetVertexList());
 		bObjects[i].SetModelMatrix(glm::translate(vector3(x, z, y)));
 
 		spatialTree->addObject(&bObjects[i]);
@@ -95,8 +96,8 @@ void AppClass::Update(void)
 	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Cow"), "Cow");
 
 	m_pBOMngr->Update();//Update collision detection
-	
-	//m_pBOMngr->DisplaySphere(-1, REWHITE);
+
+						//m_pBOMngr->DisplaySphere(-1, REWHITE);
 	m_pBOMngr->DisplayReAlligned();
 	m_pBOMngr->DisplayOriented(-1, REWHITE);
 
@@ -113,12 +114,12 @@ void AppClass::Update(void)
 	int nFPS = m_pSystem->GetFPS();
 	//print info into the console
 	printf("FPS: %d            \r", nFPS);//print the Frames per Second
-	//Print info on the screen
+										  //Print info on the screen
 	m_pMeshMngr->PrintLine("");//Add a line on top
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 
 	std::vector<int> list = m_pBOMngr->GetCollidingVector(0);
-	
+
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
 	m_pMeshMngr->PrintLine("");
@@ -133,8 +134,11 @@ void AppClass::Display(void)
 	//Render the grid based on the camera's mode:
 
 	for (int i = 0; i < cubeCount; i++) {
-		cubes[i].Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), positions[i]);
-		bObjects[i].DisplayReAlligned(REBLUE);
+		m_pMeshMngr->AddCubeToRenderList(positions[i]);
+		//cubes[i].Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), positions[i]);
+		if (bObjects[i].colliding)
+			bObjects[i].DisplayReAlligned(RERED);
+		else bObjects[i].DisplayReAlligned(REBLUE);
 	}
 
 	m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
@@ -158,7 +162,7 @@ void AppClass::ArcBallZ(float a_fSensitivity)
 	//static quaternion qArcBall;
 	UINT	MouseX, MouseY;		// Coordinates for the mouse
 
-	//Calculate the position of the mouse and store it
+								//Calculate the position of the mouse and store it
 	POINT pt;
 	GetCursorPos(&pt);
 	MouseX = pt.x;

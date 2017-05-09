@@ -31,6 +31,8 @@ class MyBOClass
 
 	matrix4 m_m4ToWorld = IDENTITY_M4; //Matrix that will take us from local to world coordinate
 public:
+	bool checked;
+
 	vector3 v3Corner[8];
 	bool isControlledUnit;
 	bool colliding;

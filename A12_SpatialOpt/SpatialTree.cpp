@@ -32,18 +32,26 @@ void Node::split(int level) {
 }
 
 void Node::checkCollisions() {
-	//check collisions between all the objects
-	for (int i = 0; i < objects.size(); i++) {
-		for (int j = 0; j < objects.size(); j++) {
-			if (i == j) continue;
-			if (objects[i]->IsColliding(objects[j]))
-				objects[i]->colliding = true;
+	if ((children.size() > 0)) {
+		for (int i = 0; i < children.size(); i++)
+			children[i]->checkCollisions();
+	}
+	else if (objects.size() > 0) {
+		//check collisions between all the objects
+		for (int i = 0; i < objects.size() - 1; i++) {
+			//if (!(objects[i]->checked)) {
+			//	objects[i]->checked = true;
+			for (int j = i + 1; j < objects.size(); j++) {
+				if (objects[i]->IsColliding(objects[j])) {
+					objects[i]->colliding = true;
+					objects[j]->colliding = true;
+				}
+			}
+			//}
 		}
 	}
-	//tell all children to checkCollisions
-	for (int i = 0; i < children.size(); i++)
-		children[i]->checkCollisions();
 }
+
 bool Node::containsPoint(vector3 point) {
 	if ((point.x < position.x - widths.x / 2) ||
 		(point.y < position.y - widths.y / 2) ||
@@ -54,26 +62,31 @@ bool Node::containsPoint(vector3 point) {
 	return true;
 }
 bool Node::containsObject(MyBOClass* object) {
-	//must contain all 8 points of object to fully contain it 
+	//must contain any of the 8 points of object to contain it 
 	for (int i = 0; i < 8; i++) {
-		if (!containsPoint(object->v3Corner[i])) return false;
+		if (containsPoint(object->v3Corner[i])) return true;
 	}
-	return true;
+	return false;
 }
 
 void Node::addObject(MyBOClass* object) {
-	for (int i = 0; i < children.size(); i++) {
-		if (children[i]->containsObject(object)) {
-			children[i]->addObject(object);
-			return;
+	if (children.size() > 0) {
+		for (int i = 0; i < children.size(); i++) {
+			if (children[i]->containsObject(object)) {
+				MyBOClass* newObject = object;
+				children[i]->addObject(newObject);
+			}
 		}
 	}
-	objects.push_back(object);
+	else {
+		MyBOClass* newObject = object;
+		objects.push_back(newObject);
+	}
 }
 
 
 void SpatialTree::checkCollisions() {
-	if(optimize) head->checkCollisions();
+	if (optimize) head->checkCollisions();
 	else {
 		for (int i = 0; i < objects.size(); i++) {
 			for (int j = 0; j < objects.size(); j++) {
@@ -84,10 +97,10 @@ void SpatialTree::checkCollisions() {
 		}
 	}
 }
-void SpatialTree::setOptimize(){
+void SpatialTree::setOptimize() {
 	setOptimize(!optimize);
 }
-void SpatialTree::setOptimize(bool newVal){
+void SpatialTree::setOptimize(bool newVal) {
 	optimize = newVal;
 }
 
@@ -105,7 +118,7 @@ void SpatialTree::addObject(MyBOClass * object) {
 	if (m_v3Min.x > object->GetMinG().x) m_v3Min.x = object->GetMinG().x;
 	if (m_v3Min.y > object->GetMinG().y) m_v3Min.y = object->GetMinG().y;
 	if (m_v3Min.z > object->GetMinG().z) m_v3Min.z = object->GetMinG().z;
-	
+
 	objects.push_back(object);
 }
 

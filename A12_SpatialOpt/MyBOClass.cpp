@@ -6,6 +6,7 @@ void MyBOClass::Init(void)
 {
 	m_m4ToWorld = IDENTITY_M4;
 
+	colliding = false;
 	isControlledUnit = false;
 
 	m_v3Center = vector3(0.0f);

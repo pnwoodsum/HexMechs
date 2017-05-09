@@ -22,7 +22,7 @@ class AppClass : public ReEngAppClass
 	UINT MouseLastX = 0;
 	UINT MouseLastY = 0;
 
-	PrimitiveClass* cubes;
+	PrimitiveClass* cube;
 	matrix4* positions;
 	MyBOClass* bObjects;
 	
