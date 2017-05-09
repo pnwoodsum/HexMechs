@@ -59,7 +59,3 @@ bool Object::operator!=(Object& other) {
 bool Object::operator==(Object& other) {
 	return instanceID == other.GetInstanceID();
 }
-
-Object::operator bool() const {
-	return *this != NULL;
-}

@@ -71,7 +71,7 @@ void AppClass::InitVariables(void) {
 	UINT	CenterX, CenterY;
 	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
 	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
-	for (int i = 0; i < objects.size(); i++) {
+	for (int i = 0; i < (int)objects.size(); i++) {
 		objects[i]->Start();
 	}
 }
@@ -89,7 +89,7 @@ void AppClass::Update(void)
 
 	if (!pause) {
 		m_Camera->Move(fTimer); //Moves Camera/Player
-		for (int i = 0; i < objects.size(); i++) {
+		for (int i = 0; i < (int)objects.size(); i++) {
 			objects[i]->Update(fDeltaTime);
 		}
 	}
@@ -149,7 +149,7 @@ void AppClass::Display(void)
 	//Render the cone
 	m_pCone->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -65.0f));
 
-	for (int i = 0; i < objects.size(); i++) {
+	for (int i = 0; i < (int)objects.size(); i++) {
 		objects[i]->Render(m_m4Projection, m_m4View);
 	}
 

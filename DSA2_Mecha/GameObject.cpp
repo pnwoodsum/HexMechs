@@ -36,20 +36,20 @@ void GameObject::addComponent(Component* component) {
 }
 
 void GameObject::Start() {
-	for (int i = 0; i < components.size(); i++)
+	for (int i = 0; i < (int)components.size(); i++)
 		components[i]->Start();
 }
 
 bool GameObject::Update(float deltaTime) {
 	if (!active) return false;
-	for (int i = 0; i < components.size(); i++)
+	for (int i = 0; i < (int)components.size(); i++)
 		components[i]->Update(deltaTime);
 	return true;
 }
 
 bool GameObject::Render(matrix4 projection, matrix4 view) {
 	if (!active || !visible) return false;
-	for (int i = 0; i < components.size(); i++)
+	for (int i = 0; i < (int)components.size(); i++)
 		components[i]->Render();
 
 	if (model)
@@ -59,6 +59,6 @@ bool GameObject::Render(matrix4 projection, matrix4 view) {
 
 void GameObject::SetActive(bool value) {
 	active = value;
-	for (int i = 0; i < components.size(); i++)
+	for (int i = 0; i < (int)components.size(); i++)
 		components[i]->active = value;
 }

@@ -16,7 +16,7 @@ BoundingObject::BoundingObject(std::vector<vector3> vertexList, int objectType)
 	m_v3Min = vertexList[0];
 	m_v3Max = vertexList[0];
 
-	for (int i = 1; i < vertexList.size(); i++)
+	for (int i = 1; i < (int)vertexList.size(); i++)
 	{
 		if (m_v3Min.x > vertexList[i].x)
 		{
@@ -131,11 +131,11 @@ void BoundingObject::SetModelMatrix(matrix4 a_m4ToWorld)
 	p_v3Min = vector3(10000000.0f, 10000000.0f, 10000000.0f);
 	p_v3Max = vector3(-10000000.0f, -10000000.0f, -10000000.0f);
 
-	for (int i = 0; i < points.size(); i++) {
+	for (int i = 0; i < (int)points.size(); i++) {
 		pointsG[i] = vector3(m_m4ToWorld * vector4(points[i], 1.0f));
 	}
 
-	for (int i = 0; i < pointsG.size(); i++) {
+	for (int i = 0; i < (int)pointsG.size(); i++) {
 		if (p_v3Min.x > pointsG[i].x)
 		{
 			p_v3Min.x = pointsG[i].x;

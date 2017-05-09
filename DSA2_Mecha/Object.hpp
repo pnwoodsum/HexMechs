@@ -22,5 +22,4 @@ public:
 	static Object Instantiate(Object original, vector3 position, quaternion rotation);
 	bool operator!=(Object& other);
 	bool operator==(Object& other);
-	operator bool() const;
 };

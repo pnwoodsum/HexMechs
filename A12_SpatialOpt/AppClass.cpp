@@ -24,8 +24,8 @@ void AppClass::InitVariables(void)
 
 	for (int i = 0; i < cubeCount; i++) {
 		
-		float xRot = (rand() % 360);// *PI / 180;
-		float yRot = (rand() % 360);// *PI / 180;
+		float xRot = (float)(rand() % 360);// *PI / 180;
+		float yRot = (float)(rand() % 360);// *PI / 180;
 		float x = radius * cos(xRot) * sin(yRot);
 		float y = radius * sin(xRot) * sin(yRot);
 		float z = radius * cos(yRot);
