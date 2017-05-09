@@ -84,6 +84,8 @@ void AppClass::Update(void)
 	static int nClock = m_pSystem->GenClock();
 	float fDeltaTime = static_cast<float>(m_pSystem->LapClock(nClock));
 	fTimer += fDeltaTime;
+	
+	GameObject::time = fTimer;
 
 	if (!pause) {
 		m_Camera->Move(fTimer); //Moves Camera/Player

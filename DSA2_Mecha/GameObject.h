@@ -12,6 +12,7 @@ enum ColliderType { projectile, environment, object };
 
 class GameObject : public Object {
 public:
+	static float time;
 	bool bGravityEnabled;
 	bool visible = true;
 	Camera* m_Camera;

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Collider.hpp"
 #include "Camera.h"
+#include <vector>
 
 class Pillar : public GameObject
 {
@@ -29,10 +30,11 @@ public:
 	Enemy(vector3, Camera*);
 	~Enemy();
 	Camera* m_Camera;
+	
+	std::vector<vector3> points;
 
 	virtual bool Update(float fDeltaTime);
 	virtual bool Render(matrix4, matrix4);
-	static void HandleCollision(Collider*, Collider*);
 };
 
 class Bullet : public GameObject

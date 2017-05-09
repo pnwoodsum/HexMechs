@@ -1,6 +1,8 @@
 #include "GameObject.h"
 #include "Component.hpp"
 
+float GameObject::time = 0;
+
 GameObject::GameObject() {
 	components = std::vector<Component*>();
 }

@@ -69,8 +69,7 @@ Enemy::Enemy(vector3 pos, Camera* cam)
 	model = nullptr;
 
 	transform = glm::translate(pos);
-	
-	getComponent<Collider>()->onCollisionEnterFunction = &Enemy::HandleCollision;
+	getComponent<Collider>()->onCollisionEnterFunction = &DestructObj::HandleCollision;
 	
 	visible = true;
 	health = 50;
@@ -80,9 +79,13 @@ Enemy::~Enemy(){}
 
 bool Enemy::Update(float fDeltaTime) {
 	if (!DestructObj::Update(fDeltaTime)) return false;
-	transform = glm::translate(glm::lerp(glm::vec3(transform[3]), m_Camera->cameraPos, 1*fDeltaTime));
 	
+	transform = glm::translate(glm::lerp(glm::vec3(transform[3]), m_Camera->cameraPos, fDeltaTime));
+
 	getComponent<BoundingObject>()->SetModelMatrix(transform);
+	
+	//transform = glm::inverse(glm::lookAt(glm::vec3(transform[3]), m_Camera->cameraPos, vector3(0, 1, 0)));// * glm::rotate(180.0f, vector3(0, 1, 0));
+
 	m_pMeshMngr->SetModelMatrix(transform, std::to_string(this->GetInstanceID()));
 	return true;
 }
@@ -92,28 +95,6 @@ bool Enemy::Render(matrix4 projection, matrix4 view) {
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 	return true;
 }
-
-void Enemy::HandleCollision(Collider* mainobj, Collider* other)
-{
-	Enemy* me = static_cast<Enemy*>(mainobj->getGameObject());
-
-	Bullet* castedOther = dynamic_cast<Bullet*>(other->getGameObject());
-	if (!castedOther) return;
-
-	me->health -= 10;
-
-	if (me->health <= 0) {
-		std::cout << "dead" << std::endl;
-		
-		//Hack to set model to invisible
-		me->m_pMeshMngr->SetModelMatrix(glm::scale(vector3(0,0,0)), std::to_string(me->GetInstanceID()));
-		
-		me->SetActive(false);
-		//me->transform = glm::scale(0, 0, 0);
-		
-	}
-}
-
 #pragma endregion
 
 #pragma region Bullet
@@ -148,6 +129,7 @@ void Bullet::fire(vector3 pos, glm::quat or , float time) {
 		bulletIndex = (bulletIndex + 1) % bulletList.size();
 
 		ptr->SetActive(true);
+
 		ptr->transform = glm::inverse(glm::translate(pos - vector3(45.0f, -22.0f, -220.0f) * or ));
 
 		ptr->lastOrient = or ;
