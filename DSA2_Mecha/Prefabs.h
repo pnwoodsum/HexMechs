@@ -24,12 +24,14 @@ public:
 class Enemy : public DestructObj
 {
 public:
+	MeshManagerSingleton* m_pMeshMngr = MeshManagerSingleton::GetInstance();
 	Enemy(Camera* cam);
 	Enemy(vector3, Camera*);
 	~Enemy();
 	Camera* m_Camera;
 
-	virtual void Update(float fDeltaTime);
+	virtual bool Update(float fDeltaTime);
+	virtual bool Render(matrix4, matrix4);
 	static void HandleCollision(Collider*, Collider*);
 };
 
@@ -44,7 +46,7 @@ public:
 	float startTime;
 
 	static void fire(vector3, glm::quat, float);
-	virtual void Update(float deltaTime);
+	virtual bool Update(float deltaTime);
 	static void HandleCollision(Collider*, Collider*);
 
 	const static float BULLET_SPEED;

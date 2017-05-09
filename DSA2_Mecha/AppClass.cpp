@@ -131,7 +131,8 @@ void AppClass::Update(void)
 	m_pMeshMngr->Update();
 
 	//Adds all loaded instance to the render list
-	m_pMeshMngr->AddInstanceToRenderList("ALL");
+	//m_pMeshMngr->AddInstanceToRenderList("ALL");
+	m_pMeshMngr->AddInstanceToRenderList("ChainGun");
 
 }
 
@@ -155,7 +156,7 @@ void AppClass::Display(void)
 	}
 
 	m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -155.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));
-
+	
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->PrintLine(std::to_string(m_Camera->velocity.x) + "," + std::to_string(m_Camera->velocity.y) + "," + std::to_string(m_Camera->velocity.z));
 	m_pMeshMngr->PrintLine(std::to_string(glm::length(m_Camera->velocity)));

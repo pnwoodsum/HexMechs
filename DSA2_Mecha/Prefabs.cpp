@@ -64,31 +64,56 @@ Enemy::Enemy(Camera* cam) : Enemy(vector3(0, 0, 0), cam) {}
 
 Enemy::Enemy(vector3 pos, Camera* cam)
 {
+	m_pMeshMngr->LoadModel("Mechs\\buzzer_bot.obj", std::to_string(this->GetInstanceID()));
 	m_Camera = cam;
-	model = new PrimitiveClass();
-	model->GenerateCube(50.0f, RERED);
+	model = nullptr;
 
 	transform = glm::translate(pos);
-	//collider already there from Destructable obj?
-	/*
-	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
-	collider->SetModelMatrix(transform);
-	this->addComponent(collider);
-	//reuse the destructobj handle collision method we inherit
-	collider->onCollisionEnterFunction = &DestructObj::HandleCollision;
-	*/
+	
+	getComponent<Collider>()->onCollisionEnterFunction = &Enemy::HandleCollision;
+	
 	visible = true;
 	health = 50;
 }
 
 Enemy::~Enemy(){}
 
-void Enemy::Update(float fDeltaTime) {
-	DestructObj::Update(fDeltaTime);
+bool Enemy::Update(float fDeltaTime) {
+	if (!DestructObj::Update(fDeltaTime)) return false;
 	transform = glm::translate(glm::lerp(glm::vec3(transform[3]), m_Camera->cameraPos, 1*fDeltaTime));
 	
 	getComponent<BoundingObject>()->SetModelMatrix(transform);
+	m_pMeshMngr->SetModelMatrix(transform, std::to_string(this->GetInstanceID()));
+	return true;
 }
+
+bool Enemy::Render(matrix4 projection, matrix4 view) {
+	if (!DestructObj::Render(projection, view)) return false;
+	m_pMeshMngr->AddInstanceToRenderList("ALL");
+	return true;
+}
+
+void Enemy::HandleCollision(Collider* mainobj, Collider* other)
+{
+	Enemy* me = static_cast<Enemy*>(mainobj->getGameObject());
+
+	Bullet* castedOther = dynamic_cast<Bullet*>(other->getGameObject());
+	if (!castedOther) return;
+
+	me->health -= 10;
+
+	if (me->health <= 0) {
+		std::cout << "dead" << std::endl;
+		
+		//Hack to set model to invisible
+		me->m_pMeshMngr->SetModelMatrix(glm::scale(vector3(0,0,0)), std::to_string(me->GetInstanceID()));
+		
+		me->SetActive(false);
+		//me->transform = glm::scale(0, 0, 0);
+		
+	}
+}
+
 #pragma endregion
 
 #pragma region Bullet
@@ -138,9 +163,9 @@ void Bullet::HandleCollision(Collider* mainobj, Collider* other) {
 	me->SetActive(false);
 }
 
-void Bullet::Update(float time)
+bool Bullet::Update(float time)
 {
-	GameObject::Update(time);
+	if (!GameObject::Update(time)) return false;
 	transform = glm::translate(transform, vector3(0.0f, 0.0f, -BULLET_SPEED) * lastOrient);
 	//TODO this should update automatically in BO code
 	getComponent<BoundingObject>()->SetModelMatrix(transform);
@@ -151,7 +176,7 @@ void Bullet::Update(float time)
 	//collider->SetModelMatrix(glm::translate(position));
 	//bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
 	
-	
+	return true;
 }
 
 #pragma endregion

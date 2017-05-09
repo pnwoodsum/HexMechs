@@ -38,19 +38,21 @@ void GameObject::Start() {
 		components[i]->Start();
 }
 
-void GameObject::Update(float deltaTime) {
-	if (!active) return;
+bool GameObject::Update(float deltaTime) {
+	if (!active) return false;
 	for (int i = 0; i < components.size(); i++)
 		components[i]->Update(deltaTime);
+	return true;
 }
 
-void GameObject::Render(matrix4 projection, matrix4 view) {
-	if (!active) return;
+bool GameObject::Render(matrix4 projection, matrix4 view) {
+	if (!active || !visible) return false;
 	for (int i = 0; i < components.size(); i++)
 		components[i]->Render();
 
-	if (visible)
+	if (model)
 		model->Render(projection, view, transform);
+	return true;
 }
 
 void GameObject::SetActive(bool value) {

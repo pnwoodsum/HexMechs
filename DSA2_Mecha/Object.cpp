@@ -8,8 +8,8 @@ Object::Object() {
 	name = "Object";
 	//TODO: instance id generation
 	//set the instance id to one more the the biggest one already in the vector
-	//	instanceID = instanceIDs.at(std::distance(instanceIDs.begin(), std::max_element(instanceIDs.begin(), instanceIDs.end()))) + 1;
-	//instanceIDs.push_back(instanceID);
+	instanceID = instanceIDs.size();
+	instanceIDs.push_back(instanceID);
 }
 
 Object::Object(const Object& other) {
