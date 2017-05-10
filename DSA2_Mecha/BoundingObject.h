@@ -98,6 +98,10 @@ public:
 	Will check the collision with another object
 	*/
 	bool IsColliding(BoundingObject* a_other, bool isProjectile = false);
+	/*
+	Will check the collision with a ray(position and direction)
+	*/
+	bool IsCollidingRay(vector3, vector3);
 
 	/*
 	Sets the type of bounding object

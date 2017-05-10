@@ -16,7 +16,7 @@ BoundingObject::BoundingObject(std::vector<vector3> vertexList, int objectType)
 	m_v3Min = vertexList[0];
 	m_v3Max = vertexList[0];
 
-	for (int i = 1; i < (int)vertexList.size(); i++)
+	for (int i = 1; i < vertexList.size(); i++)
 	{
 		if (m_v3Min.x > vertexList[i].x)
 		{
@@ -131,11 +131,11 @@ void BoundingObject::SetModelMatrix(matrix4 a_m4ToWorld)
 	p_v3Min = vector3(10000000.0f, 10000000.0f, 10000000.0f);
 	p_v3Max = vector3(-10000000.0f, -10000000.0f, -10000000.0f);
 
-	for (int i = 0; i < (int)points.size(); i++) {
+	for (int i = 0; i < points.size(); i++) {
 		pointsG[i] = vector3(m_m4ToWorld * vector4(points[i], 1.0f));
 	}
 
-	for (int i = 0; i < (int)pointsG.size(); i++) {
+	for (int i = 0; i < pointsG.size(); i++) {
 		if (p_v3Min.x > pointsG[i].x)
 		{
 			p_v3Min.x = pointsG[i].x;
@@ -213,4 +213,46 @@ void BoundingObject::testCollision(Collider* other) {
 	//this is probably not a good idea
 	BoundingObject* castedOther = dynamic_cast<BoundingObject*>(other);
 	callCallbacks(IsColliding(castedOther), other);
+}
+
+bool BoundingObject::IsCollidingRay(vector3 pos, vector3 dir) 
+{
+	float xMin, xMax, yMin, yMax, zMin, zMax;
+
+	if (dir.x > 0) {
+		xMin = (p_v3Min.x - pos.x) / dir.x;
+		xMax = (p_v3Max.x - pos.x) / dir.x;
+	}
+	else {
+		xMin = (p_v3Max.x - pos.x) / dir.x;
+		xMax = (p_v3Min.x - pos.x) / dir.x;
+	}
+
+	if (dir.y > 0) {
+		yMin = (p_v3Min.y - pos.y) / dir.y;
+		yMax = (p_v3Max.y - pos.y) / dir.y;
+	}
+	else {
+		yMin = (p_v3Max.y - pos.y) / dir.y;
+		yMax = (p_v3Min.y - pos.y) / dir.y;
+	}
+
+	if (dir.z > 0) {
+		zMin = (p_v3Min.z - pos.z) / dir.z;
+		zMax = (p_v3Max.z - pos.z) / dir.z;
+	}
+	else {
+		zMin = (p_v3Max.z - pos.z) / dir.z;
+		zMax = (p_v3Min.z - pos.z) / dir.z;
+	}
+
+	if ((xMin > yMax) || (yMin > xMax)) return false;
+	if (yMin > xMin) xMin = yMin;
+	if (yMax < xMax)xMax = yMax;
+	if ((xMin > zMax) || (zMin > xMax)) return false;
+	if (zMin > xMin) xMin = zMin;
+	if (zMax < xMax)xMax = zMax;
+
+	return true;
+
 }
