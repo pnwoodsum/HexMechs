@@ -39,21 +39,15 @@ void AppClass::InitVariables(void)
 	}
 	
 	spatialTree->generateTree(3);
+	spatialTree->cleanTree(spatialTree->head);
 
 	//Initialize positions
 	m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
 	m_v3O2 = vector3(2.5f, 0.0f, 0.0f);
 
-	////Load Models
-	//m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
-	////m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
-	//m_pMeshMngr->LoadModel("Minecraft\\Cow.obj", "Cow");
-
 	m_pBOMngr = MyBOManager::GetInstance();
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Steve"), "Steve");
 	m_pBOMngr->GetBoundingObject(0)->isControlledUnit = true;
-	//m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Creeper"), "Creeper");
-	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Cow"), "Cow");
 }
 
 void AppClass::Update(void)
@@ -83,17 +77,8 @@ void AppClass::Update(void)
 	matrix4 mTranslation = glm::translate(m_v3O2);
 
 	spatialTree->checkCollisions();
+	//spatialTree->displayTree(m_pMeshMngr);
 	spatialTree->displayTree(m_pMeshMngr, spatialTree->head);
-
-	////Set the model matrices for both objects and Bounding Spheres
-	//m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");
-	////m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
-	//m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O3), "Cow");
-
-	////Set the model matrix to the Bounding Object
-	//m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"), "Steve");
-	////m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"), "Creeper");
-	//m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Cow"), "Cow");
 
 	m_pBOMngr->Update();//Update collision detection
 

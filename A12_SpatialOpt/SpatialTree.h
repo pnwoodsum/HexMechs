@@ -50,6 +50,8 @@ public:
 	void displayTree(MeshManagerSingleton*, Node*);
 	void generateTree(int);
 
+	void cleanTree(Node * node);
+
 	SpatialTree();
 	~SpatialTree();
 };
