@@ -2,6 +2,7 @@
 
 
 
+int Node::colCount;
 
 Node::Node(vector3 position, vector3 width) {
 	widths = width;
@@ -33,21 +34,23 @@ void Node::split(int level) {
 
 void Node::checkCollisions() {
 	if ((children.size() > 0)) {
-		for (int i = 0; i < children.size(); i++)
-			children[i]->checkCollisions();
+		for (int i = 0; i < children.size(); i++) {
+			if(children[i]->objects.size() > 0 || children[i]->children.size() > 0)
+				children[i]->checkCollisions();
+		}
 	}
 	else if (objects.size() > 0) {
 		//check collisions between all the objects
 		for (int i = 0; i < objects.size() - 1; i++) {
-			//if (!(objects[i]->checked)) {
-			//	objects[i]->checked = true;
 			for (int j = i + 1; j < objects.size(); j++) {
+
+
 				if (objects[i]->IsColliding(objects[j])) {
+					colCount++;
 					objects[i]->colliding = true;
 					objects[j]->colliding = true;
 				}
 			}
-			//}
 		}
 	}
 }
@@ -84,15 +87,19 @@ void Node::addObject(MyBOClass* object) {
 	}
 }
 
-
 void SpatialTree::checkCollisions() {
+	head->colCount = 0;
+	colCount = 0;
+
 	if (optimize) head->checkCollisions();
 	else {
-		for (int i = 0; i < objects.size(); i++) {
-			for (int j = 0; j < objects.size(); j++) {
-				if (i == j) continue;
-				if (objects[i]->IsColliding(objects[j]))
+		for (int i = 0; i < objects.size()-1; i++) {
+			for (int j = i+1; j < objects.size(); j++) {
+				colCount++;
+				//Counter::IncCollisionCount();
+				if (objects[i]->IsColliding(objects[j])) {
 					objects[i]->colliding = true;
+				}
 			}
 		}
 	}
@@ -128,20 +135,21 @@ void SpatialTree::displayTree(MeshManagerSingleton* Mesh) {
 		Node* curr = head->children[i];
 		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(curr->position.x, curr->position.y, curr->position.z) * glm::scale(curr->widths.x, curr->widths.y, curr->widths.z), RERED, WIRE);
 		for (int j = 0; j < curr->children.size(); j++) {
-			Node* curr2 = curr->children[j];
-			displayTree(Mesh, curr2);
+			//Node* curr2 = curr->children[j];
+			displayTree(Mesh, curr->children[j]);
 		}
 	}
 }
 
 void SpatialTree::displayTree(MeshManagerSingleton* Mesh, Node* node) {
 	if (node->children.size() <= 0) {
-		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(node->position.x, node->position.y, node->position.z) * glm::scale(node->widths.x, node->widths.y, node->widths.z), RERED, WIRE);
+		if (node->objects.size() > 0)
+			Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(node->position.x, node->position.y, node->position.z) * glm::scale(node->widths.x, node->widths.y, node->widths.z), RERED, WIRE);
 		return;
 	}
 	for (int i = 0; i < node->children.size(); i++) {
 		Node* curr = node->children[i];
-		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(curr->position.x, curr->position.y, curr->position.z) * glm::scale(curr->widths.x, curr->widths.y, curr->widths.z), RERED, WIRE);
+		//Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(curr->position.x, curr->position.y, curr->position.z) * glm::scale(curr->widths.x, curr->widths.y, curr->widths.z), RERED, WIRE);
 		for (int j = 0; j < curr->children.size(); j++) {
 			Node* curr2 = curr->children[j];
 			displayTree(Mesh, curr2);
