@@ -78,6 +78,8 @@ Enemy::Enemy(vector3 pos, Camera* cam)
 	speed = 100;
 	visible = true;
 	health = 50;
+	fireRate = 2.f;
+	timeAtLastFire = GameObject::time;
 }
 
 Enemy::~Enemy(){}
@@ -109,6 +111,7 @@ void Enemy::SetGoal() {
 bool Enemy::Update(float fDeltaTime) {
 	if (!DestructObj::Update(fDeltaTime)) return false;
 	
+	//update position
 	float timeElapsed = time - timeAtLastTargetReached;
 	if (timeElapsed != 0 && distanceBetweenPoints != 0) {
 		float percent = timeElapsed / (distanceBetweenPoints / speed);
@@ -119,18 +122,20 @@ bool Enemy::Update(float fDeltaTime) {
 			SetGoal();
 		}
 	}
+	//recalc transform mats
 	vector3 pos = vector3(transform[3]);
 	matrix4 rotMat = glm::lookAt(vector3(0,0,0), m_Camera->cameraPos+pos, vector3(0, 1, 0));
 	transform = glm::translate(pos) * glm::inverse(rotMat) * glm::rotate(180.0f, vector3(0, 1, 0));
 	
 	getComponent<BoundingObject>()->SetModelMatrix(transform);
 	m_pMeshMngr->SetModelMatrix(transform, std::to_string(this->GetInstanceID()));
+
 	return true;
 }
 
 bool Enemy::Render(matrix4 projection, matrix4 view) {
 	if (!DestructObj::Render(projection, view)) return false;
-	m_pMeshMngr->AddInstanceToRenderList("ALL");
+	m_pMeshMngr->AddInstanceToRenderList(std::to_string(this->GetInstanceID()));
 	return true;
 }
 #pragma endregion
@@ -174,11 +179,14 @@ Bullet::Bullet(void)
 {
 	model = new PrimitiveClass();
 	model->GenerateSphere(5.0f, 20, RERED);
+	m_pMeshMngr->LoadModel("Mechs\\missle.obj", std::to_string(this->GetInstanceID()));
 
 	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
 	collider->SetModelMatrix(transform);
 	this->addComponent(collider);
 	collider->onCollisionEnterFunction = &Bullet::HandleCollision;
+
+	model = nullptr;
 
 	visible = true;
 	SetActive(false);
@@ -223,10 +231,12 @@ bool Bullet::Update(float time)
 	//if (timer > 100) visible = false;
 	//collider->SetModelMatrix(glm::translate(position));
 	//bulletPos += vector3(0.0f, 0.0f, 20.0f) * lastOrient;
-	
+	m_pMeshMngr->SetModelMatrix( glm::translate(vector3(transform[3])) * glm::inverse(glm::mat4_cast(lastOrient)), std::to_string(this->GetInstanceID()));
 	return true;
 }
-
+bool Bullet::Render(matrix4 projection, matrix4 view) {
+	if (!GameObject::Render(projection, view)) return false;
+	m_pMeshMngr->AddInstanceToRenderList(std::to_string(this->GetInstanceID()));
+	return true;
+}
 #pragma endregion
-
-

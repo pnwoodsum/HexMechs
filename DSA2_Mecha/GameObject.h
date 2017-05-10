@@ -16,6 +16,7 @@ public:
 	bool bGravityEnabled;
 	bool visible = true;
 	Camera* m_Camera;
+	MeshManagerSingleton* m_pMeshMngr = MeshManagerSingleton::GetInstance();
 
 	std::string instanceName;
 
