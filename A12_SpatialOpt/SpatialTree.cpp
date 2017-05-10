@@ -142,20 +142,20 @@ void SpatialTree::displayTree(MeshManagerSingleton* Mesh) {
 }
 
 void SpatialTree::displayTree(MeshManagerSingleton* Mesh, Node* node) {
-	if (node->children.size() <= 0) {
-		if (node->objects.size() > 0)
-			Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(node->position.x, node->position.y, node->position.z) * glm::scale(node->widths.x, node->widths.y, node->widths.z), RERED, WIRE);
-		return;
-	}
-	for (int i = 0; i < node->children.size(); i++) {
-		Node* curr = node->children[i];
-		//Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(curr->position.x, curr->position.y, curr->position.z) * glm::scale(curr->widths.x, curr->widths.y, curr->widths.z), RERED, WIRE);
-		for (int j = 0; j < curr->children.size(); j++) {
-			Node* curr2 = curr->children[j];
-			displayTree(Mesh, curr2);
+	// Generates smallest nodes, but only if they contain objects
+	if (!display) return;
+	if ((node->children.size() > 0)) {
+		for (int i = 0; i < node->children.size(); i++) {
+			if (node->children[i]->objects.size() > 0 || node->children[i]->children.size() > 0)
+				displayTree(Mesh, node->children[i]);
 		}
 	}
+	else if (objects.size() > 0) {
+		// Draw cubes
+		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(node->position.x, node->position.y, node->position.z) * glm::scale(node->widths.x, node->widths.y, node->widths.z), RERED, WIRE);
+	}
 }
+
 
 void SpatialTree::generateTree(int depth) {
 	head->widths.x = m_v3Max.x - m_v3Min.x;
