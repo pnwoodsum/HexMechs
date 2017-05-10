@@ -20,6 +20,8 @@ void AppClass::ProcessKeyboard(void)
 			bLast##key = pressed; } //remember the state
 #pragma endregion
 
+	sManager->currentMoveState = sManager->None;
+
 	//F1 Controllers
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
 	{
@@ -30,9 +32,11 @@ void AppClass::ProcessKeyboard(void)
 	{
 		if (bModifier) {
 			m_Camera->MoveForward(1.0f,true); 
+			sManager->currentMoveState = sManager->Boost;
 		}
 		else {
 			m_Camera->MoveForward(1.0f,false);
+			sManager->currentMoveState = sManager->Walk;
 		}
 		
 	}
@@ -40,27 +44,33 @@ void AppClass::ProcessKeyboard(void)
 	{
 		if (bModifier) {
 			m_Camera->MoveForward(-1.0f,true);
+			sManager->currentMoveState = sManager->Boost;
 		}
 		else {
 			m_Camera->MoveForward(-1.0f,false);
+			sManager->currentMoveState = sManager->Walk;
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		if (bModifier) {
 			m_Camera->MoveSideways(1.0f, true);
+			sManager->currentMoveState = sManager->Boost;
 		}
 		else {
 			m_Camera->MoveSideways(1.0f, false);
+			sManager->currentMoveState = sManager->Walk;
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		if (bModifier) {
 			m_Camera->MoveSideways(-1.0f, true);
+			sManager->currentMoveState = sManager->Boost;
 		}
 		else {
 			m_Camera->MoveSideways(-1.0f, false);
+			sManager->currentMoveState = sManager->Walk;
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) 
@@ -76,6 +86,7 @@ void AppClass::ProcessKeyboard(void)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
+		sManager->currentMoveState = sManager->Boost;
 		m_Camera->MoveVertical(1.0f, false);
 		m_Camera->inAir = true;
 	}

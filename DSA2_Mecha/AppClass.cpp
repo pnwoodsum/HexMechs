@@ -126,7 +126,7 @@ void AppClass::Update(void)
 	m_m4View = m_Camera->GetView(mousePos);
 
 	// Handle Sounds
-	sManager->PlaySounds();
+	sManager->PlaySounds(fDeltaTime);
 
 	// Update gun matrix
 	m_m4GunMat = glm::translate(-m_Camera->GetPos()) *
