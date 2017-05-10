@@ -14,11 +14,12 @@ void AppClass::InitVariables(void)
 	spatialTree = new SpatialTree();
 	m_bArcBallZ = false;
 
-	cubeCount = 300;
+	cubeCount = 150;
 	radius = 15;
 	cube = new PrimitiveClass();
 	positions = new matrix4[cubeCount];
 	bObjects = new MyBOClass[cubeCount];
+	
 
 	cube->GenerateCube(2, REWHITE);
 
@@ -125,6 +126,12 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Optimize:");
 	m_pMeshMngr->Print(spatialTree->optimize == 0 ? "False" : "True", REYELLOW);
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Node::ColCount:");
+	m_pMeshMngr->Print(std::to_string(spatialTree->head->colCount), REGREEN);
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Tree::ColCount:");
+	m_pMeshMngr->Print(std::to_string(spatialTree->colCount), REGREEN);
 }
 
 void AppClass::Display(void)

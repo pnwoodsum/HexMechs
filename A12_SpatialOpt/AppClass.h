@@ -18,6 +18,7 @@ class AppClass : public ReEngAppClass
 	vector3 m_v3O2 = vector3( 2.5f, 0.0f, 0.0f);
 	vector3 m_v3O3 = vector3( 2.5f, 1.0f, 0.0f);
 
+
 	bool m_bArcBallZ = false;
 	UINT MouseLastX = 0;
 	UINT MouseLastY = 0;
