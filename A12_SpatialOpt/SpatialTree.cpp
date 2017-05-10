@@ -29,7 +29,6 @@ void Node::split(int level) {
 	for (int i = 0; i < 8; i++) {
 		children[i]->split(level - 1);
 	}
-
 }
 
 void Node::checkCollisions() {
@@ -129,20 +128,8 @@ void SpatialTree::addObject(MyBOClass * object) {
 	objects.push_back(object);
 }
 
-void SpatialTree::displayTree(MeshManagerSingleton* Mesh) {
-	if (!display) return;
-	for (int i = 0; i < head->children.size(); i++) {
-		Node* curr = head->children[i];
-		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(curr->position.x, curr->position.y, curr->position.z) * glm::scale(curr->widths.x, curr->widths.y, curr->widths.z), RERED, WIRE);
-		for (int j = 0; j < curr->children.size(); j++) {
-			//Node* curr2 = curr->children[j];
-			displayTree(Mesh, curr->children[j]);
-		}
-	}
-}
-
 void SpatialTree::displayTree(MeshManagerSingleton* Mesh, Node* node) {
-	// Generates smallest nodes, but only if they contain objects
+	// Displays smallest nodes, but only if they contain objects
 	if (!display) return;
 	if ((node->children.size() > 0)) {
 		for (int i = 0; i < node->children.size(); i++) {
@@ -152,10 +139,9 @@ void SpatialTree::displayTree(MeshManagerSingleton* Mesh, Node* node) {
 	}
 	else if (objects.size() > 0) {
 		// Draw cubes
-		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(node->position.x, node->position.y, node->position.z) * glm::scale(node->widths.x, node->widths.y, node->widths.z), RERED, WIRE);
+		Mesh->AddCubeToRenderList(IDENTITY_M4 * glm::translate(node->position.x, node->position.y, node->position.z) * glm::scale(node->widths.x, node->widths.y, node->widths.z), REPURPLE, WIRE);
 	}
 }
-
 
 void SpatialTree::generateTree(int depth) {
 	head->widths.x = m_v3Max.x - m_v3Min.x;
@@ -167,6 +153,20 @@ void SpatialTree::generateTree(int depth) {
 	head->split(depth);
 	for (int i = 0; i < objects.size(); i++) {
 		head->addObject(objects[i]);
+	}
+}
+
+void SpatialTree::cleanTree(Node* node) {
+	if ((node->children.size() > 1)) {
+		for (int i = 0; i < node->children.size(); i++) {
+			if (node->children[i]->objects.size() > 0 || node->children[i]->children.size() > 0)
+				cleanTree(node->children[i]);
+		}
+	}
+	else {
+		for (int i = 0; i < node->children.size(); i++) {
+			node->children.erase(node->children.begin() + i);
+		}
 	}
 }
 
