@@ -7,7 +7,7 @@ class BoundingObject : public Collider
 private:
 	float m_fRadius = 0.0f; //radius of the sphere
 	vector3 m_v3CenterLocal = vector3(0.0f); //center of the sphere in local space
-	vector3 m_v3CenterGlobal = vector3(0.0f); //center of the sphere in global space
+	
 	matrix4 m_m4ToWorld = IDENTITY_M4; //matrix that takes you from local to global space
 	MeshManagerSingleton* m_pMeshMngr = nullptr; //for drawing the sphere
 
@@ -34,6 +34,7 @@ private:
 	std::vector<vector3> pointsG;
 
 public:
+	vector3 m_v3CenterGlobal = vector3(0.0f); //center of the sphere in global space
 	virtual void subUpdate();
 	//virtual void Update(float);
 	virtual void Render();

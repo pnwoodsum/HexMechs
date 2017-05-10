@@ -220,30 +220,30 @@ bool BoundingObject::IsCollidingRay(vector3 pos, vector3 dir)
 	float xMin, xMax, yMin, yMax, zMin, zMax;
 
 	if (dir.x > 0) {
-		xMin = (p_v3Min.x - pos.x) / dir.x;
-		xMax = (p_v3Max.x - pos.x) / dir.x;
+		xMin = (m_v3MinG.x - pos.x) / dir.x;
+		xMax = (m_v3MaxG.x - pos.x) / dir.x;
 	}
 	else {
-		xMin = (p_v3Max.x - pos.x) / dir.x;
-		xMax = (p_v3Min.x - pos.x) / dir.x;
+		xMin = (m_v3MaxG.x - pos.x) / dir.x;
+		xMax = (m_v3MinG.x - pos.x) / dir.x;
 	}
 
 	if (dir.y > 0) {
-		yMin = (p_v3Min.y - pos.y) / dir.y;
-		yMax = (p_v3Max.y - pos.y) / dir.y;
+		yMin = (m_v3MinG.y - pos.y) / dir.y;
+		yMax = (m_v3MaxG.y - pos.y) / dir.y;
 	}
 	else {
-		yMin = (p_v3Max.y - pos.y) / dir.y;
-		yMax = (p_v3Min.y - pos.y) / dir.y;
+		yMin = (m_v3MaxG.y - pos.y) / dir.y;
+		yMax = (m_v3MinG.y - pos.y) / dir.y;
 	}
 
 	if (dir.z > 0) {
-		zMin = (p_v3Min.z - pos.z) / dir.z;
-		zMax = (p_v3Max.z - pos.z) / dir.z;
+		zMin = (m_v3MinG.z - pos.z) / dir.z;
+		zMax = (m_v3MaxG.z - pos.z) / dir.z;
 	}
 	else {
-		zMin = (p_v3Max.z - pos.z) / dir.z;
-		zMax = (p_v3Min.z - pos.z) / dir.z;
+		zMin = (m_v3MaxG.z - pos.z) / dir.z;
+		zMax = (m_v3MinG.z - pos.z) / dir.z;
 	}
 
 	if ((xMin > yMax) || (yMin > xMax)) return false;
