@@ -31,12 +31,40 @@ public:
 	~Enemy();
 	Camera* m_Camera;
 	
-	std::vector<vector3> points;
+	vector3(*RequestNextPoint)(Enemy*);
+	static vector3 RequestDefault(Enemy*);
+	
+	//movement related variables
+	vector3 targetPoint;
+	vector3 lastTargetPoint;
+	float speed;
+	float timeAtLastTargetReached;
+	float distanceBetweenPoints;
 
+	void SetGoal();
+
+	virtual void Start();
 	virtual bool Update(float fDeltaTime);
 	virtual bool Render(matrix4, matrix4);
 };
-
+class EnemyPath : public Enemy
+{
+public:
+	EnemyPath(Camera* cam);
+	EnemyPath(vector3, Camera*);
+	static vector3 RequestPath(Enemy*);
+	std::vector<vector3> pathPoints;
+	int pathIndex;
+};
+class EnemyRandom : public Enemy
+{
+public:
+	EnemyRandom(Camera* cam);
+	EnemyRandom(vector3, Camera*);
+	static vector3 RequestRandomInBox(Enemy*);
+	vector3 boxDimmensions;
+	vector3 boxCenter;
+};
 class Bullet : public GameObject
 {
 public:

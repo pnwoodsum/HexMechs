@@ -71,21 +71,61 @@ Enemy::Enemy(vector3 pos, Camera* cam)
 	transform = glm::translate(pos);
 	getComponent<Collider>()->onCollisionEnterFunction = &DestructObj::HandleCollision;
 	
+	//default RequestNextPoint
+	RequestNextPoint = &Enemy::RequestDefault;
+	targetPoint = pos;
+
+	speed = 100;
 	visible = true;
 	health = 50;
 }
 
 Enemy::~Enemy(){}
 
+void Enemy::Start() {
+	SetGoal();
+}
+
+vector3 Enemy::RequestDefault(Enemy* me) {
+	//just return current location
+	return vector3(me->transform[3]);
+}
+
+void Enemy::SetGoal() {
+	//either move to the next point or stay at the last target
+	lastTargetPoint = targetPoint;
+	targetPoint = RequestNextPoint(this);
+
+	if (lastTargetPoint == targetPoint) distanceBetweenPoints = 0;
+	else 
+		distanceBetweenPoints = sqrtf(
+			pow(lastTargetPoint.x - targetPoint.x, 2) +
+			pow(lastTargetPoint.y - targetPoint.y, 2) +
+			pow(lastTargetPoint.z - targetPoint.z, 2)
+		);
+	timeAtLastTargetReached = time;
+}
+
 bool Enemy::Update(float fDeltaTime) {
 	if (!DestructObj::Update(fDeltaTime)) return false;
-	
-	transform = glm::translate(glm::lerp(glm::vec3(transform[3]), m_Camera->cameraPos, fDeltaTime));
 
+	float timeElapsed = time - timeAtLastTargetReached;
+	if (timeElapsed != 0 && distanceBetweenPoints != 0) {
+		float percent = timeElapsed / (distanceBetweenPoints / speed);
+		vector3 newPosition = glm::lerp(lastTargetPoint, targetPoint, percent);
+		transform = glm::translate(newPosition);
+
+		if (percent > 1) {
+			SetGoal();
+		}
+	}
+	/*
+	matrix4 rotmatrix = glm::lookAt(vector3(400, 0, 300), m_Camera->cameraPos, vector3(0, 1, 0));
+	rotmatrix = glm::inverse(rotmatrix);
+	rotmatrix = glm::mat4_cast(glm::quat_cast(rotmatrix));
+	transform = glm::translate(targetPoint) * rotmatrix * glm::rotate(180.0f, vector3(0, 1, 0));
+	*/
 	getComponent<BoundingObject>()->SetModelMatrix(transform);
-	
-	//transform = glm::inverse(glm::lookAt(glm::vec3(transform[3]), m_Camera->cameraPos, vector3(0, 1, 0)));// * glm::rotate(180.0f, vector3(0, 1, 0));
-
 	m_pMeshMngr->SetModelMatrix(transform, std::to_string(this->GetInstanceID()));
 	return true;
 }
@@ -96,6 +136,32 @@ bool Enemy::Render(matrix4 projection, matrix4 view) {
 	return true;
 }
 #pragma endregion
+
+EnemyPath::EnemyPath(Camera* cam) : EnemyPath(vector3(0, 0, 0), cam) {}
+EnemyPath::EnemyPath(vector3 pos, Camera* cam) : Enemy(pos, cam) {
+	RequestNextPoint = &EnemyPath::RequestPath;
+}
+
+vector3 EnemyPath::RequestPath(Enemy* me_uncasted) {
+	EnemyPath* me = static_cast<EnemyPath*>(me_uncasted);
+	vector3 point = me->pathPoints[me->pathIndex];
+	me->pathIndex = (me->pathIndex + 1) % me->pathPoints.size();
+	return point;
+}
+
+EnemyRandom::EnemyRandom(Camera* cam) : EnemyRandom(vector3(0, 0, 0), cam) {}
+EnemyRandom::EnemyRandom(vector3 pos, Camera* cam) : Enemy(pos, cam) {
+	RequestNextPoint = &EnemyRandom::RequestRandomInBox;
+}
+
+vector3 EnemyRandom::RequestRandomInBox(Enemy* me_uncasted) {
+	EnemyRandom* me = static_cast<EnemyRandom*>(me_uncasted);
+	
+	int randx = (float)rand() / (RAND_MAX/me->boxDimmensions.x) + me->boxCenter.x;
+	int randy = (float)rand() / (RAND_MAX/me->boxDimmensions.x) + me->boxCenter.x;
+	int randz = (float)rand() / (RAND_MAX/me->boxDimmensions.x) + me->boxCenter.x;
+	return vector3(randx, randy, randz);
+}
 
 #pragma region Bullet
 int Bullet::bulletIndex;
@@ -162,3 +228,5 @@ bool Bullet::Update(float time)
 }
 
 #pragma endregion
+
+

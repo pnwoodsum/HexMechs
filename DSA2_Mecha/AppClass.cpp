@@ -32,7 +32,18 @@ void AppClass::InitVariables(void) {
 	objects.push_back(new DestructObj(vector3(300, 0, 300)));
 	objects.push_back(new DestructObj(vector3(200, 0, 300)));
 	objects.push_back(new DestructObj(vector3(100, 0, 300)));
-	objects.push_back(new Enemy(vector3(400, 0, 300), m_Camera));
+	//Enemy* enemy = new Enemy(vector3(400, 0, 300), m_Camera);
+	//enemy->targetPoint = vector3(400, 100, 300);
+	EnemyRandom* enemy = new EnemyRandom(vector3(400, 0, 300), m_Camera);
+	enemy->boxCenter = vector3(0, 100, 0);
+	enemy->boxDimmensions = vector3(800, 200, 800);
+	objects.push_back(enemy);
+
+	EnemyPath* enemy2 = new EnemyPath(m_Camera);
+	enemy2->pathPoints.push_back(vector3(100, 0, 0));
+	enemy2->pathPoints.push_back(vector3(100, 0, 100));
+	enemy2->pathPoints.push_back(vector3(0, 0, 100));
+	objects.push_back(enemy2);
 
 
 	environment[6].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
