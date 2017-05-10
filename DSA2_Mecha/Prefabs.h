@@ -67,11 +67,11 @@ public:
 	vector3 boxDimmensions;
 	vector3 boxCenter;
 };
-class Bullet : public GameObject
+class Projectile : public GameObject
 {
 public:
-	Bullet();
-	~Bullet();
+	Projectile();
+	~Projectile();
 
 	glm::quat lastOrient;
 	int timer;
@@ -86,5 +86,5 @@ public:
 	const static float FIRE_RATE;
 	static float lastBullet;
 	static int bulletIndex;
-	static std::vector<Bullet*> bulletList;
+	static std::vector<Projectile*> bulletList;
 };

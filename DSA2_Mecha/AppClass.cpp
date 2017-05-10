@@ -20,7 +20,7 @@ void AppClass::InitVariables(void) {
 	
 	//create the bullets
 	for (int i = 0; i < 40; i++) {
-		objects.push_back(new Bullet());
+		objects.push_back(new Projectile());
 	}
 	
 	objects.push_back(new Pillar(vector3(-600, 0, -600)));

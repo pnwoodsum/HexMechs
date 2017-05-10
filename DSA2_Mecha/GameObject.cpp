@@ -13,9 +13,8 @@ GameObject::GameObject(matrix4 transform) {
 	this->transform = transform;
 }
 
-//Literally breaks everything V
-/*GameObject::GameObject(const GameObject& other) {
-components = std::vector<Component*>();
+GameObject::GameObject(const GameObject& other) {
+	components = std::vector<Component*>();
 	int numComps = other.components.size();
 
 	for (int i = 0; i < numComps; i++){
@@ -26,7 +25,7 @@ components = std::vector<Component*>();
 			transform = other.transform;
 		}
 	}
-}*/
+}
 
 GameObject::~GameObject() {}
 

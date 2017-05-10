@@ -28,8 +28,7 @@ public:
 	
 	GameObject();
 	GameObject(matrix4 transform);
-	//breaks everything V
-	//GameObject(const GameObject& other);
+	GameObject(const GameObject& other);
 	~GameObject();
 	
 	template<class T>

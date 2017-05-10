@@ -34,7 +34,7 @@ class AppClass : public ReEngAppClass
 
 	SoundManager* sManager;
 
-	std::vector<Bullet> bullets;
+	std::vector<Projectile> bullets;
 	int curr = 0;
 
 	Camera* m_Camera = new Camera();

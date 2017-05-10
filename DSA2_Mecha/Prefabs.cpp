@@ -47,7 +47,7 @@ void DestructObj::HandleCollision(Collider* mainobj, Collider* other)
 {
 	DestructObj* me = static_cast<DestructObj*>(mainobj->getGameObject());
 	
-	Bullet* castedOther = dynamic_cast<Bullet*>(other->getGameObject());
+	Projectile* castedOther = dynamic_cast<Projectile*>(other->getGameObject());
 	if (!castedOther) return;
 	
 	me->health -= 10;
@@ -169,13 +169,13 @@ vector3 EnemyRandom::RequestRandomInBox(Enemy* me_uncasted) {
 #pragma endregion
 
 #pragma region Bullet
-int Bullet::bulletIndex;
-std::vector<Bullet*> Bullet::bulletList;
-float Bullet::lastBullet;
-const float Bullet::BULLET_SPEED = 30.0f;
-const float Bullet::FIRE_RATE = 0.1f;
+int Projectile::bulletIndex;
+std::vector<Projectile*> Projectile::bulletList;
+float Projectile::lastBullet;
+const float Projectile::BULLET_SPEED = 30.0f;
+const float Projectile::FIRE_RATE = 0.1f;
 
-Bullet::Bullet(void)
+Projectile::Projectile(void)
 {
 	model = new PrimitiveClass();
 	model->GenerateSphere(5.0f, 20, RERED);
@@ -184,7 +184,7 @@ Bullet::Bullet(void)
 	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
 	collider->SetModelMatrix(transform);
 	this->addComponent(collider);
-	collider->onCollisionEnterFunction = &Bullet::HandleCollision;
+	collider->onCollisionEnterFunction = &Projectile::HandleCollision;
 
 	model = nullptr;
 
@@ -195,11 +195,11 @@ Bullet::Bullet(void)
 }
 
 
-Bullet::~Bullet() {}
+Projectile::~Projectile() {}
 
-void Bullet::fire(vector3 pos, glm::quat or , float time) {
-	if (time - lastBullet > Bullet::FIRE_RATE) {
-		Bullet* ptr = bulletList[bulletIndex];
+void Projectile::fire(vector3 pos, glm::quat or , float time) {
+	if (time - lastBullet > Projectile::FIRE_RATE) {
+		Projectile* ptr = bulletList[bulletIndex];
 		bulletIndex = (bulletIndex + 1) % bulletList.size();
 
 		ptr->SetActive(true);
@@ -213,13 +213,13 @@ void Bullet::fire(vector3 pos, glm::quat or , float time) {
 	}
 }
 
-void Bullet::HandleCollision(Collider* mainobj, Collider* other) {
-	Bullet* me = static_cast<Bullet*>(mainobj->getGameObject());	
+void Projectile::HandleCollision(Collider* mainobj, Collider* other) {
+	Projectile* me = static_cast<Projectile*>(mainobj->getGameObject());	
 
 	me->SetActive(false);
 }
 
-bool Bullet::Update(float time)
+bool Projectile::Update(float time)
 {
 	if (!GameObject::Update(time)) return false;
 	transform = glm::translate(transform, vector3(0.0f, 0.0f, -BULLET_SPEED) * lastOrient);
@@ -234,7 +234,7 @@ bool Bullet::Update(float time)
 	m_pMeshMngr->SetModelMatrix( glm::translate(vector3(transform[3])) * glm::inverse(glm::mat4_cast(lastOrient)), std::to_string(this->GetInstanceID()));
 	return true;
 }
-bool Bullet::Render(matrix4 projection, matrix4 view) {
+bool Projectile::Render(matrix4 projection, matrix4 view) {
 	if (!GameObject::Render(projection, view)) return false;
 	m_pMeshMngr->AddInstanceToRenderList(std::to_string(this->GetInstanceID()));
 	return true;
