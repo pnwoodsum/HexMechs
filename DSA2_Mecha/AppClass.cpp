@@ -11,6 +11,9 @@ void AppClass::InitVariables(void) {
 	cockpitTexture->LoadTexture("Cockpit.png");
 
 	pause = false;
+	
+	// Sound manager
+	sManager = SoundManager::GetInstance();
 
 	//Environment Setup
 	//********
@@ -32,20 +35,25 @@ void AppClass::InitVariables(void) {
 	objects.push_back(new DestructObj(vector3(300, 0, 300)));
 	objects.push_back(new DestructObj(vector3(200, 0, 300)));
 	objects.push_back(new DestructObj(vector3(100, 0, 300)));
-	//Enemy* enemy = new Enemy(vector3(400, 0, 300), m_Camera);
-	//enemy->targetPoint = vector3(400, 100, 300);
-	EnemyRandom* enemy = new EnemyRandom(vector3(400, 0, 300), m_Camera);
-	enemy->boxCenter = vector3(0, 100, 0);
-	enemy->boxDimmensions = vector3(800, 200, 800);
-	objects.push_back(enemy);
 
-	EnemyPath* enemy2 = new EnemyPath(m_Camera);
-	enemy2->pathPoints.push_back(vector3(100, 0, 0));
-	enemy2->pathPoints.push_back(vector3(100, 0, 100));
-	enemy2->pathPoints.push_back(vector3(0, 0, 100));
-	objects.push_back(enemy2);
+	//randomly moving enemies
+	for (int i = 0; i < 3; i++) {
+		EnemyRandom* enemy = new EnemyRandom(vector3(400, 0, 300), m_Camera);
+		enemy->boxCenter = vector3(0, 100, 0);
+		enemy->boxDimmensions = vector3(800, 200, 800);
+		objects.push_back(enemy);
+	}
+	
+	//point to point enemies
+	for (int i = 0; i < 4; i++) {
+		EnemyPath* enemy = new EnemyPath(m_Camera);
+		enemy->pathPoints.push_back(vector3(3000.f, 100.f, i * 1000));
+		enemy->pathPoints.push_back(vector3(-3000.f, 100.f, i * 1000));
+		enemy->speed = enemy->speed + i * 20;
+		objects.push_back(enemy);
+	}
 
-
+/*	
 	environment[6].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
 	environ_Matrix[6] = glm::translate(vector3(0, 0, 3000));
 
@@ -57,21 +65,18 @@ void AppClass::InitVariables(void) {
 
 	environment[9].GenerateCuboid(vector3(30.f, 400.f, 6000.f), REORANGE);
 	environ_Matrix[9] = glm::translate(vector3(-3000, 0, 0));
-	
-	//*******
+*/
 
-	// Sound manager
-	sManager = SoundManager::GetInstance();
-	
 	//Generate the Cone
 	m_pCone = new PrimitiveClass();
 	m_pCone->GenerateCube(70.0f, RERED);
 	
-	m_pPlane = new PrimitiveClass();
-	m_pPlane->GeneratePlane(10000.0f, REBLUE);
-
 	// Gun model
 	m_pMeshMngr->LoadModel("Mechs\\ChainGun.fbx", "ChainGun");
+	m_pMeshMngr->LoadModel("Mechs\\panel.obj", "panel");
+	m_pMeshMngr->LoadModel("Mechs\\wall.obj", "wall");
+	m_pMeshMngr->LoadModel("Mechs\\floor.obj", "floor");
+
 
 	//Calculate the first projections
 	m_m4Projection = glm::perspective(45.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
@@ -137,6 +142,8 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(m_m4GunMat,
 		"ChainGun");
 
+	
+	
 	//Update the system's time
 	m_pSystem->UpdateTime();
 
@@ -146,6 +153,37 @@ void AppClass::Update(void)
 	//Adds all loaded instance to the render list
 	//m_pMeshMngr->AddInstanceToRenderList("ALL");
 	m_pMeshMngr->AddInstanceToRenderList("ChainGun");
+
+	//Panels
+	for (int i = 0; i < 4; i++) {
+		m_pMeshMngr->SetModelMatrix(glm::translate(vector3(2850.f, 100.f, i * 1000)) * glm::scale(vector3(5, 5, 5)) * glm::rotate(-90.0f, vector3(0,1,0)),
+			"panel");
+		m_pMeshMngr->AddInstanceToRenderList("panel");
+		m_pMeshMngr->SetModelMatrix(glm::translate(vector3(-2850.f, 100.f, i * 1000)) * glm::scale(vector3(5, 5, 5)) * glm::rotate(90.0f, vector3(0, 1, 0)),
+			"panel");
+		m_pMeshMngr->AddInstanceToRenderList("panel");
+	}
+
+
+
+	//Wall sections
+	for (int x = 0; x <= 360; x+=90) {
+		for (int z = -10; z < 10; z++) {
+			m_pMeshMngr->SetModelMatrix(glm::rotate((float)x, vector3(0, 1, 0)) * glm::translate(vector3(-3100,-60,4*90*z)) * glm::scale(vector3(150, 150, 150)),
+				"wall");
+			m_pMeshMngr->AddInstanceToRenderList("wall");
+		}
+	}
+
+	//Floor sections 
+	for (int x = -8; x < 8; x++) {
+		for (int z = -8; z < 8; z++) {
+			m_pMeshMngr->SetModelMatrix(glm::translate(vector3(x * 500, -230, z * 500)) * glm::scale(vector3(500, 500, 500)),
+				"floor");
+			m_pMeshMngr->AddInstanceToRenderList("floor");
+		}
+	}
+	
 
 }
 
@@ -158,7 +196,7 @@ void AppClass::Display(void)
 	m_pCameraMngr->SetViewMatrix(m_m4View);
 
 	//Render the cone
-	m_pCone->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -65.0f));
+	//m_pCone->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -65.0f));
 
 	for (int i = 0; i < (int)objects.size(); i++) {
 		objects[i]->Render(m_m4Projection, m_m4View);
@@ -168,7 +206,7 @@ void AppClass::Display(void)
 		environment[n].Render(m_m4Projection, m_m4View, environ_Matrix[n]);
 	}
 
-	m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -155.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));
+	//m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -155.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));
 	
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->PrintLine(std::to_string(m_Camera->velocity.x) + "," + std::to_string(m_Camera->velocity.y) + "," + std::to_string(m_Camera->velocity.z));

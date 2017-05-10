@@ -9,6 +9,7 @@ Pillar::Pillar(vector3 pos)
 	model = new PrimitiveClass();
 	model->GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
 
+
 	transform = glm::translate(pos);
 
 	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
@@ -150,6 +151,13 @@ vector3 EnemyPath::RequestPath(Enemy* me_uncasted) {
 	EnemyPath* me = static_cast<EnemyPath*>(me_uncasted);
 	vector3 point = me->pathPoints[me->pathIndex];
 	me->pathIndex = (me->pathIndex + 1) % me->pathPoints.size();
+	if (me->firstPass) {
+		me->lastTargetPoint = point;
+		me->firstPass = false;
+		point = me->pathPoints[me->pathIndex];
+		me->pathIndex = (me->pathIndex + 1) % me->pathPoints.size();
+		return point;
+	}
 	return point;
 }
 
@@ -177,11 +185,9 @@ const float Projectile::FIRE_RATE = 0.1f;
 
 Projectile::Projectile(void)
 {
-	model = new PrimitiveClass();
-	model->GenerateSphere(5.0f, 20, RERED);
 	m_pMeshMngr->LoadModel("Mechs\\missle.obj", std::to_string(this->GetInstanceID()));
 
-	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	BoundingObject* collider = new BoundingObject(m_pMeshMngr->GetVertexList(std::to_string(this->GetInstanceID())), 0);
 	collider->SetModelMatrix(transform);
 	this->addComponent(collider);
 	collider->onCollisionEnterFunction = &Projectile::HandleCollision;
@@ -224,7 +230,7 @@ bool Projectile::Update(float time)
 	if (!GameObject::Update(time)) return false;
 	transform = glm::translate(transform, vector3(0.0f, 0.0f, -BULLET_SPEED) * lastOrient);
 	//TODO this should update automatically in BO code
-	getComponent<BoundingObject>()->SetModelMatrix(transform);
+	getComponent<BoundingObject>()->SetModelMatrix(glm::translate(vector3(transform[3])) * glm::inverse(glm::mat4_cast(lastOrient)));
 	//timer++;
 
 	//if(time - startTime > 2) visible = false;

@@ -57,6 +57,7 @@ public:
 	static vector3 RequestPath(Enemy*);
 	std::vector<vector3> pathPoints;
 	int pathIndex;
+	bool firstPass = true;
 };
 class EnemyRandom : public Enemy
 {
