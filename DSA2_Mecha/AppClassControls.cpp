@@ -88,6 +88,11 @@ void AppClass::ProcessKeyboard(void)
 			sManager->m_bShooting = true;
 			Projectile::fire(m_Camera->GetPos(), m_Camera->orientation, fTimer);
 		}
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+			firing = true;
+			sManager->m_bShooting = true;
+		}
+		else firing = false;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
 			sManager->currentMoveState = sManager->Boost;

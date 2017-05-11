@@ -55,6 +55,7 @@ void AppClass::InitVariables(void) {
 		enemy->boxCenter = vector3(0, 100, 0);
 		enemy->boxDimmensions = vector3(800, 200, 800);
 		objects.push_back(enemy);
+		enemies.push_back(enemy);
 	}
 	
 	//point to point enemies
@@ -64,6 +65,7 @@ void AppClass::InitVariables(void) {
 		enemy->pathPoints.push_back(vector3(-3000.f, 100.f, i * 1000));
 		enemy->speed = enemy->speed + i * 20;
 		objects.push_back(enemy);
+		enemies.push_back(enemy);
 	}
 
 	//Generate the Cone
@@ -112,6 +114,17 @@ void AppClass::Update(void)
 			m_Camera->Move(fTimer); //Moves Camera/Player
 			for (int i = 0; i < (int)objects.size(); i++) {
 				objects[i]->Update(fDeltaTime);
+			}
+			if (firing) {
+				//Uses Ray to box to detect collisions
+				for (int i = 0; i < enemies.size(); i++) {
+					if (enemies[i]->getComponent<BoundingObject>()->IsCollidingRay(-m_Camera->cameraPos, m_Camera->cameraForward)) {
+						enemies[i]->health -= 1;
+						if (enemies[i]->health < 0) {
+							enemies[i]->SetActive(false);
+						}
+					}
+				}
 			}
 		}
 

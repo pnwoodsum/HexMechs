@@ -304,7 +304,7 @@ void Projectile::fire(vector3 pos, glm::quat or , float time) {
 
 		ptr->SetActive(true);
 
-		ptr->transform = glm::inverse(glm::translate(pos - vector3(45.0f, -22.0f, -220.0f) * or ));
+		ptr->transform = glm::inverse(glm::translate(pos - vector3(-15.0f, 55.0f, -220.0f) * or ));
 
 		ptr->lastOrient = or ;
 		ptr->startTime = time;

@@ -57,6 +57,7 @@ matrix4 Camera::GetView(vector2 mouse) {
 		orientation = glm::quat(vector3(glm::radians(y/20.0f), 0.0f, 0.0f)) * glm::quat(vector3(0.0f, glm::radians(x/20.0f), 0.0f));
 	}
 	cameraView = glm::toMat4(orientation) * glm::translate(cameraPos);
+	cameraForward = vector3(0, 0, 1.0f) * orientation;
 	return cameraView;
 }
 
@@ -81,13 +82,14 @@ void Camera::SetUp(vector3 up) {
 	cameraUp = up;
 }
 
+//Moves camera forward
 void Camera::MoveForward(float z, bool b) {
-	cameraForward = vector3(0.0f, 0.0f, z) * orientation;
+	vector3 moveDir = vector3(0.0f, 0.0f, z) * orientation;
 
 	if (b) {
 		if (energy > 0) {
 			accelf = 7.0f;
-			accel += cameraForward * accelf;
+			accel += moveDir * accelf;
 			if (accel.y < 0) {
 				inAir = true;
 			}
@@ -107,11 +109,12 @@ void Camera::MoveForward(float z, bool b) {
 		if (inAir) return;
 		if (glm::length(velocity) > 5) return;
 		accelf = 1.0f;
-		accel += cameraForward * accelf;
+		accel += moveDir * accelf;
 		accel.y = 0.0f;
 	}
 }
 
+//moves Camer sideways
 void Camera::MoveSideways(float x, bool b) {
 	cameraRight = vector3(x, 0.0f, 0.0f) * orientation;
 	
@@ -138,6 +141,7 @@ void Camera::MoveSideways(float x, bool b) {
 	accel.y = 0.0f;
 }
 
+//Direct vertical movement
 void Camera::MoveVertical(float y, bool b) {
 	vector3 upVector = vector3(0.0f, y, 0.0f) * orientation;
 
@@ -180,6 +184,7 @@ void Camera::Move(float timer) {
 	if (decel)velocity -= (vector3(velocity.x, 0.0f, velocity.z) * 0.02f);
 	else velocity -= (vector3(velocity.x, 0.0f, velocity.z) * 0.06f);
 
+	//Clamps velocity
 	if (glm::length(velocity) > 5) {
 		if(!boost && !inAir && !decel) velocity = glm::normalize(velocity) * 5.0f;
 		else if (glm::length(velocity) > 20) {

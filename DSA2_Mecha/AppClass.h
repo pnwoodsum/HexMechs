@@ -20,6 +20,7 @@ class AppClass : public ReEngAppClass
 {
 	//CollisionManager* m_pBOMngr;
 	std::vector<GameObject*> objects;
+	std::vector<Enemy*> enemies;
 	//BulletManager* bulletMngr;
 
 
@@ -51,6 +52,7 @@ class AppClass : public ReEngAppClass
 	int timer;
 	float fTimer;
 	bool pause;
+	bool firing = false;
 	bool lastPressed = false;
 	matrix4 m_m4GunMat;
 
