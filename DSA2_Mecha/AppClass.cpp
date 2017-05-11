@@ -74,6 +74,7 @@ void AppClass::InitVariables(void) {
 	
 	// loading models used in game
 	m_pMeshMngr->LoadModel("Mechs\\ChainGun.fbx", "ChainGun");
+	m_pMeshMngr->LoadModel("Mechs\\chainGunDefault.fbx", "ChainGunDefault");
 	m_pMeshMngr->LoadModel("Mechs\\panel.obj", "panel");
 	m_pMeshMngr->LoadModel("Mechs\\wall.obj", "wall");
 	m_pMeshMngr->LoadModel("Mechs\\floor.obj", "floor");
@@ -195,6 +196,7 @@ void AppClass::Update(void)
 
 		m_pMeshMngr->SetModelMatrix(m_m4GunMat,
 			"ChainGun");
+		m_pMeshMngr->SetModelMatrix(m_m4GunMat, "ChainGunDefault");
 	}
 	
 	//Update the system's time
@@ -206,7 +208,12 @@ void AppClass::Update(void)
 	//Adds all loaded instance to the render list
 	//m_pMeshMngr->AddInstanceToRenderList("ALL");
 	if (state == 1) {
-		m_pMeshMngr->AddInstanceToRenderList("ChainGun");
+		if (sManager->m_bShooting) {
+			m_pMeshMngr->AddInstanceToRenderList("ChainGun");
+		}
+		else {
+			m_pMeshMngr->AddInstanceToRenderList("ChainGunDefault");
+		}
 		m_pMeshMngr->AddInstanceToRenderList("CockPitPlane");
 
 		//Panels

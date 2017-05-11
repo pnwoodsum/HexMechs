@@ -22,10 +22,6 @@ class SoundManager
 	sf::Sound m_sBulletImpact;
 	sf::SoundBuffer m_sbBoostLoop;
 	sf::Sound m_sBoostLoop;
-	sf::SoundBuffer m_sbFireRocket;
-	sf::Sound m_sFireRocket;
-	sf::SoundBuffer m_sbRocketImpact;
-	sf::Sound m_sRocketImpact;
 
 public:
 	static SoundManager* GetInstance();
@@ -44,14 +40,9 @@ public:
 	// Handle sound of bullets impacting
 	void BulletCollision();
 
-	// Play the fire rocket sound
-	void FireRocket();
-
-	// Play the rocket explosion sound
-	void RocketExplosion();
-
 	// Is the play currently shooting?
 	bool m_bShooting;
+	bool m_bShootingSecond;
 
 	// Is the player walking or boosting?
 	enum PlayerMoveState {

@@ -84,8 +84,9 @@ void AppClass::ProcessKeyboard(void)
 		else if (lastPressed) lastPressed = false;
 
 		sManager->m_bShooting = false;
+		sManager->m_bShootingSecond = false;
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			sManager->m_bShooting = true;
+			sManager->m_bShootingSecond = true;
 			Projectile::fire(m_Camera->GetPos(), m_Camera->orientation, fTimer);
 		}
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {

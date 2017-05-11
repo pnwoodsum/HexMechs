@@ -35,14 +35,6 @@ void SoundManager::Init(void)
 	m_sbBoostLoop.loadFromFile("Data\\Audio\\boostLoop.wav");
 	m_sBoostLoop.setBuffer(m_sbBoostLoop);
 	m_sBoostLoop.setVolume(60.0f);
-
-	m_sbFireRocket.loadFromFile("Data\\Audio\\fireRocket.wav");
-	m_sFireRocket.setBuffer(m_sbFireRocket);
-	m_sFireRocket.setVolume(60.0f);
-
-	m_sbRocketImpact.loadFromFile("Data\\Audio\\rocketImpact.wav");
-	m_sRocketImpact.setBuffer(m_sbBoostLoop);
-	m_sRocketImpact.setVolume(60.0f);
 	
 	footStepTimer = 0.0f;
 }
@@ -92,14 +84,6 @@ void SoundManager::ShootingSound() {
 
 void SoundManager::BulletCollision() {
 	m_sBulletImpact.play();
-}
-
-void SoundManager::FireRocket() {
-	m_sFireRocket.play();
-}
-
-void SoundManager::RocketExplosion() {
-	m_sRocketImpact.play();
 }
 
 void SoundManager::MoveSounds(float dt) {

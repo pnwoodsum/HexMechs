@@ -3,6 +3,7 @@
 #include "Collider.hpp"
 #include "Camera.h"
 #include <vector>
+#include <SFML\Audio.hpp>
 
 //A parent class for all objects that should block the player
 class Environment : public GameObject
@@ -114,6 +115,7 @@ public:
 //Bullets within the game
 class Projectile : public GameObject
 {
+
 public:
 	Projectile();
 	~Projectile();
@@ -121,6 +123,11 @@ public:
 	glm::quat lastOrient;
 	int timer;
 	float startTime;
+
+	sf::SoundBuffer m_sbFireRocket;
+	sf::Sound m_sFireRocket;
+	sf::SoundBuffer m_sbRocketImpact;
+	sf::Sound m_sRocketImpact;
 
 	static void fire(vector3, glm::quat, float);
 	virtual bool Update(float deltaTime);

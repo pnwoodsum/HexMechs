@@ -1,5 +1,5 @@
-# ASCII Text Object file created from the model ChainGun.fbx
-# 2017-5-11 | 1:18:26
+# ASCII Text Object file created from the model chainGunDefault.fbx
+# 2017-5-11 | 1:19:41
 # Made by Alberto Bobadilla (labigm@rit.edu)
 Version: 1.0
 
@@ -15,7 +15,7 @@ Materials: 2
 		NormalMap: NULL
 		SpecularMap: NULL
 
-Frames: 38
+Frames: 1
 
 Groups: 3
 	#Name -> Parent
@@ -3207,14 +3207,13 @@ Groups: 3
 		0.11 0.1983 12.93 0.1 0.75 1 1 1 -0.7315 -0.6819 0 -0.6819 0.7315 0 0 0 -1.138
 		0.11 0.1983 12.64 0.1 1 1 1 1 -0.7315 -0.6819 0 -0.6819 0.7315 0 0 0 -1.138
 		0.2055 0.09581 12.93 0 0.75 1 1 1 -0.7315 -0.6819 0 -0.6819 0.7315 0 0 0 -1.138
-	KeyFrames: 2
-		1 1 0 0 0 0 0 0 1 1 1
-		37 1 0 0 0 0 0 720 1 1 1
+	KeyFrames: 1
+		0 1 0 0 0 0 0 0 1 1 1
 
 
 Sequences: // 1
 	#SQ: Name ( FirstFrame | LastFrame | FrameRate )
-	SQ: Default ( 0 | 38 | 30 ) //0
+	SQ: Default ( 0 | 1 | 30 ) //0
 
 States: //1
 	#ST: Name ( SequenceName | Breakable | Transitional | Loop ) // Index

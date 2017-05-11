@@ -271,11 +271,19 @@ int Projectile::bulletIndex;
 std::vector<Projectile*> Projectile::bulletList;
 float Projectile::lastBullet;
 const float Projectile::BULLET_SPEED = 30.0f;
-const float Projectile::FIRE_RATE = 0.1f;
+const float Projectile::FIRE_RATE = 0.25f;
 
 Projectile::Projectile(void)
 {
 	m_pMeshMngr->LoadModel("Mechs\\missle.obj", std::to_string(this->GetInstanceID()));
+
+	m_sbFireRocket.loadFromFile("Data\\Audio\\fireRocket.wav");
+	m_sFireRocket.setBuffer(m_sbFireRocket);
+	m_sFireRocket.setVolume(35.0f);
+
+	m_sbRocketImpact.loadFromFile("Data\\Audio\\rocketImpact.wav");
+	m_sRocketImpact.setBuffer(m_sbRocketImpact);
+	m_sRocketImpact.setVolume(75.0f);
 
 	BoundingObject* collider = new BoundingObject(m_pMeshMngr->GetVertexList(std::to_string(this->GetInstanceID())), 0);
 	collider->SetModelMatrix(transform);
@@ -292,7 +300,6 @@ Projectile::Projectile(void)
 	bulletList.push_back(this);
 }
 
-
 Projectile::~Projectile() {}
 
 void Projectile::fire(vector3 pos, glm::quat or , float time) {
@@ -301,6 +308,8 @@ void Projectile::fire(vector3 pos, glm::quat or , float time) {
 		//activate current bullet and update the index
 		Projectile* ptr = bulletList[bulletIndex];
 		bulletIndex = (bulletIndex + 1) % bulletList.size();
+
+		ptr->m_sFireRocket.play();
 
 		ptr->SetActive(true);
 
@@ -315,7 +324,7 @@ void Projectile::fire(vector3 pos, glm::quat or , float time) {
 
 void Projectile::HandleCollision(Collider* mainobj, Collider* other) {
 	Projectile* me = static_cast<Projectile*>(mainobj->getGameObject());	
-
+	me->m_sRocketImpact.play();
 	me->SetActive(false);
 }
 
