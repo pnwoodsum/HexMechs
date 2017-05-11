@@ -4,12 +4,27 @@
 #include "Camera.h"
 #include <vector>
 
-class Pillar : public GameObject
+class Environment : public GameObject
+{
+public:
+	Environment();
+	~Environment();
+};
+
+class Pillar : public Environment
 {
 public:
 	Pillar();
 	Pillar(vector3);
 	~Pillar();
+};
+
+class Wall : public Environment
+{
+public:
+	Wall();
+	Wall(vector3, vector3);
+	~Wall();
 };
 
 class DestructObj : public GameObject
@@ -20,6 +35,19 @@ public:
 	DestructObj(vector3);
 	~DestructObj();
 	static void HandleCollision(Collider*, Collider*);
+};
+
+class Player : public GameObject
+{
+public:
+	Camera* camRef;
+	int health;
+	bool dead;
+	Player();
+	Player(Camera*);
+	~Player();
+	static void HandleCollision(Collider*, Collider*);
+	bool Update(float fDeltaTime);
 };
 
 class Enemy : public DestructObj
