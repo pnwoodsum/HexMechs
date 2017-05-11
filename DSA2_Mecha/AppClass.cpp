@@ -1,4 +1,5 @@
 #include "AppClass.h"
+#include "BoundingObject.h"
 
 void AppClass::InitWindow(String a_sWindowName) {
 	super::InitWindow("HexMechs"); // Window Name
@@ -250,4 +251,17 @@ void AppClass::Release(void)
 
 	//Release the memory of the inherited fields
 	super::Release(); 
+}
+
+void AppClass::ToggleDebug() {
+	for (int i = 0; i < objects.size(); i++) {
+		Collider* col = objects[i]->getComponent<Collider>();
+		if (col) {
+			col->visible = !col->visible;
+		}
+	}
+}
+
+void AppClass::ToggleSAT() {
+	BoundingObject::doSAT = !BoundingObject::doSAT;
 }

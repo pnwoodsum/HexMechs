@@ -109,6 +109,9 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void WriteConfig(void) final {}
+	void ToggleDebug();
+
+	void ToggleSAT();
 };
 
 #endif //__APPLICATION_H_

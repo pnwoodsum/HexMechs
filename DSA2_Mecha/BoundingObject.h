@@ -34,6 +34,7 @@ private:
 	std::vector<vector3> pointsG;
 
 public:
+	static bool doSAT;
 	vector3 m_v3CenterGlobal = vector3(0.0f); //center of the sphere in global space
 	virtual void subUpdate();
 	//virtual void Update(float);

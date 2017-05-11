@@ -48,8 +48,10 @@ bool GameObject::Update(float deltaTime) {
 
 bool GameObject::Render(matrix4 projection, matrix4 view) {
 	if (!active || !visible) return false;
-	for (int i = 0; i < (int)components.size(); i++)
-		components[i]->Render();
+	for (int i = 0; i < (int)components.size(); i++) {
+		if(components[i]->visible)
+			components[i]->Render();
+	}
 
 	if (model)
 		model->Render(projection, view, transform);

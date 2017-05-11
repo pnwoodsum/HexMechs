@@ -113,8 +113,14 @@ void AppClass::ProcessKeyboard(void)
 			break;
 		}
 	}
+	
 	//Exit the program
 #pragma region Other Actions
 	ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL))
+	ON_KEY_PRESS_RELEASE(F6, NULL, ToggleDebug())
+	ON_KEY_PRESS_RELEASE(F7, NULL, ToggleSAT())
+
 #pragma endregion
 }
+
+

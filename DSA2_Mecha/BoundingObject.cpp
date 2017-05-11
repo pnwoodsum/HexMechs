@@ -168,7 +168,7 @@ void BoundingObject::SetModelMatrix(matrix4 a_m4ToWorld)
 	p_v3Size = p_v3Max - p_v3Min;
 	m_v3HalfWidth = (m_v3Max - m_v3Min) / 2.0f;
 }
-
+bool BoundingObject::doSAT = false;
 bool BoundingObject::IsColliding(BoundingObject* a_other, bool isProjectile)
 {
 
@@ -196,7 +196,9 @@ bool BoundingObject::IsColliding(BoundingObject* a_other, bool isProjectile)
 		return false;
 
 	//SAT
-	return SAT(a_other);
+	if(doSAT)
+		return SAT(a_other);
+	return true;
 }
 
 bool BoundingObject::SAT(BoundingObject* const a_pOther)
