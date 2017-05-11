@@ -46,6 +46,8 @@ public:
 	BoundingObject(std::vector<vector3> vertexList, int objectType);
 	~BoundingObject();
 
+	vector3 m_v3HalfWidth = vector3(0.0f);//Will store half the size of all sides
+	bool SAT(BoundingObject* const a_pOther);
 	/*
 	Sets Colliding
 	*/
