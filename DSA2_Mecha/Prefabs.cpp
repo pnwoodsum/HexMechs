@@ -1,6 +1,11 @@
 #include "Prefabs.h"
 #include "BoundingObject.h"
 
+#pragma region Environment
+Environment::Environment() {}
+Environment::~Environment() {}
+#pragma endregion
+
 #pragma region Pillar
 Pillar::Pillar() : Pillar(vector3(0, 0, 0)) {}
 
@@ -20,6 +25,26 @@ Pillar::Pillar(vector3 pos)
 }
 
 Pillar::~Pillar() {}
+#pragma endregion
+
+#pragma region Wall
+Wall::Wall() : Wall(vector3(0, 0, 0), vector3(0, 0, 0)) {}
+
+Wall::Wall(vector3 size, vector3 pos)
+{
+	model = new PrimitiveClass();
+	model->GenerateCuboid(size, REORANGE);
+
+	transform = glm::translate(pos);
+
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(transform);
+	this->addComponent(collider);
+
+	visible = true;
+}
+
+Wall::~Wall() {}
 #pragma endregion
 
 #pragma region DestructObj
@@ -59,6 +84,55 @@ void DestructObj::HandleCollision(Collider* mainobj, Collider* other)
 	}
 }
 #pragma endregion
+
+#pragma region Player
+Player::Player() {
+}
+Player::Player(Camera* cam) {
+
+	camRef = cam;
+
+	model = new PrimitiveClass();
+	model->GenerateCube(50.0f, REBROWN);
+
+	transform = glm::translate(camRef->GetPos());
+
+	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
+	collider->SetModelMatrix(transform);
+	this->addComponent(collider);
+	collider->onCollisionEnterFunction = &Player::HandleCollision;
+
+	visible = true;
+	health = 100;
+	dead = false;
+}
+Player::~Player() {}
+void Player::HandleCollision(Collider* mainobj, Collider* other)
+{
+	Player* me = static_cast<Player*>(mainobj->getGameObject());
+
+	Projectile* castedOther = dynamic_cast<Projectile*>(other->getGameObject());
+	if (castedOther) {
+		me->health -= 5;
+
+		if (me->health <= 0) {
+			std::cout << "dead" << std::endl;
+			me->dead = true;
+		}
+	}
+
+	Environment* castedBarrier = dynamic_cast<Environment*>(other->getGameObject());
+	if (castedBarrier) {
+		me->camRef->velocity *= -1;
+	}
+}
+
+bool Player::Update(float fDeltaTime) {
+	getComponent<BoundingObject>()->SetModelMatrix(glm::translate(camRef->GetPos()));
+	return true;
+}
+#pragma endregion
+
 
 #pragma region Enemy
 Enemy::Enemy(Camera* cam) : Enemy(vector3(0, 0, 0), cam) {}

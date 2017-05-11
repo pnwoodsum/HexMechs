@@ -30,21 +30,23 @@ void AppClass::InitVariables(void) {
 
 	//Environment Setup
 	//********
-	envCount = 10;
-	environment = new PrimitiveClass[envCount];
-	environ_Matrix = new matrix4[envCount];
 	
 	//create the bullets
 	for (int i = 0; i < 40; i++) {
 		objects.push_back(new Projectile());
 	}
-	
+
+	objects.push_back(new Player(m_Camera));
 	objects.push_back(new Pillar(vector3(-600, 0, -600)));
 	objects.push_back(new Pillar(vector3(-600, 0, 0)));
 	objects.push_back(new Pillar(vector3(-600, 0, 600)));
 	objects.push_back(new Pillar(vector3(600, 0, -600)));
 	objects.push_back(new Pillar(vector3(600, 0, 0)));
 	objects.push_back(new Pillar(vector3(600, 0, 600)));
+	objects.push_back(new Wall(vector3(6000.f, 400.f, 30.f), vector3(0, 0, -3000)));
+	objects.push_back(new Wall(vector3(6000.f, 400.f, 30.f), vector3(0, 0, 3000)));
+	objects.push_back(new Wall(vector3(30.f, 400.f, 6000.f), vector3(-3000, 0, 0)));
+	objects.push_back(new Wall(vector3(30.f, 400.f, 6000.f), vector3(3000, 0, 0)));
 	objects.push_back(new DestructObj(vector3(300, 0, 300)));
 	objects.push_back(new DestructObj(vector3(200, 0, 300)));
 	objects.push_back(new DestructObj(vector3(100, 0, 300)));
@@ -65,20 +67,6 @@ void AppClass::InitVariables(void) {
 		enemy->speed = enemy->speed + i * 20;
 		objects.push_back(enemy);
 	}
-
-/*	
-	environment[6].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
-	environ_Matrix[6] = glm::translate(vector3(0, 0, 3000));
-
-	environment[7].GenerateCuboid(vector3(6000.f, 400.f, 30.f), REORANGE);
-	environ_Matrix[7] = glm::translate(vector3(0, 0, -3000));
-
-	environment[8].GenerateCuboid(vector3(30.f, 400.f, 6000.f), REORANGE);
-	environ_Matrix[8] = glm::translate(vector3(3000, 0, 0));
-
-	environment[9].GenerateCuboid(vector3(30.f, 400.f, 6000.f), REORANGE);
-	environ_Matrix[9] = glm::translate(vector3(-3000, 0, 0));
-*/
 
 	//Generate the Cone
 	m_pCone = new PrimitiveClass();
@@ -217,10 +205,6 @@ void AppClass::Display(void)
 
 	for (int i = 0; i < (int)objects.size(); i++) {
 		objects[i]->Render(m_m4Projection, m_m4View);
-	}
-
-	for (int n = 0; n < envCount; n++) {
-		environment[n].Render(m_m4Projection, m_m4View, environ_Matrix[n]);
 	}
 
 	//m_pPlane->Render(m_m4Projection,m_m4View, glm::translate(IDENTITY_M4, REAXISY * -155.0f) * glm::rotate(90.0f,1.0f,0.0f,0.0f));
