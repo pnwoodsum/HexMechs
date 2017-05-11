@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include <vector>
 
+//A parent class for all objects that should block the player
 class Environment : public GameObject
 {
 public:
@@ -11,6 +12,7 @@ public:
 	~Environment();
 };
 
+//Pillar objects in the world, block player movement
 class Pillar : public Environment
 {
 public:
@@ -19,6 +21,7 @@ public:
 	~Pillar();
 };
 
+//Walls in the world, block the player
 class Wall : public Environment
 {
 public:
@@ -27,6 +30,7 @@ public:
 	~Wall();
 };
 
+//Parents class for objects that take damage
 class DestructObj : public GameObject
 {
 public:
@@ -37,6 +41,7 @@ public:
 	static void HandleCollision(Collider*, Collider*);
 };
 
+//Player class, can take damage
 class Player : public GameObject
 {
 public:
@@ -50,6 +55,7 @@ public:
 	static void HandleCollision(Collider*, Collider*);
 };
 
+//Enemy class, can be destroyed.
 class Enemy : public DestructObj
 {
 public:
@@ -96,6 +102,8 @@ public:
 	vector3 boxDimmensions;
 	vector3 boxCenter;
 };
+
+//Bullets within the game
 class Projectile : public GameObject
 {
 public:
