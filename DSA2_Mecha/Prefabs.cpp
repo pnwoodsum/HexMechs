@@ -1,11 +1,13 @@
 #include "Prefabs.h"
 #include "BoundingObject.h"
 
+//ENVIRONMENT Definitions
 #pragma region Environment
 Environment::Environment() {}
 Environment::~Environment() {}
 #pragma endregion
 
+//PILLAR Definitions
 #pragma region Pillar
 Pillar::Pillar() : Pillar(vector3(0, 0, 0)) {}
 
@@ -13,7 +15,6 @@ Pillar::Pillar(vector3 pos)
 {
 	model = new PrimitiveClass();
 	model->GenerateCylinder(50.0f, 300.0f, 10, REGREEN);
-
 
 	transform = glm::translate(pos);
 
@@ -27,6 +28,7 @@ Pillar::Pillar(vector3 pos)
 Pillar::~Pillar() {}
 #pragma endregion
 
+//WALL Definitions
 #pragma region Wall
 Wall::Wall() : Wall(vector3(0, 0, 0), vector3(0, 0, 0)) {}
 
@@ -47,6 +49,7 @@ Wall::Wall(vector3 size, vector3 pos)
 Wall::~Wall() {}
 #pragma endregion
 
+//DestructObj Definitions
 #pragma region DestructObj
 DestructObj::DestructObj() : DestructObj(vector3(0, 0, 0)) {}
 
@@ -85,16 +88,19 @@ void DestructObj::HandleCollision(Collider* mainobj, Collider* other)
 }
 #pragma endregion
 
+//PLAYER Defintions
 #pragma region Player
 Player::Player() {
 }
 Player::Player(Camera* cam) {
 
+	//using camera location to position bounding object
 	camRef = cam;
 
 	model = new PrimitiveClass();
 	model->GenerateCube(25.0f, REBROWN);
 
+	//set transform with camera
 	transform = glm::inverse(glm::translate(camRef->GetPos()));
 
 	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
@@ -102,6 +108,9 @@ Player::Player(Camera* cam) {
 	this->addComponent(collider);
 	collider->onCollisionEnterFunction = &Player::HandleCollision;
 
+	transform = glm::translate(vector3(0, -100, 0));
+
+	//intializing variables
 	visible = true;
 	health = 100;
 	dead = false;
@@ -134,11 +143,13 @@ bool Player::Update(float fDeltaTime) {
 }
 #pragma endregion
 
+//ENEMY Definitions
 #pragma region Enemy
 Enemy::Enemy(Camera* cam) : Enemy(vector3(0, 0, 0), cam) {}
 
 Enemy::Enemy(vector3 pos, Camera* cam)
 {
+	//loads enemy model
 	m_pMeshMngr->LoadModel("Mechs\\buzzer_bot.obj", std::to_string(this->GetInstanceID()));
 	m_Camera = cam;
 	model = nullptr;
@@ -150,6 +161,7 @@ Enemy::Enemy(vector3 pos, Camera* cam)
 	RequestNextPoint = &Enemy::RequestDefault;
 	targetPoint = pos;
 
+	//intializes variables
 	speed = 100;
 	visible = true;
 	health = 50;
@@ -215,6 +227,7 @@ bool Enemy::Render(matrix4 projection, matrix4 view) {
 }
 #pragma endregion
 
+//ENEMYVARIANTS Definitions
 #pragma region EnemyVariants
 EnemyPath::EnemyPath(Camera* cam) : EnemyPath(vector3(0, 0, 0), cam) {}
 EnemyPath::EnemyPath(vector3 pos, Camera* cam) : Enemy(pos, cam) {
@@ -252,6 +265,7 @@ vector3 EnemyRandom::RequestRandomInBox(Enemy* me_uncasted) {
 }
 #pragma endregion
 
+//BULLET Definitions
 #pragma region Bullet
 int Projectile::bulletIndex;
 std::vector<Projectile*> Projectile::bulletList;
