@@ -7,10 +7,8 @@ void AppClass::InitWindow(String a_sWindowName) {
 void AppClass::InitVariables(void) {
 
 	fTimer = 0.0f; //Global Timer in Seconds
-	
-	//cockpitTexture = new TextureClass();
-	//cockpitTexture->LoadTexture("Cockpit.png");
 
+	//screens for displaying game state
 	failTexture = new TextureClass();
 	failTexture->LoadTexture("fail.jpg");
 	notFailTexture = new TextureClass();
@@ -18,6 +16,7 @@ void AppClass::InitVariables(void) {
 	pauseTexture = new TextureClass();
 	pauseTexture->LoadTexture("pause.png");
 
+	//loads all the screen textures
 	for (int i = 0; i < 25; i++) {
 		mainMenuBG[i] = new TextureClass();
 		std::string num = "dream" + std::to_string(i + 1) + ".jpg";
@@ -28,15 +27,13 @@ void AppClass::InitVariables(void) {
 	
 	// Sound manager
 	sManager = SoundManager::GetInstance();
-
-	//Environment Setup
-	//********
-	
+		
 	//create the bullets
 	for (int i = 0; i < 40; i++) {
 		objects.push_back(new Projectile());
 	}
 
+	//creates some objects in the environment and the player
 	objects.push_back(new Player(m_Camera));
 	objects.push_back(new Pillar(vector3(-600, 0, -600)));
 	objects.push_back(new Pillar(vector3(-600, 0, 0)));
@@ -73,12 +70,11 @@ void AppClass::InitVariables(void) {
 	m_pCone = new PrimitiveClass();
 	m_pCone->GenerateCube(70.0f, RERED);
 	
-	// Gun model
+	// loading models used in game
 	m_pMeshMngr->LoadModel("Mechs\\ChainGun.fbx", "ChainGun");
 	m_pMeshMngr->LoadModel("Mechs\\panel.obj", "panel");
 	m_pMeshMngr->LoadModel("Mechs\\wall.obj", "wall");
 	m_pMeshMngr->LoadModel("Mechs\\floor.obj", "floor");
-
 	m_pMeshMngr->LoadModel("Mechs\\cockpitPlane.obj", "CockPitPlane");
 
 	m_v3CockPitPlane = vector3(0.0f, 0.0f, 11.0f);
@@ -92,6 +88,8 @@ void AppClass::InitVariables(void) {
 	UINT	CenterX, CenterY;
 	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
 	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
+
+	//intializes all objects in game
 	for (int i = 0; i < (int)objects.size(); i++) {
 		objects[i]->Start();
 	}
@@ -108,6 +106,7 @@ void AppClass::Update(void)
 	
 	GameObject::time = fTimer;
 
+	//Gameplay state
 	if (state == 1) {
 		if (!pause) {
 			m_Camera->Move(fTimer); //Moves Camera/Player
@@ -139,6 +138,8 @@ void AppClass::Update(void)
 		// Handle Sounds
 		sManager->PlaySounds(fDeltaTime);
 
+
+		//sound effects for the character movement
 		if (sManager->currentMoveState == sManager->Walk) {
 			if (m_bCockPitUp) {
 				m_v3CockPitPlane.y -= 0.04f;
@@ -289,6 +290,7 @@ void AppClass::Release(void)
 	super::Release(); 
 }
 
+//Turns the bounding object lines on and off
 void AppClass::ToggleDebug() {
 	for (int i = 0; i < objects.size(); i++) {
 		Collider* col = objects[i]->getComponent<Collider>();
@@ -298,6 +300,7 @@ void AppClass::ToggleDebug() {
 	}
 }
 
+//Turns SAT on and off
 void AppClass::ToggleSAT() {
 	BoundingObject::doSAT = !BoundingObject::doSAT;
 }

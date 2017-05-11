@@ -22,23 +22,31 @@ class AppClass : public ReEngAppClass
 	std::vector<GameObject*> objects;
 	//BulletManager* bulletMngr;
 
+
+	//Textures for main menu
 	TextureClass* cockpitTexture;
 	TextureClass* mainMenuBG[25];
 	TextureClass* failTexture;
 	TextureClass* notFailTexture;
 	TextureClass* pauseTexture;
+
+	//simple shapes used in scene
 	PrimitiveClass* m_pCone = nullptr;
 	PrimitiveClass* m_pPlane = nullptr;
 	PrimitiveClass* m_pCylinder = nullptr;
 	PrimitiveClass* m_pCylinder2 = nullptr;
 
+	//handles all sound
 	SoundManager* sManager;
 
+	//an array to hold all bullets so they don't have to be created every time
 	std::vector<Projectile> bullets;
 	int curr = 0;
 
+	//pointer to camera
 	Camera* m_Camera = new Camera();
 
+	//variables for controlling game
 	uint state = 0;
 	int timer;
 	float fTimer;
@@ -115,8 +123,11 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void WriteConfig(void) final {}
+
+	//Toggles the bounding objects display
 	void ToggleDebug();
 
+	//Toggles the Seperation Axis Theorem
 	void ToggleSAT();
 };
 
