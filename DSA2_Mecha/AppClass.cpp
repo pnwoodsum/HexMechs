@@ -10,6 +10,19 @@ void AppClass::InitVariables(void) {
 	cockpitTexture = new TextureClass();
 	cockpitTexture->LoadTexture("Cockpit.png");
 
+	failTexture = new TextureClass();
+	failTexture->LoadTexture("fail.jpg");
+	notFailTexture = new TextureClass();
+	notFailTexture->LoadTexture("notFail.jpg");
+	pauseTexture = new TextureClass();
+	pauseTexture->LoadTexture("pause.png");
+
+	for (int i = 0; i < 25; i++) {
+		mainMenuBG[i] = new TextureClass();
+		std::string num = "dream" + std::to_string(i + 1) + ".jpg";
+		mainMenuBG[i]->LoadTexture(num);
+	}
+
 	pause = false;
 	
 	// Sound manager
@@ -103,46 +116,47 @@ void AppClass::Update(void)
 	
 	GameObject::time = fTimer;
 
-	if (!pause) {
-		m_Camera->Move(fTimer); //Moves Camera/Player
-		for (int i = 0; i < (int)objects.size(); i++) {
-			objects[i]->Update(fDeltaTime);
+	if (state == 1) {
+		if (!pause) {
+			m_Camera->Move(fTimer); //Moves Camera/Player
+			for (int i = 0; i < (int)objects.size(); i++) {
+				objects[i]->Update(fDeltaTime);
+			}
 		}
+
+		//Find Mouse Difference to move Camera
+		cM = sf::Mouse::getPosition();
+
+		UINT	CenterX, CenterY;
+		CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
+		CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
+
+		sf::Vector2i rem = sf::Vector2i(CenterX, CenterY);
+
+		sf::Vector2i dis = rem - cM;
+		vector2 mousePos = vector2(-dis.x, -dis.y);
+
+		SetCursorPos(CenterX, CenterY);
+
+		ArcBall();
+
+		//Camera
+		m_m4Projection = m_Camera->GetProjection(false);
+		m_m4View = m_Camera->GetView(mousePos);
+
+		// Handle Sounds
+		sManager->PlaySounds(fDeltaTime);
+
+		// Update gun matrix
+		m_m4GunMat = glm::translate(-m_Camera->GetPos()) *
+			glm::transpose(glm::toMat4(m_Camera->orientation)) *
+			glm::translate(IDENTITY_M4, -vector3(-8.0f, 4.0f, 20.0f)) *
+			ToMatrix4(glm::angleAxis(180.0f, REAXISY));
+
+		m_pMeshMngr->SetModelMatrix(m_m4GunMat,
+			"ChainGun");
+
 	}
-	
-	//Find Mouse Difference to move Camera
-	cM = sf::Mouse::getPosition();
-
-	UINT	CenterX, CenterY;
-	CenterX = m_pSystem->GetWindowX() + m_pSystem->GetWindowWidth() / 2;
-	CenterY = m_pSystem->GetWindowY() + m_pSystem->GetWindowHeight() / 2;
-
-	sf::Vector2i rem = sf::Vector2i(CenterX, CenterY);
-
-	sf::Vector2i dis = rem - cM;
-	vector2 mousePos = vector2(-dis.x, -dis.y);
-
-	SetCursorPos(CenterX, CenterY);
-
-	ArcBall();
-
-	//Camera
-	m_m4Projection = m_Camera->GetProjection(false);
-	m_m4View = m_Camera->GetView(mousePos);
-
-	// Handle Sounds
-	sManager->PlaySounds(fDeltaTime);
-
-	// Update gun matrix
-	m_m4GunMat = glm::translate(-m_Camera->GetPos()) *
-		glm::transpose(glm::toMat4(m_Camera->orientation)) * 
-		glm::translate(IDENTITY_M4, -vector3(-8.0f,4.0f,20.0f)) * 
-		ToMatrix4(glm::angleAxis(180.0f, REAXISY));
-
-	m_pMeshMngr->SetModelMatrix(m_m4GunMat,
-		"ChainGun");
-
-	
 	
 	//Update the system's time
 	m_pSystem->UpdateTime();
@@ -152,39 +166,42 @@ void AppClass::Update(void)
 
 	//Adds all loaded instance to the render list
 	//m_pMeshMngr->AddInstanceToRenderList("ALL");
-	m_pMeshMngr->AddInstanceToRenderList("ChainGun");
-
-	//Panels
-	for (int i = 0; i < 4; i++) {
-		m_pMeshMngr->SetModelMatrix(glm::translate(vector3(2850.f, 100.f, i * 1000)) * glm::scale(vector3(5, 5, 5)) * glm::rotate(-90.0f, vector3(0,1,0)),
-			"panel");
-		m_pMeshMngr->AddInstanceToRenderList("panel");
-		m_pMeshMngr->SetModelMatrix(glm::translate(vector3(-2850.f, 100.f, i * 1000)) * glm::scale(vector3(5, 5, 5)) * glm::rotate(90.0f, vector3(0, 1, 0)),
-			"panel");
-		m_pMeshMngr->AddInstanceToRenderList("panel");
-	}
+	if (state == 1) {
+		m_pMeshMngr->AddInstanceToRenderList("ChainGun");
 
 
-
-	//Wall sections
-	for (int x = 0; x <= 360; x+=90) {
-		for (int z = -10; z < 10; z++) {
-			m_pMeshMngr->SetModelMatrix(glm::rotate((float)x, vector3(0, 1, 0)) * glm::translate(vector3(-3100,-60,4*90*z)) * glm::scale(vector3(150, 150, 150)),
-				"wall");
-			m_pMeshMngr->AddInstanceToRenderList("wall");
+		//Panels
+		for (int i = 0; i < 4; i++) {
+			m_pMeshMngr->SetModelMatrix(glm::translate(vector3(2850.f, 100.f, i * 1000)) * glm::scale(vector3(5, 5, 5)) * glm::rotate(-90.0f, vector3(0, 1, 0)),
+				"panel");
+			m_pMeshMngr->AddInstanceToRenderList("panel");
+			m_pMeshMngr->SetModelMatrix(glm::translate(vector3(-2850.f, 100.f, i * 1000)) * glm::scale(vector3(5, 5, 5)) * glm::rotate(90.0f, vector3(0, 1, 0)),
+				"panel");
+			m_pMeshMngr->AddInstanceToRenderList("panel");
 		}
-	}
 
-	//Floor sections 
-	for (int x = -8; x < 8; x++) {
-		for (int z = -8; z < 8; z++) {
-			m_pMeshMngr->SetModelMatrix(glm::translate(vector3(x * 500, -230, z * 500)) * glm::scale(vector3(500, 500, 500)),
-				"floor");
-			m_pMeshMngr->AddInstanceToRenderList("floor");
+
+
+
+		//Wall sections
+		for (int x = 0; x <= 360; x += 90) {
+			for (int z = -10; z < 10; z++) {
+				m_pMeshMngr->SetModelMatrix(glm::rotate((float)x, vector3(0, 1, 0)) * glm::translate(vector3(-3100, -60, 4 * 90 * z)) * glm::scale(vector3(150, 150, 150)),
+					"wall");
+				m_pMeshMngr->AddInstanceToRenderList("wall");
+			}
 		}
-	}
-	
 
+		//Floor sections 
+		for (int x = -8; x < 8; x++) {
+			for (int z = -8; z < 8; z++) {
+				m_pMeshMngr->SetModelMatrix(glm::translate(vector3(x * 500, -230, z * 500)) * glm::scale(vector3(500, 500, 500)),
+					"floor");
+				m_pMeshMngr->AddInstanceToRenderList("floor");
+			}
+		}
+
+	}
 }
 
 void AppClass::Display(void)
@@ -215,6 +232,26 @@ void AppClass::Display(void)
 
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->RenderTexture(cockpitTexture->GetGLTextureID());
+
+	static int inte = 0;
+	switch (state) {
+	case 0:
+		m_pMeshMngr->RenderTexture(mainMenuBG[inte]->GetGLTextureID());
+		inte++;
+		if (inte >= 25) inte = 0;
+		break;
+	case 2:
+		m_pMeshMngr->RenderTexture(notFailTexture->GetGLTextureID());
+		break;
+	case 3:
+		m_pMeshMngr->RenderTexture(failTexture->GetGLTextureID());
+		break;
+
+	}
+	if (pause) {
+		m_pMeshMngr->RenderTexture(pauseTexture->GetGLTextureID());
+	}
+
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
 }

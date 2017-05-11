@@ -23,6 +23,10 @@ class AppClass : public ReEngAppClass
 	//BulletManager* bulletMngr;
 
 	TextureClass* cockpitTexture;
+	TextureClass* mainMenuBG[25];
+	TextureClass* failTexture;
+	TextureClass* notFailTexture;
+	TextureClass* pauseTexture;
 	PrimitiveClass* m_pCone = nullptr;
 	PrimitiveClass* m_pPlane = nullptr;
 	PrimitiveClass* m_pCylinder = nullptr;
@@ -39,9 +43,11 @@ class AppClass : public ReEngAppClass
 
 	Camera* m_Camera = new Camera();
 
+	uint state = 0;
 	int timer;
 	float fTimer;
 	bool pause;
+	bool lastPressed = false;
 	matrix4 m_m4GunMat;
 
 	sf::Vector2i cM;
