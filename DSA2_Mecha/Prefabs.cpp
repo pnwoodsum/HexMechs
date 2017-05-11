@@ -93,9 +93,9 @@ Player::Player(Camera* cam) {
 	camRef = cam;
 
 	model = new PrimitiveClass();
-	model->GenerateCube(50.0f, REBROWN);
+	model->GenerateCube(25.0f, REBROWN);
 
-	transform = glm::translate(camRef->GetPos());
+	transform = glm::inverse(glm::translate(camRef->GetPos()));
 
 	BoundingObject* collider = new BoundingObject(model->GetVertexList(), 0);
 	collider->SetModelMatrix(transform);
@@ -109,8 +109,10 @@ Player::Player(Camera* cam) {
 Player::~Player() {}
 void Player::HandleCollision(Collider* mainobj, Collider* other)
 {
+	std::cout << "Hit a barrier" << std::endl;
 	Player* me = static_cast<Player*>(mainobj->getGameObject());
 
+	std::cout << "Hit a barrier" << std::endl;
 	Projectile* castedOther = dynamic_cast<Projectile*>(other->getGameObject());
 	if (castedOther) {
 		me->health -= 5;
@@ -128,11 +130,10 @@ void Player::HandleCollision(Collider* mainobj, Collider* other)
 }
 
 bool Player::Update(float fDeltaTime) {
-	getComponent<BoundingObject>()->SetModelMatrix(glm::translate(camRef->GetPos()));
+	getComponent<BoundingObject>()->SetModelMatrix(glm::inverse(glm::translate(camRef->GetPos())));
 	return true;
 }
 #pragma endregion
-
 
 #pragma region Enemy
 Enemy::Enemy(Camera* cam) : Enemy(vector3(0, 0, 0), cam) {}

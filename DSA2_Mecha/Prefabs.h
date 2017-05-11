@@ -46,8 +46,8 @@ public:
 	Player();
 	Player(Camera*);
 	~Player();
-	static void HandleCollision(Collider*, Collider*);
 	bool Update(float fDeltaTime);
+	static void HandleCollision(Collider*, Collider*);
 };
 
 class Enemy : public DestructObj
