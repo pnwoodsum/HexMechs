@@ -3,6 +3,7 @@
 //  SoundManager
 SoundManager* SoundManager::m_pInstance = nullptr;
 
+// Initialize all of the sounds and sound buffers
 void SoundManager::Init(void)
 {
 	// Music

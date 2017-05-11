@@ -2,6 +2,8 @@
 
 #include <SFML\Audio.hpp>
 
+// A singleton to contain all of the sound buffers, music and sound variables.
+// Also contains enum for player movement state and methods to play each sound.
 class SoundManager
 {
 	static SoundManager* m_pInstance;
@@ -30,20 +32,28 @@ public:
 
 	static void ReleaseInstance(void);
 
+	// Method to combine sounds to be played on update.
 	void PlaySounds(float dt);
 
+	// Handle the sounds of the machine gun firing
 	void ShootingSound();
 
+	// Handle sounds of boosting and footsteps
 	void MoveSounds(float dt);
 
+	// Handle sound of bullets impacting
 	void BulletCollision();
 
+	// Play the fire rocket sound
 	void FireRocket();
 
+	// Play the rocket explosion sound
 	void RocketExplosion();
 
+	// Is the play currently shooting?
 	bool m_bShooting;
 
+	// Is the player walking or boosting?
 	enum PlayerMoveState {
 		None,
 		Walk,
@@ -54,7 +64,7 @@ public:
 
 private:
 
-	float footStepTimer;
+	float footStepTimer; // Keep track of when to play footstep sound
 
 	SoundManager(void);
 
