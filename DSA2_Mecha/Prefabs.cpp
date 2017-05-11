@@ -227,7 +227,7 @@ void Projectile::HandleCollision(Collider* mainobj, Collider* other) {
 
 bool Projectile::Update(float time)
 {
-	if (!GameObject::Update(time)) return false;
+	GameObject::Update(time);
 	transform = glm::translate(transform, vector3(0.0f, 0.0f, -BULLET_SPEED) * lastOrient);
 	//TODO this should update automatically in BO code
 	getComponent<BoundingObject>()->SetModelMatrix(glm::translate(vector3(transform[3])) * glm::inverse(glm::mat4_cast(lastOrient)));
