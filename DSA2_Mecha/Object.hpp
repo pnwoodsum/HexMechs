@@ -13,6 +13,7 @@ public:
 	Object(const Object& other);
 	~Object();
 	bool active = true;
+	bool visible = true;
 	int GetInstanceID() const;
 	std::string ToString();
 	Object Clone();
