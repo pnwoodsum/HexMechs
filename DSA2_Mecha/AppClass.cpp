@@ -41,10 +41,10 @@ void AppClass::InitVariables(void) {
 	objects.push_back(new Pillar(vector3(600, 0, -600)));
 	objects.push_back(new Pillar(vector3(600, 0, 0)));
 	objects.push_back(new Pillar(vector3(600, 0, 600)));
-	objects.push_back(new Wall(vector3(6000.f, 400.f, 30.f), vector3(0, 0, -3000)));
-	objects.push_back(new Wall(vector3(6000.f, 400.f, 30.f), vector3(0, 0, 3000)));
-	objects.push_back(new Wall(vector3(30.f, 400.f, 6000.f), vector3(-3000, 0, 0)));
-	objects.push_back(new Wall(vector3(30.f, 400.f, 6000.f), vector3(3000, 0, 0)));
+	objects.push_back(new Wall(vector3(6000.f, 400.f, 30.f), vector3(0, 0, -2800)));
+	objects.push_back(new Wall(vector3(6000.f, 400.f, 30.f), vector3(0, 0, 2800)));
+	objects.push_back(new Wall(vector3(30.f, 400.f, 6000.f), vector3(-2800, 0, 0)));
+	objects.push_back(new Wall(vector3(30.f, 400.f, 6000.f), vector3(2800, 0, 0)));
 	objects.push_back(new DestructObj(vector3(300, 0, 300)));
 	objects.push_back(new DestructObj(vector3(200, 0, 300)));
 	objects.push_back(new DestructObj(vector3(100, 0, 300)));

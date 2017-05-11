@@ -17,6 +17,7 @@ GameObject::GameObject(const GameObject& other) {
 	components = std::vector<Component*>();
 	int numComps = other.components.size();
 
+	//copy over the components and update their gameobject reference
 	for (int i = 0; i < numComps; i++){
 		Component* newComp = other.components[i]->clone();
 		if (newComp){
@@ -40,7 +41,11 @@ void GameObject::Start() {
 }
 
 bool GameObject::Update(float deltaTime) {
+	//early return if not active
+	//returning bools lets child classes also early return
 	if (!active) return false;
+
+	//update all components as well
 	for (int i = 0; i < (int)components.size(); i++)
 		components[i]->Update(deltaTime);
 	return true;
@@ -53,6 +58,7 @@ bool GameObject::Render(matrix4 projection, matrix4 view) {
 			components[i]->Render();
 	}
 
+	//render the primitive if it was set
 	if (model)
 		model->Render(projection, view, transform);
 	return true;
@@ -60,6 +66,8 @@ bool GameObject::Render(matrix4 projection, matrix4 view) {
 
 void GameObject::SetActive(bool value) {
 	active = value;
+
+	//update all components
 	for (int i = 0; i < (int)components.size(); i++)
 		components[i]->active = value;
 }

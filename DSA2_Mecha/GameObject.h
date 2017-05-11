@@ -1,28 +1,26 @@
 #pragma once
+//Component and Gameobject ref eachother, 
+//forward declaration avoids inf loop
 class Component;
 #include "RE\ReEngAppClass.h"
-//#include "BoundingObject.h"
 #include "Camera.h"
 #include <vector>
 #include "Object.hpp"
 
 using namespace ReEng;
 
-enum ColliderType { projectile, environment, object };
-
 class GameObject : public Object {
 public:
+	//Time since the start of the game
 	static float time;
-	bool bGravityEnabled;
 	
 	Camera* m_Camera;
 	MeshManagerSingleton* m_pMeshMngr = MeshManagerSingleton::GetInstance();
 
-	std::string instanceName;
-
 	//TODO: should handle both primitives and loaded models
 	PrimitiveClass* model = nullptr;
 
+	//holds all position, rotation, and scale
 	matrix4 transform;
 	std::vector<Component*> components;
 	
@@ -31,6 +29,8 @@ public:
 	GameObject(const GameObject& other);
 	~GameObject();
 	
+	//provides accessor for getting components by type
+	//NOTE: only gets first of type
 	template<class T>
 	T* getComponent() {
 		for (unsigned int i = 0; i < components.size(); i++) {

@@ -64,7 +64,10 @@ public:
 	~Enemy();
 	Camera* m_Camera;
 	
+	//function pointer that will be called when updating enemy target
 	vector3(*RequestNextPoint)(Enemy*);
+
+	//Default to the above that causes enemies to stay in place
 	static vector3 RequestDefault(Enemy*);
 
 	float fireRate;
@@ -77,12 +80,15 @@ public:
 	float timeAtLastTargetReached;
 	float distanceBetweenPoints;
 
+	//Called to invoke RequestNextPoint and update associated vars
 	void SetGoal();
 
 	virtual void Start();
 	virtual bool Update(float fDeltaTime);
 	virtual bool Render(matrix4, matrix4);
 };
+
+//Variant of Enemy that lerps between a list of points
 class EnemyPath : public Enemy
 {
 public:
@@ -93,6 +99,8 @@ public:
 	int pathIndex;
 	bool firstPass = true;
 };
+
+//Variant of Enemy that lerps to random points in an area
 class EnemyRandom : public Enemy
 {
 public:

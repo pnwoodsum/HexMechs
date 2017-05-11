@@ -41,7 +41,7 @@ Wall::Wall(vector3 size, vector3 pos)
 	collider->SetModelMatrix(transform);
 	this->addComponent(collider);
 
-	visible = true;
+	visible = false;
 }
 
 Wall::~Wall() {}
@@ -108,11 +108,9 @@ Player::Player(Camera* cam) {
 }
 Player::~Player() {}
 void Player::HandleCollision(Collider* mainobj, Collider* other)
-{
-	std::cout << "Hit a barrier" << std::endl;
+{	
 	Player* me = static_cast<Player*>(mainobj->getGameObject());
 
-	std::cout << "Hit a barrier" << std::endl;
 	Projectile* castedOther = dynamic_cast<Projectile*>(other->getGameObject());
 	if (castedOther) {
 		me->health -= 5;
@@ -130,6 +128,7 @@ void Player::HandleCollision(Collider* mainobj, Collider* other)
 }
 
 bool Player::Update(float fDeltaTime) {
+	GameObject::Update(fDeltaTime);
 	getComponent<BoundingObject>()->SetModelMatrix(glm::inverse(glm::translate(camRef->GetPos())));
 	return true;
 }
@@ -224,8 +223,10 @@ EnemyPath::EnemyPath(vector3 pos, Camera* cam) : Enemy(pos, cam) {
 
 vector3 EnemyPath::RequestPath(Enemy* me_uncasted) {
 	EnemyPath* me = static_cast<EnemyPath*>(me_uncasted);
+	//get next point and update index
 	vector3 point = me->pathPoints[me->pathIndex];
 	me->pathIndex = (me->pathIndex + 1) % me->pathPoints.size();
+	//start at the first point instead of 0,0,0 at the beginning
 	if (me->firstPass) {
 		me->lastTargetPoint = point;
 		me->firstPass = false;
@@ -243,7 +244,7 @@ EnemyRandom::EnemyRandom(vector3 pos, Camera* cam) : Enemy(pos, cam) {
 
 vector3 EnemyRandom::RequestRandomInBox(Enemy* me_uncasted) {
 	EnemyRandom* me = static_cast<EnemyRandom*>(me_uncasted);
-	
+	//get random point in bounds
 	int randx = (float)rand() / (RAND_MAX/me->boxDimmensions.x) + me->boxCenter.x;
 	int randy = (float)rand() / (RAND_MAX/me->boxDimmensions.x) + me->boxCenter.x;
 	int randz = (float)rand() / (RAND_MAX/me->boxDimmensions.x) + me->boxCenter.x;
@@ -265,6 +266,7 @@ Projectile::Projectile(void)
 	BoundingObject* collider = new BoundingObject(m_pMeshMngr->GetVertexList(std::to_string(this->GetInstanceID())), 0);
 	collider->SetModelMatrix(transform);
 	this->addComponent(collider);
+	//collision handler hides bullets
 	collider->onCollisionEnterFunction = &Projectile::HandleCollision;
 
 	model = nullptr;
@@ -272,6 +274,7 @@ Projectile::Projectile(void)
 	visible = true;
 	SetActive(false);
 
+	//add to static bullet list on creation
 	bulletList.push_back(this);
 }
 
@@ -279,7 +282,9 @@ Projectile::Projectile(void)
 Projectile::~Projectile() {}
 
 void Projectile::fire(vector3 pos, glm::quat or , float time) {
+	//fire rate limited
 	if (time - lastBullet > Projectile::FIRE_RATE) {
+		//activate current bullet and update the index
 		Projectile* ptr = bulletList[bulletIndex];
 		bulletIndex = (bulletIndex + 1) % bulletList.size();
 
