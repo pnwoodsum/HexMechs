@@ -46,6 +46,12 @@ class AppClass : public ReEngAppClass
 	bool lastPressed = false;
 	matrix4 m_m4GunMat;
 
+	bool m_bCockPitUp = true;
+	bool m_bCockPitRight = true;
+
+	matrix4 m_m4CockPitPlaneMat;
+	vector3 m_v3CockPitPlane;
+
 	sf::Vector2i cM;
 
 	matrix4 m_m4Projection;

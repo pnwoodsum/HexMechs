@@ -8,8 +8,8 @@ void AppClass::InitVariables(void) {
 
 	fTimer = 0.0f; //Global Timer in Seconds
 	
-	cockpitTexture = new TextureClass();
-	cockpitTexture->LoadTexture("Cockpit.png");
+	//cockpitTexture = new TextureClass();
+	//cockpitTexture->LoadTexture("Cockpit.png");
 
 	failTexture = new TextureClass();
 	failTexture->LoadTexture("fail.jpg");
@@ -79,6 +79,9 @@ void AppClass::InitVariables(void) {
 	m_pMeshMngr->LoadModel("Mechs\\wall.obj", "wall");
 	m_pMeshMngr->LoadModel("Mechs\\floor.obj", "floor");
 
+	m_pMeshMngr->LoadModel("Mechs\\cockpitPlane.obj", "CockPitPlane");
+
+	m_v3CockPitPlane = vector3(0.0f, 0.0f, 11.0f);
 
 	//Calculate the first projections
 	m_m4Projection = glm::perspective(45.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
@@ -136,6 +139,40 @@ void AppClass::Update(void)
 		// Handle Sounds
 		sManager->PlaySounds(fDeltaTime);
 
+		if (sManager->currentMoveState == sManager->Walk) {
+			if (m_bCockPitUp) {
+				m_v3CockPitPlane.y -= 0.04f;
+				if (m_v3CockPitPlane.y <= -0.6) {
+					m_bCockPitUp = false;
+				}
+			}
+			else {
+				m_v3CockPitPlane.y += 0.05f;
+				if (m_v3CockPitPlane.y >= 0.5) {
+					m_bCockPitUp = true;
+				}
+			}
+			if (m_bCockPitRight) {
+				m_v3CockPitPlane.x -= 0.005f;
+				if (m_v3CockPitPlane.x <= -0.25) {
+					m_bCockPitRight = false;
+				}
+			}
+			else {
+				m_v3CockPitPlane.x += 0.004f;
+				if (m_v3CockPitPlane.x >= 0.25) {
+					m_bCockPitRight = true;
+				}
+			}
+		}
+
+		m_m4CockPitPlaneMat = glm::translate(-m_Camera->GetPos()) *
+			glm::transpose(glm::toMat4(m_Camera->orientation)) *
+			glm::translate(IDENTITY_M4, -m_v3CockPitPlane) *
+			glm::scale(vector3(0.5f, 0.5f, 0.0f));
+
+		m_pMeshMngr->SetModelMatrix(m_m4CockPitPlaneMat, "CockPitPlane");
+
 		// Update gun matrix
 		m_m4GunMat = glm::translate(-m_Camera->GetPos()) *
 			glm::transpose(glm::toMat4(m_Camera->orientation)) *
@@ -144,7 +181,6 @@ void AppClass::Update(void)
 
 		m_pMeshMngr->SetModelMatrix(m_m4GunMat,
 			"ChainGun");
-
 	}
 	
 	//Update the system's time
@@ -157,7 +193,7 @@ void AppClass::Update(void)
 	//m_pMeshMngr->AddInstanceToRenderList("ALL");
 	if (state == 1) {
 		m_pMeshMngr->AddInstanceToRenderList("ChainGun");
-
+		m_pMeshMngr->AddInstanceToRenderList("CockPitPlane");
 
 		//Panels
 		for (int i = 0; i < 4; i++) {
@@ -216,7 +252,7 @@ void AppClass::Display(void)
 	m_pMeshMngr->PrintLine(std::to_string(m_Camera->energy));
 
 	m_pMeshMngr->Render(); //renders the render list
-	m_pMeshMngr->RenderTexture(cockpitTexture->GetGLTextureID());
+	//m_pMeshMngr->RenderTexture(cockpitTexture->GetGLTextureID());
 
 	static int inte = 0;
 	switch (state) {
